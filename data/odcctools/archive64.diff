@@ -1,0 +1,21 @@
+diff -r -u odcctools/libstuff/ofile.c odcctools+iPhone/libstuff/ofile.c
+--- odcctools/libstuff/ofile.c	2007-09-08 01:05:35.000000000 +0000
++++ odcctools+iPhone/libstuff/ofile.c	2007-12-29 09:01:22.000000000 +0000
+@@ -105,7 +105,7 @@
+     unsigned long module_index);
+ 
+ #ifndef OTOOL
+-#ifdef ALIGNMENT_CHECKS
++#ifdef ALIGNMENT_CHECKS_ARCHIVE_64_BIT
+ static
+ void
+ temporary_archive_member_warning(
+@@ -128,7 +128,7 @@
+         print("\n");
+ 	va_end(ap);
+ }
+-#endif /* defined(ALIGNMENT_CHECKS) */
++#endif /* defined(ALIGNMENT_CHECKS_ARCHIVE_64_BIT) */
+ #endif /* !defined(OTOOL) */
+ 
+ #ifndef OFI
