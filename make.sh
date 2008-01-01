@@ -14,10 +14,12 @@ done
 
 export PKG_HASH=$({
     find -L "${PKG_DATA}" \( -name '.svn' -o -name '_*' \) -prune -o -type f -print0 | sort -z | xargs -0 cat
-    if [[ ${#PKG_DEPS[@]} -ne 0 ]]; then
-        find -H "${PKG_DEPS[@]}" -type l -printf '%p -> %l\n' | sort
-        find -H "${PKG_DEPS[@]}" -type f -print0 | sort -z | xargs -0 cat
-    fi
+    for dep in "${PKG_DEPS[@]}"; do
+        DEP_NAME=$(basename "${dep}" .dep)
+        DEP_DEST=${PKG_BASE}/dest/${DEP_NAME}
+        find -H "${DEP_DEST}" -type l -printf '%p -> %l\n' | sort
+        find -H "${DEP_DEST}" -type f -print0 | sort -z | xargs -0 cat
+    done
 } | md5sum | cut -d ' ' -f 1)
 
 echo "hashed ${PKG_NAME} to: ${PKG_HASH}"
