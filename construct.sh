@@ -14,24 +14,33 @@ rm -rf "${PKG_REPO}/debs"
 cp -a debs "${PKG_REPO}"
 cd "${PKG_REPO}/dists/tangelo"
 
+cat >main/binary-darwin-arm/Release <<EOF
+Archive: stable
+Version: 1.0r5
+Component: main
+Origin: saurik
+Label: Telesphoreo
+Architecture: darwin-arm
+EOF
+
 {
     cat <<EOF
 Origin: saurik
 Label: Telesphoreo
 Suite: stable
-Version: 1.0r4
+Version: 1.0r5
 Codename: tangelo
 Architectures: darwin-arm
 Components: main
-Description: Telesphoreo Tangelo 1.0r4
+Description: Telesphoreo Tangelo 1.0r5
 MD5Sum:
 EOF
 
     find */* -type f | while read -r line; do
-        echo a 1>&2
         echo " $(md5sum "${line}" | cut -d ' ' -f 1) $(du -b "${line}" | cut -d $'\t' -f 1) ${line}"
     done
 
 } >"Release"
 
+rm -f Release.gpg
 gpg -abs -o Release.gpg Release
