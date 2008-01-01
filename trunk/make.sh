@@ -13,9 +13,10 @@ for dep in "${PKG_DEPS[@]}"; do
 done
 
 export PKG_HASH=$({
-    find -L "${PKG_DATA}" \( -name '.svn' -o -name '_*' \) -prune -o -type f -print -exec cat {} \;
+    find -L "${PKG_DATA}" \( -name '.svn' -o -name '_*' \) -prune -o -type f -print0 | sort -z | xargs -0 cat
     if [[ ${#PKG_DEPS[@]} -ne 0 ]]; then
-        find -H "${PKG_DEPS[@]}" -type l -printf '%p\n%l\n' -o -type f -print -exec cat {} \;
+        find -H "${PKG_DEPS[@]}" -type l -printf '%p -> %l\n' | sort
+        find -H "${PKG_DEPS[@]}" -type f -print0 | sort -z | xargs -0 cat
     fi
 } | md5sum | cut -d ' ' -f 1)
 
@@ -93,6 +94,9 @@ function pkg: {
 function pkg:extract() {
     for tgz in "${PKG_DATA}"/{*.tar.gz,*.tgz}; do
         tar -zxvf "${tgz}"
+    done
+    for tbz2 in "${PKG_DATA}"/*.tar.bz2; do
+        tar -jxvf "${tbz2}"
     done
 }
 

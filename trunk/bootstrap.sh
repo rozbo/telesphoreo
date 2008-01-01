@@ -27,8 +27,7 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     ') >"${PKG_BASE}/Packager/var/lib/dpkg/info/${PKG_NAME}.list"
 done
 
-cp -a "${PKG_BASE}/saurik.list" "${PKG_BASE}/Packager/etc/apt/sources.list.d"
-cp -a "${PKG_BASE}/profile" "${PKG_BASE}/Packager/etc"
+cp -a "${PKG_BASE}"/over/* "${PKG_BASE}/Packager"
 cd "${PKG_BASE}/Packager"
 rm -f ../Packager.zip
 zip -ry ../Packager.zip *
