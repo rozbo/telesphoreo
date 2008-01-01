@@ -1,0 +1,176 @@
+diff -ru odcctools/as/arm.c odcctools+iPhone/as/arm.c
+--- odcctools/as/arm.c	2007-09-13 02:31:45.000000000 +0000
++++ odcctools+iPhone/as/arm.c	2007-12-29 08:49:20.000000000 +0000
+@@ -648,6 +648,18 @@
+             fill_reloc_value(buf, (unsigned int)n, 0x00000fff); 
+             break;
+ 
++        case ARM_RELOC_ADR:
++            val -= 4;
++            if (val >= 0)
++                n = 1 << 23;
++            else {
++                n = 1 << 22;
++                val = -val;
++            }
++            n |= generate_shifted_immediate(val, NULL);
++            fill_reloc_value(buf, (unsigned int)n, 0x00c00fff); 
++            break;
++
+         case ARM_RELOC_SHIFT_IMM:
+             if (val == 32)
+                 val = 0;
+diff -ru odcctools/as/armop.c odcctools+iPhone/as/armop.c
+--- odcctools/as/armop.c	2007-10-16 20:20:35.000000000 +0000
++++ odcctools+iPhone/as/armop.c	2007-12-29 08:49:59.000000000 +0000
+@@ -5,7 +5,7 @@
+ 
+ #include "army.h"
+ 
+-int arm_op_count = 5823;
++int arm_op_count = 5863;
+ struct arm_op_info arm_op_info[] = {
+     { "adc", OP_DATA_PROC_3, 0xe0a00000 },
+     { "adcal", OP_DATA_PROC_3, 0xe0a00000 },
+@@ -87,6 +87,46 @@
+     { "addvcs", OP_DATA_PROC_3, 0x70900000 },
+     { "addvs", OP_DATA_PROC_3, 0x60800000 },
+     { "addvss", OP_DATA_PROC_3, 0x60900000 },
++    { "adr", OP_ADR, 0xe0000000 },
++    { "adral", OP_ADR, 0xe0000000 },
++    { "adrals", OP_ADR, 0xe0100000 },
++    { "adrcc", OP_ADR, 0x30000000 },
++    { "adrccs", OP_ADR, 0x30100000 },
++    { "adrcs", OP_ADR, 0x20000000 },
++    { "adrcss", OP_ADR, 0x20100000 },
++    { "adreq", OP_ADR, 0x00000000 },
++    { "adreqs", OP_ADR, 0x00100000 },
++    { "adrge", OP_ADR, 0xa0000000 },
++    { "adrges", OP_ADR, 0xa0100000 },
++    { "adrgt", OP_ADR, 0xc0000000 },
++    { "adrgts", OP_ADR, 0xc0100000 },
++    { "adrhi", OP_ADR, 0x80000000 },
++    { "adrhis", OP_ADR, 0x80100000 },
++    { "adrhs", OP_ADR, 0x20000000 },
++    { "adrhss", OP_ADR, 0x20100000 },
++    { "adrle", OP_ADR, 0xd0000000 },
++    { "adrles", OP_ADR, 0xd0100000 },
++    { "adrlo", OP_ADR, 0x30000000 },
++    { "adrlos", OP_ADR, 0x30100000 },
++    { "adrls", OP_ADR, 0x90000000 },
++    { "adrlss", OP_ADR, 0x90100000 },
++    { "adrlt", OP_ADR, 0xb0000000 },
++    { "adrlts", OP_ADR, 0xb0100000 },
++    { "adrmi", OP_ADR, 0x40000000 },
++    { "adrmis", OP_ADR, 0x40100000 },
++    { "adrne", OP_ADR, 0x10000000 },
++    { "adrnes", OP_ADR, 0x10100000 },
++    { "adrnv", OP_ADR, 0xf0000000 },
++    { "adrnvs", OP_ADR, 0xf0100000 },
++    { "adrpl", OP_ADR, 0x50000000 },
++    { "adrpls", OP_ADR, 0x50100000 },
++    { "adrs", OP_ADR, 0xe0100000 },
++    { "adrul", OP_ADR, 0x30000000 },
++    { "adruls", OP_ADR, 0x30100000 },
++    { "adrvc", OP_ADR, 0x70000000 },
++    { "adrvcs", OP_ADR, 0x70100000 },
++    { "adrvs", OP_ADR, 0x60000000 },
++    { "adrvss", OP_ADR, 0x60100000 },
+     { "and", OP_DATA_PROC_3, 0xe0000000 },
+     { "andal", OP_DATA_PROC_3, 0xe0000000 },
+     { "andals", OP_DATA_PROC_3, 0xe0100000 },
+Only in odcctools+iPhone/as: armop.c.orig
+Only in odcctools+iPhone/as: armop.c.rej
+diff -ru odcctools/as/armop.in odcctools+iPhone/as/armop.in
+--- odcctools/as/armop.in	2007-10-16 20:20:35.000000000 +0000
++++ odcctools+iPhone/as/armop.in	2007-12-29 08:49:20.000000000 +0000
+@@ -27,6 +27,7 @@
+ mov{<cond>}{s}      t: OP_DATA_PROC_1   e: 1101     (21)
+ bic{<cond>}{s}      t: OP_DATA_PROC_3   e: 1110     (21)
+ mvn{<cond>}{s}      t: OP_DATA_PROC_1   e: 1111     (21)
++adr{<cond>}{s}      t: OP_ADR           e: 0000     (21)
+ 
+ # Multiply instructions
+ mul{<cond>}{s}      t: OP_MUL           e: 0000000 (21), 1001 (4)
+@@ -164,6 +165,7 @@
+ # -----------------------------------------------------------------------------
+ 
+ blx{<cond>}             t: OP_BLX       e: 0 (0)
++bxj{<cond>}             t: OP_BXJ       e: 0 (0)
+ 
+ smla{<x>}{<y>}{<cond>}  t: OP_SMLA_XY   e: 00010000 (20), 1 (7), 0 (4)
+ smlaw{<y>}{<cond>}      t: OP_SMLA_XY   e: 00010010 (20), 1 (7), 0 (5), 0 (4)
+diff -ru odcctools/as/army.y odcctools+iPhone/as/army.y
+--- odcctools/as/army.y	2007-10-16 23:11:52.000000000 +0000
++++ odcctools+iPhone/as/army.y	2007-12-29 08:49:20.000000000 +0000
+@@ -31,7 +31,7 @@
+ %token <nval> OPRD_REG
+ %token <ival> OPRD_IMM
+ %token <nval> OP_BRANCH OP_DATA_PROC_1 OP_DATA_PROC_2 OP_DATA_PROC_3 OP_MUL
+-%token <nval> OP_MLA OP_SMLAL OP_CLZ OP_LDR OP_LDRH OP_LDM OP_SWI OP_BKPT
++%token <nval> OP_MLA OP_SMLAL OP_CLZ OP_LDR OP_LDRH OP_LDM OP_SWI OP_BKPT OP_BXJ
+ %token <nval> OP_CPS_EFFECT OP_CPS OP_LDREX OP_MCRR2 OP_PKHBT OP_QADD16 OP_REV
+ %token <nval> OP_RFE OP_SXTAH OP_SEL OP_SETEND OP_SMLAD OP_SMLALD OP_SMMUL
+ %token <nval> OP_SRS OP_SSAT OP_SSAT16 OP_STREX OP_SXTH OP_SWP OP_USAD8 OP_USADA8
+@@ -41,7 +41,7 @@
+ %token <nval> OP_VFP_ST_D OP_VFP_MSR OP_VFP_MRS OP_VFP_MDXR OP_VFP_MRDX
+ %token <nval> OP_VFP_MXR OP_VFP_MRX OP_VFP_FMSTAT OP_VFP_DPX1_S OP_VFP_DPX1_D
+ %token <nval> OP_VFP_FMDRR OP_VFP_FMRRD OP_VFP_FMSRR OP_VFP_FMRRS OP_VFP_DPX_SD
+-%token <nval> OP_VFP_DPX_DS OP_MSR OP_MRS OP_LDC OP_MCR
++%token <nval> OP_VFP_DPX_DS OP_MSR OP_MRS OP_LDC OP_MCR OP_ADR
+ %token <nval> OPRD_LSL_LIKE OPRD_RRX OPRD_IFLAGS OPRD_COPROC OPRD_CR OPRD_REG_S
+ %token <nval> OPRD_REG_D OPRD_REG_VFP_SYS OPRD_ENDIANNESS OPRD_PSR
+ %token <nval> OPRD_COPRO_REG
+@@ -66,6 +66,7 @@
+ %type  <nval> vfp_maybe_imm_offset generic_reg vfp_data_proc_inst
+ %type  <nval> vfp_store_inst vfp_misc_inst vfp2_inst vfp_imm_offset_with_u_bit
+ %type  <nval> vfp_store_am armv3_inst clz_class_inst armv2_inst
++%type  <nval> bxj_class_inst
+ %type  <nval> load_store_copro_am imm_div_4_with_u_bit mcr_opcode_2
+ 
+ %%
+@@ -101,6 +102,11 @@
+         { $$ = ($1 | $2 | $4 | (1 << 20)); }
+     | OP_DATA_PROC_3 dest_reg ',' src_reg ',' shifter_operand
+         { $$ = ($1 | $2 | $4 | $6); }
++    | OP_ADR dest_reg ',' expr
++        {
++            register_reloc_type(ARM_RELOC_ADR, 4, 1);
++            $$ = ($1 | $2 | (15 << 16) | (1 << 25));
++        }
+     ;
+ 
+ load_inst:
+@@ -378,6 +384,7 @@
+ 
+ armv5_inst:
+       blx_class_inst        { $$ = $1; }
++    | bxj_class_inst        { $$ = $1; }
+     | smla_xy_class_inst    { $$ = $1; }
+     | smlal_xy_class_inst   { $$ = $1; }
+     | smul_xy_class_inst    { $$ = $1; }
+@@ -389,6 +396,10 @@
+       OP_CLZ OPRD_REG ',' OPRD_REG  { $$ = ($1 | ($2 << 12) | $4); }
+     ;
+ 
++bxj_class_inst:
++      OP_BXJ OPRD_REG   { $$ = ($1 | (0x12 << 20) | (0xfff2 << 4) | $2); }
++    ;
++
+ blx_class_inst:
+       OP_BLX branch_am  { $$ = ((0x7d << 25) | $2); }
+     | OP_BLX OPRD_REG   { $$ = ($1 | (0x12 << 20) | (0xfff3 << 4) | $2); }
+Only in odcctools+iPhone/as: army.y.orig
+diff -ru odcctools/include/mach-o/arm/reloc.h odcctools+iPhone/include/mach-o/arm/reloc.h
+--- odcctools/include/mach-o/arm/reloc.h	2007-09-08 01:05:35.000000000 +0000
++++ odcctools+iPhone/include/mach-o/arm/reloc.h	2007-12-29 08:49:16.000000000 +0000
+@@ -21,7 +21,8 @@
+     ARM_RELOC_PCREL_DATA_IMM12, /* Load and Store Word/Immediate Offset, r15 */
+     ARM_RELOC_SHIFT_IMM12,      /* Data-processing operands - Immediate */
+     ARM_RELOC_PCREL_VFP_IMM8_TIMES_4,   /* VFP Load and Store Word, r15 */
+-    ARM_RELOC_SHIFT_IMM         /* immediate shifter operand */
++    ARM_RELOC_SHIFT_IMM,         /* immediate shifter operand */
++    ARM_RELOC_ADR               /* immediate shifter operand with add/sub */
+ };
+ 
+ /* Determines whether a reloc can be exported to object files (1) or whether

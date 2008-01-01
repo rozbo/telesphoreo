@@ -1,0 +1,15 @@
+diff -ru javasqlite-20071108/Makefile.in javasqlite-20071108+iPhone/Makefile.in
+--- javasqlite-20071108/Makefile.in	2007-10-25 06:30:12.000000000 +0000
++++ javasqlite-20071108+iPhone/Makefile.in	2007-12-28 12:12:23.000000000 +0000
+@@ -125,9 +125,9 @@
+ 	    -rpath $(NATIVE_LIB_DIR) $(LIBS)
+ 
+ native/mkconst:	native/mkconst.c
+-	$(LIBTOOL) $(CC) $(SQLITE_INC) $(SQLITE3_INC) \
++	$(LIBTOOL) gcc $(SQLITE_INC) $(SQLITE3_INC) \
+ 	    -DHAVE_SQLITE2=@HAVE_SQLITE2@ -DHAVE_SQLITE3=@HAVE_SQLITE3@ \
+-	    -o native/mkconst native/mkconst.c $(LIBS)
++	    -o native/mkconst native/mkconst.c
+ 
+ Makefile:	Makefile.in configure config.status
+ 	./config.status

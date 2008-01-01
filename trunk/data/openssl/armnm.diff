@@ -1,0 +1,12 @@
+diff -ru openssl-0.9.8g/Makefile.shared openssl-0.9.8g+iPhone/Makefile.shared
+--- openssl-0.9.8g/Makefile.shared	2007-09-16 14:11:51.000000000 +0000
++++ openssl-0.9.8g+iPhone/Makefile.shared	2007-12-30 04:20:19.000000000 +0000
+@@ -101,7 +101,7 @@
+     LIBDEPS="$${LIBDEPS:-$(LIBDEPS)}"; \
+     SHAREDCMD="$${SHAREDCMD:-$(CC)}"; \
+     SHAREDFLAGS="$${SHAREDFLAGS:-$(CFLAGS) $(SHARED_LDFLAGS)}"; \
+-    nm -Pg $$SHOBJECTS | grep ' [BDT] ' | cut -f1 -d' ' > lib$(LIBNAME).exp; \
++    arm-apple-darwin-nm -Pg $$SHOBJECTS | grep ' [BDT] ' | cut -f1 -d' ' > lib$(LIBNAME).exp; \
+     LIBPATH=`for x in $$LIBDEPS; do if echo $$x | grep '^ *-L' > /dev/null 2>&1; then echo $$x | sed -e 's/^ *-L//'; fi; done | uniq`; \
+     LIBPATH=`echo $$LIBPATH | sed -e 's/ /:/g'`; \
+     LD_LIBRARY_PATH=$$LIBPATH:$$LD_LIBRARY_PATH \

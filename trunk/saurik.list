@@ -1,0 +1,2 @@
+deb http://apt.saurik.com/ tangelo main
+deb-src http://apt.saurik.com/ tangelo main

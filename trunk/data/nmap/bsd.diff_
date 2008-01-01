@@ -1,0 +1,24 @@
+diff -ru nmap-4.50/libdnet-stripped/configure.in nmap-4.50+iPhone/libdnet-stripped/configure.in
+--- nmap-4.50/libdnet-stripped/configure.in	2007-11-27 06:22:46.000000000 +0000
++++ nmap-4.50+iPhone/libdnet-stripped/configure.in	2007-12-24 19:50:24.000000000 +0000
+@@ -226,7 +226,7 @@
+ elif test "$ac_cv_dnet_bsd_bpf" = yes ; then
+ 	AC_LIBOBJ([eth-bsd])
+ elif test "$ac_cv_dnet_linux_pf_packet" = yes ; then
+-	AC_LIBOBJ([eth-linux])
++	AC_LIBOBJ([eth-bsd])
+ elif test "$ac_cv_header_net_raw_h" = yes ; then
+ 	AC_LIBOBJ([eth-snoop])
+ elif test "$ac_cv_header_sys_ndd_var_h" = yes ; then
+diff -ru nmap-4.50/libdnet-stripped/src/Makefile.in nmap-4.50+iPhone/libdnet-stripped/src/Makefile.in
+--- nmap-4.50/libdnet-stripped/src/Makefile.in	2007-11-27 06:22:46.000000000 +0000
++++ nmap-4.50+iPhone/libdnet-stripped/src/Makefile.in	2007-12-24 19:50:24.000000000 +0000
+@@ -40,7 +40,7 @@
+ host_triplet = @host@
+ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+ 	$(top_srcdir)/Makefile.am.common arp-bsd.c arp-ioctl.c \
+-	arp-none.c arp-win32.c err.c eth-bsd.c eth-dlpi.c eth-linux.c \
++	arp-none.c arp-win32.c err.c eth-bsd.c eth-dlpi.c eth-bsd.c \
+ 	eth-ndd.c eth-none.c eth-pfilt.c eth-snoop.c eth-win32.c \
+ 	fw-none.c intf-win32.c intf.c ip-cooked.c ip-win32.c ip.c \
+ 	memcmp.c route-bsd.c route-hpux.c route-linux.c route-none.c \

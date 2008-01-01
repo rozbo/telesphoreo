@@ -1,0 +1,81 @@
+diff -ru dpkg-1.13.25/lib/Makefile.am dpkg-1.13.25+iPhone/lib/Makefile.am
+--- dpkg-1.13.25/lib/Makefile.am	2006-06-21 13:41:12.000000000 +0000
++++ dpkg-1.13.25+iPhone/lib/Makefile.am	2007-12-29 10:00:00.000000000 +0000
+@@ -34,4 +34,5 @@
+ 	tarfn.c tarfn.h \
+ 	utils.c \
+ 	varbuf.c \
+-	vercmp.c
++	vercmp.c \
++	obstack.c
+diff -ru dpkg-1.13.25/lib/tarfn.c dpkg-1.13.25+iPhone/lib/tarfn.c
+--- dpkg-1.13.25/lib/tarfn.c	2006-06-21 13:41:12.000000000 +0000
++++ dpkg-1.13.25+iPhone/lib/tarfn.c	2007-12-29 09:51:34.000000000 +0000
+@@ -53,6 +53,13 @@
+ 	return n;
+ }
+ 
++int strnlen(const char *s, int size) {
++    for (int i = 0; i != size; ++i)
++        if (s[i] == '\0')
++            return i;
++    return size;
++}
++
+ /* String block to C null-terminated string */
+ char *
+ StoC(const char *s, int size)
+diff -ru dpkg-1.13.25/m4/funcs.m4 dpkg-1.13.25+iPhone/m4/funcs.m4
+--- dpkg-1.13.25/m4/funcs.m4	2006-06-04 15:45:45.000000000 +0000
++++ dpkg-1.13.25+iPhone/m4/funcs.m4	2007-12-29 09:51:34.000000000 +0000
+@@ -3,7 +3,7 @@
+ # Define HAVE_VA_COPY if we have va_copy, fail if they can't be assigned
+ AC_DEFUN([DPKG_FUNC_VA_COPY],
+ [AC_CACHE_CHECK([for va_copy], [dpkg_cv_va_copy],
+-[AC_TRY_RUN(
++[AC_TRY_COMPILE(
+ [#include <stdarg.h>
+ main() {
+ va_list v1, v2;
+diff -ru dpkg-1.13.25/src/help.c dpkg-1.13.25+iPhone/src/help.c
+--- dpkg-1.13.25/src/help.c	2006-06-19 01:22:03.000000000 +0000
++++ dpkg-1.13.25+iPhone/src/help.c	2007-12-29 09:51:34.000000000 +0000
+@@ -69,11 +69,8 @@
+ 
+ void checkpath(void) {
+ /* Verify that some programs can be found in the PATH. */
+-  static const char *const checklist[]= { "ldconfig", 
+-#ifdef WITH_START_STOP_DAEMON
+-    "start-stop-daemon",
+-#endif    
+-    "install-info", "update-rc.d", 0
++  static const char *const checklist[]= { 
++    "install-info", 0
+   };
+ 
+   struct stat stab;
+diff -ru dpkg-1.13.25/utils/start-stop-daemon.c dpkg-1.13.25+iPhone/utils/start-stop-daemon.c
+--- dpkg-1.13.25/utils/start-stop-daemon.c	2006-06-21 14:59:36.000000000 +0000
++++ dpkg-1.13.25+iPhone/utils/start-stop-daemon.c	2007-12-29 09:51:34.000000000 +0000
+@@ -32,7 +32,7 @@
+ #  define OSOpenBSD
+ #elif defined(hpux)
+ #  define OShpux
+-#elif defined(__FreeBSD__)
++#elif defined(__FreeBSD__) || 1
+ #  define OSFreeBSD
+ #elif defined(__NetBSD__)
+ #  define OSNetBSD
+@@ -928,10 +928,10 @@
+ 		errx(1, "%s", errbuf);
+ 	if ((kp = kvm_getprocs(kd, KERN_PROC_PID, pid, &nentries)) == 0)
+ 		errx(1, "%s", kvm_geterr(kd));
+-	if (kp->kp_proc.p_cred )
++	/*if (kp->kp_proc.p_cred )
+ 		kvm_read(kd, (u_long)&(kp->kp_proc.p_cred->p_ruid),
+ 			&proc_uid, sizeof(uid_t));
+-	else
++	else*/
+ 		return 0;
+ 	return (proc_uid == (uid_t)uid);
+ }
