@@ -5,3 +5,4 @@ for package in data/!(*_); do
     PKG_NAME=$(basename "${package}")
     ./package.sh "${PKG_NAME}"
 done
+./construct.sh
