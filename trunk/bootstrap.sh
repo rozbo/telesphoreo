@@ -29,6 +29,7 @@ done
 
 cp -a "${PKG_BASE}/saurik.list" "${PKG_BASE}/Packager/etc/apt/sources.list.d"
 cp -a "${PKG_BASE}/profile" "${PKG_BASE}/Packager/etc"
-cd "${PKG_BASE}"
-zip -ry Packager.zip Packager
+cd "${PKG_BASE}/Packager"
+rm -f ../Packager.zip
+zip -ry ../Packager.zip *
 rm -rf "${PKG_BASE}/Packager"
