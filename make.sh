@@ -79,11 +79,11 @@ function pkg:install() {
 }
 
 function pkg_ {
-    if [[ ${1:0:1} = / ]]; then
-        echo "${PKG_DEST}$1"
-    else
-        echo $1
-    fi
+    case "${1:0:1}" in
+        (/) echo "${PKG_DEST}$1";;
+        (%) echo "${PKG_DATA}${1:1}";;
+        (*) echo "$1";;
+    esac
 }
 
 function pkg: {
