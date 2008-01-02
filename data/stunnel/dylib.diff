@@ -1,0 +1,53 @@
+diff -ru stunnel-3.26/Makefile.in stunnel-3.26+iPhone/Makefile.in
+--- stunnel-3.26/Makefile.in	2003-04-03 01:43:47.000000000 +0000
++++ stunnel-3.26+iPhone/Makefile.in	2008-01-02 01:33:45.000000000 +0000
+@@ -24,7 +24,7 @@
+ LIBS=@LIBS@
+ HEADERS=common.h prototypes.h client.h
+ OBJS=client.o stunnel.o ssl.o protocol.o sthreads.o pty.o log.o options.o
+-DESTFILES=$(sbindir)/stunnel $(libdir)/stunnel.so $(man8dir)/stunnel.8  $(PEM_DIR)/stunnel.pem
++DESTFILES=$(sbindir)/stunnel $(libdir)/libstunnel.dylib $(man8dir)/stunnel.8  $(PEM_DIR)/stunnel.pem
+ 
+ # Settings that are probably only useful for creating tarball dists
+ WINGCC=i586-mingw32msvc-gcc 
+@@ -37,7 +37,7 @@
+ 
+ # standard external rules
+ 
+-all: stunnel stunnel.8 stunnel.html stunnel.so stunnel.pem
++all: stunnel stunnel.8 stunnel.html libstunnel.dylib stunnel.pem
+ 
+ install: all installdirs $(DESTFILES)
+ 
+@@ -48,7 +48,7 @@
+ 	$(MAKE) INSTALL='$(INSTALL) -s' install
+ 
+ clean:
+-	rm -f stunnel stunnel.so $(OBJS) core config.log stunnel.log
++	rm -f stunnel libstunnel.dylib $(OBJS) core config.log stunnel.log
+ 
+ distclean: clean
+ 	rm -f config.cache config.status Makefile stunnel.pem stunnel.exe
+@@ -93,9 +93,8 @@
+ stunnel: $(OBJS)
+ 	$(CC) $(LDFLAGS) -o stunnel $(OBJS) $(LIBS)
+ 
+-stunnel.so: Makefile env.c
+-	$(CC) -fPIC -shared $(LDFLAGS) -o stunnel.so env.c $(LIBS) || \
+-	touch stunnel.so
++libstunnel.dylib: Makefile env.c
++	$(CC) -fPIC -shared $(LDFLAGS) -dynamiclib -o libstunnel.dylib env.c $(LIBS)
+ 
+ Makefile: configure Makefile.in
+ 	./configure
+@@ -119,8 +118,8 @@
+ $(sbindir)/stunnel: stunnel
+ 	$(INSTALL) -m 711 stunnel $(sbindir)
+ 
+-$(libdir)/stunnel.so: stunnel.so
+-	test ! -s stunnel.so || $(INSTALL) -m 755 stunnel.so $(libdir)
++$(libdir)/libstunnel.dylib: libstunnel.dylib
++	test ! -s libstunnel.dylib || $(INSTALL) -m 755 libstunnel.dylib $(libdir)
+ 
+ $(man8dir)/stunnel.8: stunnel.8
+ 	$(INSTALLMAN) -m 644 stunnel.8 $(man8dir)

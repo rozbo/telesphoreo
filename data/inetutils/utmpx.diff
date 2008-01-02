@@ -1,0 +1,32 @@
+diff -ru inetutils-1.5/configure.ac inetutils-1.5+iPhone/configure.ac
+--- inetutils-1.5/configure.ac	2007-06-28 22:58:23.000000000 +0000
++++ inetutils-1.5+iPhone/configure.ac	2008-01-02 02:07:05.000000000 +0000
+@@ -776,8 +776,7 @@
+   AC_DEFINE(UTMPX, 1, [FIXME])
+   AC_DEFINE(HAVE_STREAMSPTY, 1, [FIXME])
+   ;;
+-*irix* | *hpux*)
+-  AC_DEFINE(UTMPX, 1, [FIXME])
++*irix* | *hpux* | *darwin*)
+   AC_DEFINE(UTMPX, 1, [FIXME])
+   ;;
+ esac
+diff -ru inetutils-1.5/libinetutils/utmp_logout.c inetutils-1.5+iPhone/libinetutils/utmp_logout.c
+--- inetutils-1.5/libinetutils/utmp_logout.c	2006-10-11 21:46:24.000000000 +0000
++++ inetutils-1.5+iPhone/libinetutils/utmp_logout.c	2008-01-02 02:23:02.000000000 +0000
+@@ -52,11 +52,15 @@
+ 
+ 	if ((ut = getutxline(&utx))) {
+ 		ut->ut_type = DEAD_PROCESS;
++#ifdef HAVE_STRUCT_UTMPX_UT_EXIT
+ 		ut->ut_exit.e_termination = 0;
+ 		ut->ut_exit.e_exit = 0;
++#endif
+ 		gettimeofday(&(ut->ut_tv), 0);
+ 		pututxline(ut);
++#ifdef HAVE_UPDWTMPX
+ 		updwtmpx(PATH_WTMPX, ut);
++#endif
+ 	}
+ 	endutxent();
+ #else
