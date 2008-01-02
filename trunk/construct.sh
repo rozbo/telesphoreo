@@ -14,9 +14,11 @@ rm -rf "${PKG_REPO}/debs"
 cp -a debs "${PKG_REPO}"
 cd "${PKG_REPO}/dists/tangelo"
 
+export PKG_RVSN=8
+
 cat >main/binary-darwin-arm/Release <<EOF
 Archive: stable
-Version: 1.0r5
+Version: 1.0r${PKG_RVSN}
 Component: main
 Origin: saurik
 Label: Telesphoreo
@@ -28,11 +30,11 @@ EOF
 Origin: saurik
 Label: Telesphoreo
 Suite: stable
-Version: 1.0r5
+Version: 1.0r${PKG_RVSN}
 Codename: tangelo
 Architectures: darwin-arm
 Components: main
-Description: Telesphoreo Tangelo 1.0r5
+Description: Telesphoreo Tangelo 1.0r${PKG_RVSN}
 MD5Sum:
 EOF
 

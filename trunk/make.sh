@@ -2,6 +2,11 @@
 set -e
 shopt -s extglob nullglob
 
+if [[ $# == 0 ]]; then
+    echo "usage: $0 <package>"
+    exit
+fi
+
 export PKG_MAKE=$0
 export PKG_NAME=${1%_}
 
@@ -131,9 +136,10 @@ function rmdir_() {
     fi
 }
 
-rm -rf "${PKG_DEST}/usr/share/info"
 rm -rf "${PKG_DEST}/usr/share/locale"
 rm -rf "${PKG_DEST}/usr/share/man"
+rm -rf "${PKG_DEST}/usr/share/info"
+rm -rf "${PKG_DEST}/usr/share/gtk-doc"
 rm -rf "${PKG_DEST}/usr/share/doc"
 rm -rf "${PKG_DEST}/usr/man"
 rm -rf "${PKG_DEST}/usr/local/share/man"
@@ -142,6 +148,7 @@ rm -rf "${PKG_DEST}/usr/local/OpenSourceLicenses"
 rm -f "${PKG_DEST}/usr/lib/charset.alias"
 rm -rf "${PKG_DEST}/usr/info"
 rm -rf "${PKG_DEST}/usr/docs"
+rm -rf "${PKG_DEST}/usr/doc"
 
 rmdir_ "${PKG_DEST}/usr/share"
 rmdir_ "${PKG_DEST}/usr/local/share"
