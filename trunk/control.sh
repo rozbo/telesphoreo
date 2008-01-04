@@ -7,6 +7,10 @@ shift
 export PKG_BASE=$(realpath "$(dirname "$0")")
 . "${PKG_BASE}/helper.sh"
 
+if [[ -n $2 ]]; then
+    PKG_VRSN=$2
+fi
+
 cat <<EOF
 Package: ${PKG_NAME}
 Essential: $([[ ${PKG_PRIO} == required ]] && echo yes || echo no)
@@ -32,8 +36,15 @@ fi
 cat <<EOF
 Maintainer: $(cat "${PKG_DATA}/_metadata/maintainer")
 Architecture: darwin-arm
-Version: ${PKG_VRSN}
 EOF
+
+echo -n "Version: ${PKG_VRSN}"
+
+if [[ $1 == status || $1 == available ]]; then
+    echo "-0"
+else
+    echo
+fi
 
 if [[ $1 == available ]]; then
     cat <<EOF
