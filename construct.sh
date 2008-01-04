@@ -10,8 +10,8 @@ for package in data/!(*_); do
 done | gzip -9c >"${PKG_OVER}"
 dpkg-scanpackages debs <(zcat "${PKG_OVER}") >"${PKG_PKGS}"
 gzip -c "${PKG_PKGS}" >"${PKG_PKGS}.gz"
-rm -rf "${PKG_REPO}/debs"
-cp -a debs "${PKG_REPO}"
+#rm -rf "${PKG_REPO}/debs"
+#cp -a debs "${PKG_REPO}"
 cd "${PKG_REPO}/dists/tangelo"
 
 export PKG_RVSN=8

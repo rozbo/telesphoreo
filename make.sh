@@ -22,20 +22,19 @@ export PKG_HASH=$({
     for dep in "${PKG_DEPS[@]}"; do
         DEP_NAME=$(basename "${dep}" .dep)
         DEP_DEST=${PKG_BASE}/dest/${DEP_NAME}
-        find -H "${DEP_DEST}" -type l -printf '%p -> %l\n' | sort
-        find -H "${DEP_DEST}" -type f -print0 | sort -z | xargs -0 cat
+        "${PKG_BASE}"/util/catdir.sh "${DEP_DEST}"
     done
 } | md5sum | cut -d ' ' -f 1)
 
-echo "hashed ${PKG_NAME} to: ${PKG_HASH}"
+echo "hashed data ${PKG_NAME} to: ${PKG_HASH}"
 
-if [[ -e "${PKG_STAT}/md5" && ${PKG_HASH} == $(cat "${PKG_STAT}/md5") ]]; then
+if [[ -e "${PKG_STAT}/data-md5" && ${PKG_HASH} == $(cat "${PKG_STAT}/data-md5") ]]; then
     echo "skipping re-build of ${PKG_NAME}"
     exit
 fi
 
-rm -rf "${PKG_STAT}"
-mkdir "${PKG_STAT}"
+mkdir -p "${PKG_STAT}"
+rm -f "${PKG_STAT}/data-md5"
 
 rm -rf "${PKG_DEST}"
 mkdir "${PKG_DEST}"
@@ -102,6 +101,9 @@ function pkg:extract() {
     for tgz in "${PKG_DATA}"/{*.tar.gz,*.tgz}; do
         tar -zxvf "${tgz}"
     done
+    for zip in "${PKG_DATA}"/*.zip; do
+        unzip "${zip}"
+    done
     for tbz2 in "${PKG_DATA}"/*.tar.bz2; do
         tar -jxvf "${tbz2}"
     done
@@ -156,4 +158,9 @@ rmdir_ "${PKG_DEST}/usr/local"
 rmdir_ "${PKG_DEST}/usr/lib"
 rmdir_ "${PKG_DEST}/usr"
 
-echo "${PKG_HASH}" >"${PKG_STAT}/md5"
+if [[ -e "${PKG_DEST}"{/usr,}/?(s)bin ]]; then
+    find "${PKG_DEST}"{/usr,}/?(s)bin -type f -exec arm-apple-darwin-strip {} \;
+fi
+
+cp -a "${PKG_DATA}/_metadata/version" "${PKG_STAT}/data-ver"
+echo "${PKG_HASH}" >"${PKG_STAT}/data-md5"
