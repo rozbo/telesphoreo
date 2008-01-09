@@ -70,11 +70,24 @@ function pkg:bin() {
 export PKG_CONF=./configure
 
 function pkg:configure() {
-    "${PKG_CONF}" --disable-nls --prefix=/usr --host=arm-apple-darwin "$@"
+    for ltmain in $(find -name ltmain.sh); do
+        patch "${ltmain}" "${PKG_BASE}/util/libtool.diff" || true
+    done
+
+    PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh") --define-variable=prefix=${PKG_ROOT}/usr" \
+    PKG_CONFIG_PATH=${PKG_ROOT}/usr/lib/pkgconfig \
+    "${PKG_CONF}" \
+        --host=arm-apple-darwin \
+        --disable-nls \
+        --enable-static=no \
+        --enable-shared=yes \
+        --prefix=/usr \
+        --localstatedir="/var/cache/${PKG_NAME}" \
+        "$@"
 }
 
 function pkg:install() {
-    make install DESTDIR="${PKG_DEST}"
+    make install DESTDIR="${PKG_DEST}" "$@"
 }
 
 function pkg_ {

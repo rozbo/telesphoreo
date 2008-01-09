@@ -1,5 +1,5 @@
 pkg:extract
 cd *
-pkg:configure --enable-static=no
+pkg:configure
 make
 pkg:install
