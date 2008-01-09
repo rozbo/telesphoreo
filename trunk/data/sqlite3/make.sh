@@ -1,6 +1,6 @@
 pkg:extract
 cd *
-pkg:configure --enable-static=no
+pkg:configure
 make
 pkg:install
 rm -f "${PKG_DEST}"/usr/lib/libsqlite3*.dylib

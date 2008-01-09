@@ -1,5 +1,5 @@
 pkg:extract
 cd *
-pkg:configure --enable-static=no --without-python
+pkg:configure --without-python
 make
 pkg:install
