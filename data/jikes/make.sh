@@ -1,6 +1,5 @@
 pkg:extract
 cd *
-autoconf
-pkg:configure
+pkg:configure --enable-source15
 make
 pkg:install
