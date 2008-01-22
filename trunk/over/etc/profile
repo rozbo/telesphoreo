@@ -1,0 +1,4 @@
+if [[ $TERM = network || -z $TERM ]]; then export TERM=xterm; fi
+export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games'
+export PS1='\h:\w \u\$ '
+umask 022
