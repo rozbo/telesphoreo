@@ -11,6 +11,7 @@ export PKG_MAKE=$0
 export PKG_NAME=${1%_}
 
 export PKG_BASE=$(realpath "$(dirname "$0")")
+export PATH=${PKG_BASE}/util:$PATH
 . "${PKG_BASE}/helper.sh"
 
 for dep in "${PKG_DEPS[@]}"; do
@@ -41,6 +42,10 @@ mkdir "${PKG_DEST}"
 
 rm -rf "${PKG_WORK}"
 mkdir "${PKG_WORK}"
+
+function PKG_DATA_() {
+    echo "${PKG_BASE}/data/$1"
+}
 
 function PKG_WORK_() {
     echo "${PKG_BASE}/work/$1"
@@ -78,7 +83,6 @@ function pkg:configure() {
     PKG_CONFIG_PATH=${PKG_ROOT}/usr/lib/pkgconfig \
     "${PKG_CONF}" \
         --host=arm-apple-darwin \
-        --disable-nls \
         --enable-static=no \
         --enable-shared=yes \
         --prefix=/usr \
@@ -94,7 +98,7 @@ function pkg_ {
     case "${1:0:1}" in
         (/) echo "${PKG_DEST}$1";;
         (%) echo "${PKG_DATA}${1:1}";;
-        (*) echo "$1";;
+        (*) echo -"$1" | sed -e 's/^.//';;
     esac
 }
 
@@ -103,7 +107,7 @@ function pkg: {
     declare argc=$#
 
     for ((i=0; $i != $argc; ++i)); do
-        argv[$i]=$(pkg_ $1)
+        argv[$i]=$(pkg_ "$1")
         shift
     done
 
