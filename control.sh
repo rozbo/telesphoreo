@@ -41,7 +41,7 @@ EOF
 echo -n "Version: ${PKG_VRSN}"
 
 if [[ $1 == status || $1 == available ]]; then
-    echo "-0"
+    echo "-$(cat "${PKG_STAT}/dest-ver")"
 else
     echo
 fi
