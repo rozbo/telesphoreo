@@ -1,7 +1,7 @@
-diff -r -u ruby-1.9.0-0/configure.in ruby-1.9.0-0+iPhone/configure.in
---- ruby-1.9.0-0/configure.in	2007-12-25 13:55:45.000000000 +0000
-+++ ruby-1.9.0-0+iPhone/configure.in	2008-01-01 22:44:55.000000000 +0000
-@@ -1124,7 +1124,7 @@
+diff -ru ruby-1.8.6-p111/configure.in ruby-1.8.6-p111+iPhone/configure.in
+--- ruby-1.8.6-p111/configure.in	2007-09-07 07:38:51.000000000 +0000
++++ ruby-1.8.6-p111+iPhone/configure.in	2008-01-14 07:16:01.000000000 +0000
+@@ -1052,7 +1052,7 @@
  	rhapsody*)	: ${LDSHARED='cc -dynamic -bundle -undefined suppress'}
  			: ${LDFLAGS=""}
  			rb_cv_dlopen=yes ;;
@@ -10,16 +10,28 @@ diff -r -u ruby-1.9.0-0/configure.in ruby-1.9.0-0+iPhone/configure.in
  			: ${LDFLAGS=""}
  			: ${LIBPATHENV=DYLD_LIBRARY_PATH}
  			rb_cv_dlopen=yes ;;
-@@ -1270,7 +1270,7 @@
+@@ -1172,15 +1172,15 @@
+ 
+ case "$target_os" in
+   linux* | gnu* | k*bsd*-gnu)
+-	STRIP='strip -S -x';;
++	STRIP=${STRIP}' -S -x';;
+   nextstep*)
+-	STRIP='strip -A -n';;
++	STRIP=${STRIP}' -A -n';;
+   openstep*)
+-	STRIP='strip -A -n';;
++	STRIP=${STRIP}' -A -n';;
    rhapsody*)
- 	STRIP='strip -A -n';;
+-	STRIP='strip -A -n';;
++	STRIP=${STRIP}' -A -n';;
    darwin*)
 -	STRIP='strip -A -n';;
-+	STRIP='arm-apple-darwin-strip -A -n';;
++	STRIP=${STRIP}' -A -n';;
  esac
  
  EXTSTATIC=
-@@ -1462,7 +1462,7 @@
+@@ -1372,7 +1372,7 @@
  	;;
      darwin*)
  	LIBRUBY_SO='lib$(RUBY_SO_NAME).$(MAJOR).$(MINOR).$(TEENY).dylib'
