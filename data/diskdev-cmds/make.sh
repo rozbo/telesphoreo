@@ -11,7 +11,17 @@ cd ..
 for tproj in !(fstyp|dev_mkdb|dump|fsck_hfs|fuser|mount_hfs|restore|quotacheck|ufs).tproj; do
     tproj=$(basename "${tproj}" .tproj)
     echo ${tproj}
-    arm-apple-darwin-gcc -Idisklib -o "${tproj}" $(find "${tproj}.tproj" -name '*.c') disklib/libdisk.a -framework IOKit -framework CoreFoundation -lutil
+
+    extra=
+    if [[ ${tproj} = mount_cd9660 ]]; then
+        extra="${extra} -framework IOKit"
+    fi
+
+    if [[ ${tproj} = mount_cd9660 || ${tproj} = newfs_hfs ]]; then
+        extra="${extra} -framework CoreFoundation"
+    fi
+
+    arm-apple-darwin-gcc -Idisklib -o "${tproj}" $(find "${tproj}.tproj" -name '*.c') disklib/libdisk.a -lutil ${extra}
     arm-apple-darwin-strip "${tproj}"
 done
 
