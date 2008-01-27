@@ -4,7 +4,7 @@ export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/b
 export PS1='\h:\w \u\$ '
 
 alias ls="ls -Fb --color=auto -T 0"
-eval $(dircolors)
+eval "$(dircolors -b)"
 alias less='less -R'
 export CLICOLOR=
 
