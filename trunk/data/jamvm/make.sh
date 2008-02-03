@@ -1,5 +1,6 @@
 pkg:extract
 cd *
+pkg:patch
 CFLAGS=-O0 pkg:configure --with-classpath-install-dir=/usr --disable-ffi
 make
 pkg:install
