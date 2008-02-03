@@ -1,0 +1,55 @@
+diff -ru apt-0.6.46.4.1/buildlib/library.mak apt-0.6.46.4.1+iPhone/buildlib/library.mak
+--- apt-0.6.46.4.1/buildlib/library.mak	2006-12-04 14:37:35.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/buildlib/library.mak	2008-01-30 17:05:02.000000000 +0000
+@@ -16,11 +16,11 @@
+ # See defaults.mak for information about LOCAL
+ 
+ # Some local definitions
+-LOCAL := lib$(LIBRARY)$(LIBEXT).so.$(MAJOR).$(MINOR)
++LOCAL := lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR).$(MINOR)
+ $(LOCAL)-OBJS := $(addprefix $(OBJ)/,$(addsuffix .opic,$(notdir $(basename $(SOURCE)))))
+ $(LOCAL)-DEP := $(addprefix $(DEP)/,$(addsuffix .opic.d,$(notdir $(basename $(SOURCE)))))
+ $(LOCAL)-HEADERS := $(addprefix $(INCLUDE)/,$(HEADERS))
+-$(LOCAL)-SONAME := lib$(LIBRARY)$(LIBEXT).so.$(MAJOR)
++$(LOCAL)-SONAME := lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR)
+ $(LOCAL)-SLIBS := $(SLIBS)
+ $(LOCAL)-LIBRARY := $(LIBRARY)
+ 
+@@ -29,7 +29,7 @@
+ 
+ # Install the command hooks
+ headers: $($(LOCAL)-HEADERS)
+-library: $(LIB)/lib$(LIBRARY).so $(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR)
++library: $(LIB)/lib$(LIBRARY).dylib $(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR)
+ clean: clean/$(LOCAL)
+ veryclean: veryclean/$(LOCAL)
+ 
+@@ -41,21 +41,21 @@
+ clean/$(LOCAL):
+ 	-rm -f $($(@F)-OBJS) $($(@F)-DEP)
+ veryclean/$(LOCAL): clean/$(LOCAL)
+-	-rm -f $($(@F)-HEADERS) $(LIB)/lib$($(@F)-LIBRARY)*.so*
++	-rm -f $($(@F)-HEADERS) $(LIB)/lib$($(@F)-LIBRARY)*.dylib*
+ 
+ # Build rules for the two symlinks
+-.PHONY: $(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR) $(LIB)/lib$(LIBRARY).so
+-$(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR): $(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR).$(MINOR)
++.PHONY: $(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR) $(LIB)/lib$(LIBRARY).dylib
++$(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR): $(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR).$(MINOR)
+ 	ln -sf $(<F) $@
+-$(LIB)/lib$(LIBRARY).so: $(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR).$(MINOR)
++$(LIB)/lib$(LIBRARY).dylib: $(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR).$(MINOR)
+ 	ln -sf $(<F) $@
+ 
+ # The binary build rule
+-$(LIB)/lib$(LIBRARY)$(LIBEXT).so.$(MAJOR).$(MINOR): $($(LOCAL)-HEADERS) $($(LOCAL)-OBJS)
+-	-rm -f $(LIB)/lib$($(@F)-LIBRARY)*.so* 2> /dev/null
++$(LIB)/lib$(LIBRARY)$(LIBEXT).dylib.$(MAJOR).$(MINOR): $($(LOCAL)-HEADERS) $($(LOCAL)-OBJS)
++	-rm -f $(LIB)/lib$($(@F)-LIBRARY)*.dylib* 2> /dev/null
+ 	echo Building shared library $@
+ 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(PICFLAGS) $(LFLAGS) $(LFLAGS_SO)\
+-	   -o $@ $(SONAME_MAGIC)$($(@F)-SONAME) -shared \
++	   -o $@ -Wl,-dylib_install_name,$(patsubst $(LIB)/%,/usr/lib/%,$@) -dynamiclib \
+ 	   $(filter %.opic,$^) \
+ 	   $($(@F)-SLIBS) 
+ 
