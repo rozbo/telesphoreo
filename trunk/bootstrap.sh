@@ -10,7 +10,7 @@ svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(adv-cmds base cydia gawk grep inetutils nano network-cmds nvi saurik sed shell-cmds system-cmds unzip zip)
+PKG_REQS=(adv-cmds base coreutils cydia gawk grep inetutils nano network-cmds nvi saurik sed shell-cmds system-cmds unzip zip)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($(find -L "${PKG_REQS[@]}" | while read -r line; do realpath "${line}"; done | grep "/home/saurik/telesphoreo/data/[^/]*$" | sed -e 's/.*\///' | sort -u))
@@ -37,7 +37,7 @@ cd "${PKG_BOOT}"
 
 rm -f ../Packager.xml
 find * -type l -print -o -name "terminfo" -prune | while read -r link; do
-    echo "<array><string>Exec</string><string>/bin/ln -fs \"$(readlink "${link}")\" \"/${link}\"</string></array>"
+    echo "<array><string>Exec</string><string>/bin/ln -fs $(readlink "${link}") /${link}</string></array>"
     rm -f "${link}"
 done >>../Packager.xml
 

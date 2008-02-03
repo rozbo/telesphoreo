@@ -25,7 +25,6 @@ echo "hashed dest ${PKG_NAME} to: ${PKG_HASH}"
 if [[ -e "${PKG_STAT}/dest-md5" && ${PKG_HASH} == $(cat "${PKG_STAT}/dest-md5" 2>/dev/null) ]]; then
     echo "skipping re-package of ${PKG_NAME}"
 else
-    export PKG_RVSN=$(cat "${PKG_STAT}/dest-ver")
     if [[ -z ${PKG_RVSN} ]]; then
         PKG_RVSN=1
     else
