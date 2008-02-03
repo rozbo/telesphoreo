@@ -2,7 +2,7 @@ tar -zxvf "${PKG_DATA}/apt_0.6.46.4-0.1.tar.gz"
 cd apt-0.6.46.4.1
 pkg:patch
 autoconf
-pkg:configure
+pkg:configure --disable-nls
 make
 pkg:mkdir /etc/apt/sources.list.d
 pkg:mkdir /var/cache/apt/archives/partial
