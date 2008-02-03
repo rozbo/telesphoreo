@@ -11,7 +11,7 @@ export PKG_MAKE=$0
 export PKG_NAME=${1%_}
 
 export PKG_BASE=$(realpath "$(dirname "$0")")
-export PATH=${PKG_BASE}/util:$PATH
+#export PATH=${PKG_BASE}/util:$PATH
 . "${PKG_BASE}/helper.sh"
 
 for dep in "${PKG_DEPS[@]}"; do
