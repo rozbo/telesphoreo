@@ -1,6 +1,7 @@
 shopt -s extglob
 pkg:extract
 cd *
+pkg:patch
 
 cd getconf.tproj
 for gperf in *.gperf; do
@@ -8,11 +9,14 @@ for gperf in *.gperf; do
 done
 cd ..
 
+arm-apple-darwin-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
+arm-apple-darwin-strip passwd
+
 cp -va "${PKG_DATA}"/kextmanager* .
 # dmesg reboot shutdown
-for tproj in getconf getty hostinfo iostat login nvram passwd sync sysctl vipw zprint; do
+for tproj in getconf getty hostinfo iostat login nvram sync sysctl vipw zprint; do
     echo "${tproj}"
-    arm-apple-darwin-gcc -o "${tproj}" "${tproj}.tproj"/!(od_passwd).c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit kextmanagerUser.c
+    arm-apple-darwin-gcc -o "${tproj}" "${tproj}.tproj"/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit kextmanagerUser.c
     arm-apple-darwin-strip "${tproj}"
 done
 
