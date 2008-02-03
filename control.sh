@@ -13,12 +13,11 @@ fi
 
 cat <<EOF
 Package: ${PKG_NAME}
-Essential: $([[ ${PKG_PRIO} == required ]] && echo yes || echo no)
 EOF
 
-if [[ -e ${PKG_DATA}/_metadata/name ]]; then
+if [[ ${PKG_PRIO} == required ]]; then
     cat <<EOF
-Name: $(cat "${PKG_DATA}/_metadata/name")
+Essential: yes
 EOF
 fi
 
@@ -33,9 +32,9 @@ Priority: ${PKG_PRIO}
 Section: $(cat "${PKG_DATA}/_metadata/section")
 EOF
 
-if [[ $1 == status || $1 == control ]]; then
+if [[ $1 == status || $1 == available ]]; then
     cat <<EOF
-Installed-Size: $(du -s "${PKG_DEST}" | cut -d $'\t' -f 1)
+Installed-Size: $(dpkg -f "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_darwin-arm.deb" Installed-Size)
 EOF
 fi
 
@@ -47,7 +46,7 @@ EOF
 echo -n "Version: ${PKG_VRSN}"
 
 if [[ $1 == status || $1 == available ]]; then
-    echo "-$(cat "${PKG_STAT}/dest-ver")"
+    echo "-${PKG_RVSN}"
 else
     echo
 fi
@@ -76,8 +75,19 @@ fi
 
 cat <<EOF
 Description: $(head -n 1 "${PKG_DATA}/_metadata/description")
+EOF
+
+if [[ $(wc -l "${PKG_DATA}/_metadata/description" | cut -d ' ' -f 1) -gt 1 ]]; then
+    cat <<EOF
 $(tail -n +2 "${PKG_DATA}/_metadata/description" | fold -sw 72 | sed -e 's/^/ /')
 EOF
+fi
+
+if [[ -e ${PKG_DATA}/_metadata/name ]]; then
+    cat <<EOF
+Name: $(cat "${PKG_DATA}/_metadata/name")
+EOF
+fi
 
 if [[ $1 == status || $1 == available ]]; then
     echo
