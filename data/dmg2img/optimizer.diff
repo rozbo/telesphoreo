@@ -1,0 +1,11 @@
+diff -ru dmg2img/Makefile dmg2img+iPhone/Makefile
+--- dmg2img/Makefile	2007-08-07 05:43:12.000000000 +0000
++++ dmg2img+iPhone/Makefile	2008-01-30 18:53:21.000000000 +0000
+@@ -1,6 +1,6 @@
+ BIN_DIR = /usr/bin
+ CC = gcc
+-CFLAGS = -O3
++CFLAGS = -O0
+ 
+ all: clean dmg2img
+ 
