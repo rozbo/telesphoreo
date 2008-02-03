@@ -16,6 +16,12 @@ Package: ${PKG_NAME}
 Essential: $([[ ${PKG_PRIO} == required ]] && echo yes || echo no)
 EOF
 
+if [[ -e ${PKG_DATA}/_metadata/name ]]; then
+    cat <<EOF
+Name: $(cat "${PKG_DATA}/_metadata/name")
+EOF
+fi
+
 if [[ $1 == status ]]; then
     cat <<EOF
 Status: install ok installed
