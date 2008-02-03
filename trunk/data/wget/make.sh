@@ -1,5 +1,6 @@
-tar -zxvf "${PKG_DATA}/wget-1.9.1.tar.gz"
-cd wget-1.9.1
+pkg:extract
+cd *
+pkg:patch
 pkg:configure
 make
 pkg:install
