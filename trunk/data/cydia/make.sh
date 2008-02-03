@@ -1,7 +1,9 @@
 pkg:extract
 cd *
+pkg:patch
 make
 pkg: mkdir /Applications
-pkg: cp -a data /Applications/Packager.app
-pkg: cp -a Cydia /Applications/Packager.app/Packager
-pkg: chmod +s /Applications/Packager.app/Packager
+pkg: mkdir -p /var/lib/cydia
+pkg: cp -a data /Applications/Cydia.app
+pkg: cp -a Cydia /Applications/Cydia.app
+pkg: chmod +s /Applications/Cydia.app/Cydia
