@@ -1,0 +1,506 @@
+diff -rui inetutils-1.5/ftp/main.c inetutils-1.5+iPhone/ftp/main.c
+--- inetutils-1.5/ftp/main.c	2006-10-11 23:30:03.000000000 +0000
++++ inetutils-1.5+iPhone/ftp/main.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1985, 1989, 1993, 1994, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -115,6 +117,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int ch, top;
+   struct passwd *pw = NULL;
+   char *cp;
+diff -rui inetutils-1.5/ftpd/ftpd.c inetutils-1.5+iPhone/ftpd/ftpd.c
+--- inetutils-1.5/ftpd/ftpd.c	2006-10-11 23:23:58.000000000 +0000
++++ inetutils-1.5+iPhone/ftpd/ftpd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* - Ftp Server
+  * Copyright (c) 1985, 1988, 1990, 1992, 1993, 1994, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -328,6 +330,13 @@
+ int
+ main(int argc, char *argv[], char **envp)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int option;
+ 
+   program_name = argv[0];
+diff -rui inetutils-1.5/gwhois/whois.c inetutils-1.5+iPhone/gwhois/whois.c
+--- inetutils-1.5/gwhois/whois.c	2007-06-28 23:07:04.000000000 +0000
++++ inetutils-1.5+iPhone/gwhois/whois.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright 1999 by Marco d'Itri <md@linux.it>.
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -47,6 +49,13 @@
+ 
+ int main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+     int ch, nopar = 0;
+     const char *server = NULL, *port = NULL;
+     char *p, *q, *qstring, fstring[64] = "\0";
+diff -rui inetutils-1.5/ifconfig/ifconfig.c inetutils-1.5+iPhone/ifconfig/ifconfig.c
+--- inetutils-1.5/ifconfig/ifconfig.c	2007-06-28 22:58:23.000000000 +0000
++++ inetutils-1.5+iPhone/ifconfig/ifconfig.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* ifconfig.c -- network interface configuration utility
+ 
+    Copyright (C) 2001, 2002, 2007 Free Software Foundation, Inc.
+@@ -56,6 +58,13 @@
+ int
+ main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int err = 0;
+   int sfd;
+   struct ifconfig *ifp;
+diff -rui inetutils-1.5/inetd/inetd.c inetutils-1.5+iPhone/inetd/inetd.c
+--- inetutils-1.5/inetd/inetd.c	2007-06-28 22:58:23.000000000 +0000
++++ inetutils-1.5+iPhone/inetd/inetd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
+    Free Software Foundation, Inc.
+ 
+@@ -386,6 +388,13 @@
+ int
+ main (int argc, char *argv[], char *envp[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int option;
+   struct servtab *sep;
+   int dofork;
+diff -rui inetutils-1.5/logger/logger.c inetutils-1.5+iPhone/logger/logger.c
+--- inetutils-1.5/logger/logger.c	2006-10-11 23:27:04.000000000 +0000
++++ inetutils-1.5+iPhone/logger/logger.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1993, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -101,6 +103,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int option, logflags, pri;
+   char *tag, buf[1024];
+ 
+diff -rui inetutils-1.5/ping/ping6.c inetutils-1.5+iPhone/ping/ping6.c
+--- inetutils-1.5/ping/ping6.c	2007-06-28 22:58:24.000000000 +0000
++++ inetutils-1.5+iPhone/ping/ping6.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 1998, 2001, 2002, 2004, 2005, 2007 Free Software Foundation, Inc.
+ 
+    This file is part of GNU Inetutils.
+@@ -81,6 +83,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int c;
+   char *p;
+   int one = 1;
+diff -rui inetutils-1.5/ping/ping.c inetutils-1.5+iPhone/ping/ping.c
+--- inetutils-1.5/ping/ping.c	2007-06-28 22:58:24.000000000 +0000
++++ inetutils-1.5+iPhone/ping/ping.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 1998,2001, 2002, 2005, 2007 Free Software Foundation, Inc.
+ 
+    This file is part of GNU Inetutils.
+@@ -106,6 +108,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int c;
+   char *p;
+   int one = 1;
+diff -rui inetutils-1.5/rcp/rcp.c inetutils-1.5+iPhone/rcp/rcp.c
+--- inetutils-1.5/rcp/rcp.c	2006-10-11 23:27:33.000000000 +0000
++++ inetutils-1.5+iPhone/rcp/rcp.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1990, 1992, 1993, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -156,6 +158,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   struct servent *sp;
+   int ch, fflag, tflag;
+   char *targ;
+diff -rui inetutils-1.5/rexecd/rexecd.c inetutils-1.5+iPhone/rexecd/rexecd.c
+--- inetutils-1.5/rexecd/rexecd.c	2006-10-11 23:45:58.000000000 +0000
++++ inetutils-1.5+iPhone/rexecd/rexecd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -105,6 +107,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   struct sockaddr_in from;
+   int fromlen, sockfd = STDIN_FILENO;
+   int c;
+diff -rui inetutils-1.5/rlogin/rlogin.c inetutils-1.5+iPhone/rlogin/rlogin.c
+--- inetutils-1.5/rlogin/rlogin.c	2006-10-11 23:27:58.000000000 +0000
++++ inetutils-1.5+iPhone/rlogin/rlogin.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1990, 1993, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -236,6 +238,13 @@
+ int
+ main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   struct passwd *pw;
+   struct servent *sp;
+   sigset_t smask;
+diff -rui inetutils-1.5/rlogind/rlogind.c inetutils-1.5+iPhone/rlogind/rlogind.c
+--- inetutils-1.5/rlogind/rlogind.c	2007-06-28 22:58:24.000000000 +0000
++++ inetutils-1.5+iPhone/rlogind/rlogind.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 1998,2001, 2002, 2007 Free Software Foundation, Inc.
+ 
+    This file is part of GNU Inetutils.
+@@ -267,6 +269,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int             port = 0;
+   int             maxchildren = DEFMAXCHILDREN;
+   int             mode = MODE_INETD;
+diff -rui inetutils-1.5/rsh/rsh.c inetutils-1.5+iPhone/rsh/rsh.c
+--- inetutils-1.5/rsh/rsh.c	2006-10-11 23:28:34.000000000 +0000
++++ inetutils-1.5+iPhone/rsh/rsh.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*-
+  * Copyright (c) 1983, 1990, 1993, 1994, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -220,6 +222,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   struct passwd *pw;
+   struct servent *sp;
+   sigset_t sigs, osigs;
+diff -rui inetutils-1.5/rshd/rshd.c inetutils-1.5+iPhone/rshd/rshd.c
+--- inetutils-1.5/rshd/rshd.c	2006-10-21 11:56:36.000000000 +0000
++++ inetutils-1.5+iPhone/rshd/rshd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*-
+  * Copyright (c) 1988, 1989, 1992, 1993, 1994, 2002
+  *	The Regents of the University of California.  All rights reserved.
+@@ -158,6 +160,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   extern int __check_rhosts_file; /* hook in rcmd(3) */
+   struct linger linger;
+   int ch, on = 1, fromlen;
+diff -rui inetutils-1.5/syslogd/syslogd.c inetutils-1.5+iPhone/syslogd/syslogd.c
+--- inetutils-1.5/syslogd/syslogd.c	2006-10-21 12:11:57.000000000 +0000
++++ inetutils-1.5+iPhone/syslogd/syslogd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* syslogd - log system messages
+  *
+  * Copyright (c) 1983, 1988, 1993, 1994, 2002
+@@ -353,6 +355,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int option;
+   size_t i;
+   FILE *fp;
+diff -rui inetutils-1.5/talk/talk.c inetutils-1.5+iPhone/talk/talk.c
+--- inetutils-1.5/talk/talk.c	2006-10-12 08:01:37.000000000 +0000
++++ inetutils-1.5+iPhone/talk/talk.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -71,6 +73,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int c;
+ 
+   program_name = argv[0];
+diff -rui inetutils-1.5/talkd/talkd.c inetutils-1.5+iPhone/talkd/talkd.c
+--- inetutils-1.5/talkd/talkd.c	2007-06-28 22:58:24.000000000 +0000
++++ inetutils-1.5+iPhone/talkd/talkd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 1998,2001, 2002, 2007 Free Software Foundation, Inc.
+ 
+    This file is part of GNU Inetutils.
+@@ -59,6 +61,13 @@
+ int
+ main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int c;
+   char *acl_file = NULL;
+ 
+diff -rui inetutils-1.5/telnet/main.c inetutils-1.5+iPhone/telnet/main.c
+--- inetutils-1.5/telnet/main.c	2006-10-11 21:53:36.000000000 +0000
++++ inetutils-1.5+iPhone/telnet/main.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1988, 1990, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -180,6 +182,13 @@
+ int
+ main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+ 	extern char *optarg;
+ 	extern int optind;
+ 	int ch;
+diff -rui inetutils-1.5/telnetd/telnetd.c inetutils-1.5+iPhone/telnetd/telnetd.c
+--- inetutils-1.5/telnetd/telnetd.c	2007-06-28 22:58:24.000000000 +0000
++++ inetutils-1.5+iPhone/telnetd/telnetd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /* Copyright (C) 1998, 2001, 2002, 2004, 2007x Free Software Foundation, Inc.
+ 
+    This file is part of GNU Inetutils.
+@@ -112,6 +114,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int c;
+   program_name = argv[0];
+   while ((c = getopt_long (argc, argv, short_options, long_options, NULL))
+diff -rui inetutils-1.5/tftp/main.c inetutils-1.5+iPhone/tftp/main.c
+--- inetutils-1.5/tftp/main.c	2006-10-11 23:42:52.000000000 +0000
++++ inetutils-1.5+iPhone/tftp/main.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -154,6 +156,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   struct sockaddr_in sin;
+ 
+   program_name = argv[0];
+diff -rui inetutils-1.5/tftpd/tftpd.c inetutils-1.5+iPhone/tftpd/tftpd.c
+--- inetutils-1.5/tftpd/tftpd.c	2006-10-11 21:46:27.000000000 +0000
++++ inetutils-1.5+iPhone/tftpd/tftpd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1983, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -124,6 +126,13 @@
+ int
+ main (int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   register struct tftphdr *tp;
+   register int n;
+   int ch, on;
+diff -rui inetutils-1.5/uucpd/uucpd.c inetutils-1.5+iPhone/uucpd/uucpd.c
+--- inetutils-1.5/uucpd/uucpd.c	2006-10-11 23:46:12.000000000 +0000
++++ inetutils-1.5+iPhone/uucpd/uucpd.c	2008-01-30 17:23:32.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /*
+  * Copyright (c) 1985, 1993
+  *	The Regents of the University of California.  All rights reserved.
+@@ -111,6 +113,13 @@
+ int
+ main (int argc, char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+ #ifndef BSDINETD
+   register int s, tcp_socket;
+   struct servent *sp;

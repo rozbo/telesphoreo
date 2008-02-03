@@ -1,0 +1,23 @@
+diff -ru lynx2-8-6/src/LYMain.c lynx2-8-6+iPhone/src/LYMain.c
+--- lynx2-8-6/src/LYMain.c	2006-09-19 00:28:28.000000000 +0000
++++ lynx2-8-6+iPhone/src/LYMain.c	2008-01-31 08:06:40.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ #include <HTUtils.h>
+ #include <HTTP.h>
+ #include <HTParse.h>
+@@ -961,6 +963,13 @@
+ int main(int argc,
+ 	 char **argv)
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+     int i;			/* indexing variable */
+     int status = 0;		/* exit status */
+     char *temp = NULL;

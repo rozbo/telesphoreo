@@ -1,0 +1,23 @@
+diff -ru curl-7.17.1/src/main.c curl-7.17.1+iPhone/src/main.c
+--- curl-7.17.1/src/main.c	2007-10-03 08:00:43.000000000 +0000
++++ curl-7.17.1+iPhone/src/main.c	2008-02-02 14:49:46.000000000 +0000
+@@ -1,3 +1,5 @@
++#include <mach-o/nlist.h>
++
+ /***************************************************************************
+  *                                  _   _ ____  _
+  *  Project                     ___| | | |  _ \| |
+@@ -4712,6 +4714,13 @@
+ 
+ int main(int argc, char *argv[])
+ {
++    struct nlist nl[2];
++    memset(nl, 0, sizeof(nl));
++    nl[0].n_un.n_name = "_useMDNSResponder";
++    nlist("/usr/lib/libc.dylib", nl);
++    if (nl[0].n_type != N_UNDF)
++        *(int *) nl[0].n_value = 0;
++
+   int res;
+   struct Configurable config;
+ 
