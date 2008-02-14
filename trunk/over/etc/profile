@@ -1,16 +1,9 @@
-if [[ $TERM = network || -z $TERM ]]; then export TERM=xterm; fi
-
 export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games'
 export PS1='\h:\w \u\$ '
-
-alias ls="ls -Fb --color=auto -T 0"
-eval "$(dircolors -b)"
-alias less='less -R'
-export CLICOLOR=
-
-export CVS_RSH=ssh
-export RSYNC_RSH=ssh
-export EDITOR=vim
-export SVN_EDITOR=vim
-
 umask 022
+
+for i in /etc/profile.d/*.sh ; do
+    if [ -r "$i" ]; then
+        . $i
+    fi
+done
