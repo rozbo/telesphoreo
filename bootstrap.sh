@@ -45,19 +45,17 @@ find * -type l -print -o -name "terminfo" -prune | while read -r link; do
     rm -f "${link}"
 done >>../Packager.xml
 
-mkdir -p usr/libexec/cydia/boot
-
-cp -a bin/bash usr/libexec/cydia/boot
-cp -a bin/df usr/libexec/cydia/boot
-cp -a bin/ln usr/libexec/cydia/boot
-cp -a bin/mktemp usr/libexec/cydia/boot
-cp -a bin/mv usr/libexec/cydia/boot
-cp -a usr/bin/basename usr/libexec/cydia/boot
-cp -a usr/bin/du usr/libexec/cydia/boot
-cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia/boot
-cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia/boot
-cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia/boot
-cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia/boot
+cp -a bin/bash usr/libexec/cydia_
+cp -a bin/df usr/libexec/cydia_
+cp -a bin/ln usr/libexec/cydia_
+cp -a bin/mktemp usr/libexec/cydia_
+cp -a bin/mv usr/libexec/cydia_
+cp -a usr/bin/basename usr/libexec/cydia_
+cp -a usr/bin/du usr/libexec/cydia_
+cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_
+cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia_
+cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
+cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
 
 rm -f ../Packager.zip
 zip -qry ../Packager.zip *
