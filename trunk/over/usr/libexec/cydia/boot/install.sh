@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/usr/libexec/cydia/boot/bash
 
 shopt -s extglob nullglob
+export PATH=/usr/libexec/cydia/boot
 
 function df_() {
     free=$(df -B1 "$1")
@@ -26,11 +27,11 @@ do if [[ -d ${dir} && ! -h ${dir} ]]; then
 
         new=/var/${base}
         if [[ -e ${new} ]]; then
-            new=$(TMPDIR=/var mktemp -t /var -d cydia.XXXXXX)
+            new=$(mktemp -d cydia.XXXXXX)
         fi
 
-        mv -T "${dir}" "${new}"
-        ln -s "${new}" "${dir}"
+        godmode mv -T "${dir}" "${new}"
+        godmode ln -s "${new}" "${dir}"
     fi
 fi; done
 

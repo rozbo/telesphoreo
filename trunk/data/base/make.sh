@@ -1,1 +1,1 @@
-tar -zxvf "${PKG_DATA}/base-1.tgz" -C "${PKG_DEST}"
+tar -zxvf "${PKG_DATA}/base.tgz" -C "${PKG_DEST}"

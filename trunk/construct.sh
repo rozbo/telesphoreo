@@ -19,7 +19,7 @@ gzip -c "${PKG_PKGS}" >"${PKG_PKGS}.gz"
 #cp -a debs "${PKG_REPO}"
 cd "${PKG_REPO}/dists/tangelo"
 
-export PKG_RVSN=13
+export PKG_RVSN=86
 
 cat >main/binary-darwin-arm/Release <<EOF
 Archive: stable
