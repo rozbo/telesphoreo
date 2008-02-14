@@ -1,0 +1,26 @@
+diff -ru sudo-1.6.9p12/install-sh sudo-1.6.9p12+iPhone/install-sh
+--- sudo-1.6.9p12/install-sh	2002-01-10 18:00:58.000000000 +0000
++++ sudo-1.6.9p12+iPhone/install-sh	2008-02-13 20:44:20.000000000 +0000
+@@ -15,7 +15,7 @@
+ MKDIR=mkdir
+ MV=mv
+ RM=rm
+-STRIP=strip
++STRIP=arm-apple-darwin-strip
+ WHOAMI="echo root"
+ 
+ ##  Some systems don't support -x, so we have to use -f.
+@@ -35,13 +35,6 @@
+     fi
+ done
+ 
+-for d in /usr/ccs/bin /usr/bin /bin; do
+-    if [ -f $d/strip ]; then
+-	STRIP=${d}/strip
+-	break
+-    fi
+-done
+-
+ ##  Defaults.
+ CHOWNIT=false
+ CHGROUPIT=false
