@@ -41,7 +41,7 @@ cd "${PKG_BOOT}"
 
 rm -f ../Packager.xml
 find * -type l -print -o -name "terminfo" -prune | while read -r link; do
-    echo "<array><string>Exec</string><string>/usr/libexec/cydia/symlink $(readlink "${link}") /${link}</string></array>"
+    echo "<array><string>Exec</string><string>/usr/libexec/cydia_/symlink $(readlink "${link}") /${link}</string></array>"
     rm -f "${link}"
 done >>../Packager.xml
 
