@@ -12,9 +12,3 @@ pkg: chmod +s /Applications/Cydia.app/Cydia
 
 pkg: mkdir -p /System/Library/PreferenceBundles
 pkg: cp -a CydiaSettings.bundle /System/Library/PreferenceBundles
-
-pkg: mkdir -p /usr/libexec/cydia
-pkg: cp -a %/install.sh /usr/libexec/cydia
-
-pkg: arm-apple-darwin-gcc -o symlink %/symlink.c
-pkg: cp -a symlink /usr/libexec/cydia
