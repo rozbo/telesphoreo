@@ -85,8 +85,8 @@ HostKey /etc/ssh/ssh_host_dsa_key
 #UsePAM no
 
 #AllowTcpForwarding yes
-#GatewayPorts no
-#X11Forwarding no
+GatewayPorts clientspecified
+X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PrintMotd yes

@@ -1,5 +1,7 @@
 pkg:extract
 cd *
+pkg:patch
+autoconf
 pkg:configure --disable-strip --sysconfdir=/etc/ssh
 make
 pkg:install INSTALL_SSH_RAND_HELPER=yes
