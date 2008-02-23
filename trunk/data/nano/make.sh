@@ -1,5 +1,7 @@
-tar -zxvf "${PKG_DATA}/nano-2.0.7.tar.gz"
-cd nano-2.0.7
+pkg:extract
+cd *
 pkg:configure
 make
 pkg:install
+pkg: mkdir -p /etc/profile.d
+pkg: cp -a %/nano.sh /etc/profile.d
