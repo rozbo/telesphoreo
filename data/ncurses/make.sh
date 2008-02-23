@@ -1,5 +1,6 @@
-tar -zxvf "${PKG_DATA}/ncurses-5.6.tar.gz"
-cd ncurses-5.6
+pkg:extract
+cd *
+pkg:patch
 pkg:configure --with-shared --without-normal --without-debug
 make
 pkg:install
