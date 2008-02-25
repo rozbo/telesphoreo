@@ -1,3 +1,4 @@
 #!/bin/sh
-/bin/launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist
+! /bin/launchctl list com.openssh.sshd &>/dev/null ||
+    /bin/launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist
 exit 0
