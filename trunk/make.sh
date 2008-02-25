@@ -148,7 +148,7 @@ function pkg:mkdir() {
 
 cd "${PKG_WORK}"
 . "${PKG_DATA}/make.sh"
-cp -Ta "${PKG_DEST}" "${PKG_ROOT}"
+tar -zcf- -C "${PKG_DEST}" . | tar -zxf- -C "${PKG_ROOT}"
 
 function rmdir_() {
     if [[ -d "$1" ]]; then

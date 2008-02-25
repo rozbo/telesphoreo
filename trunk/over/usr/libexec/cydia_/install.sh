@@ -27,7 +27,7 @@ do if [[ -d ${dir} && ! -h ${dir} ]]; then
 
         new=/var/${base}
         if [[ -e ${new} ]]; then
-            new=$(mktemp -d cydia.XXXXXX)
+            new=$(godmode mktemp -d cydia.XXXXXX)
         fi
 
         godmode mv -T "${dir}" "${new}"
