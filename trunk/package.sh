@@ -17,7 +17,14 @@ export PKG_BASE=$(realpath "$(dirname "$0")")
 
 pkg: mkdir -p /DEBIAN
 ./control.sh "${PKG_NAME}" control >"$(pkg_ /DEBIAN/control)"
-#cp -a "${PKG_DATA}"/_metadata/postinst "$(pkg_ /DEBIAN)"
+
+if [[ -e "${PKG_DATA}"/_metadata/postinst ]]; then
+    cp -a "${PKG_DATA}"/_metadata/postinst "$(pkg_ /DEBIAN)"
+fi
+
+if [[ -e "${PKG_DATA}"/_metadata/prerm ]]; then
+    cp -a "${PKG_DATA}"/_metadata/prerm "$(pkg_ /DEBIAN)"
+fi
 
 export PKG_HASH=$(util/catdir.sh "${PKG_DEST}" | md5sum | cut -d ' ' -f 1)
 echo "hashed dest ${PKG_NAME} to: ${PKG_HASH}"
