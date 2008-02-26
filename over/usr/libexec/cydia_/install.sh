@@ -22,7 +22,7 @@ do if [[ -d ${dir} && ! -h ${dir} ]]; then
     used=${used%%$'\t'*}
     free=$(df_ /var)
 
-    if [[ ${used} -lt ${free} ]]; then
+    if [[ $((used + 524288)) -lt ${free} ]]; then
         base=$(basename "${dir}")
 
         new=/var/${base}
@@ -35,4 +35,4 @@ do if [[ -d ${dir} && ! -h ${dir} ]]; then
     fi
 fi; done
 
-[[ $(df_ /) -gt 33554432 && $(df_ /var) -gt 33554432 ]]
+[[ $(df_ /) -gt 35651584 && $(df_ /var) -gt 35651584 ]]
