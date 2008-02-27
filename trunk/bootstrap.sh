@@ -14,7 +14,7 @@ chmod +s "${PKG_BOOT}/usr/libexec/cydia_/godmode"
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(adv-cmds base bash coreutils cydia gawk grep inetutils less libarmfp nano network-cmds saurik sed shell-cmds system-cmds unzip zip)
+PKG_REQS=(adv-cmds base bash coreutils cydia gawk grep inetutils less libarmfp modmyifone nano network-cmds saurik sed shell-cmds system-cmds unzip zip)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($(find -L "${PKG_REQS[@]}" | while read -r line; do realpath "${line}"; done | grep "/home/saurik/telesphoreo/data/[^/]*$" | sed -e 's/.*\///' | sort -u))
