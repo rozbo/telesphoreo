@@ -1,17 +1,66 @@
 diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 --- apt-0.6.46.4.1/methods/http.cc	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-02-26 05:07:59.000000000 +0000
-@@ -44,6 +48,9 @@
++++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-02-27 01:21:07.000000000 +0000
+@@ -44,6 +48,10 @@
  // Internet stuff
  #include <netdb.h>
  
 +#include <CoreFoundation/CoreFoundation.h>
 +#include <CoreServices/CoreServices.h>
++#include <SystemConfiguration/SystemConfiguration.h>
 +
  #include "connect.h"
  #include "rfc2553emu.h"
  #include "http.h"
-@@ -1062,159 +1069,201 @@
+@@ -51,6 +59,47 @@
+ 									/*}}}*/
+ using namespace std;
+ 
++void CfrsError(CFReadStreamRef rs) {
++    CFStreamError se = CFReadStreamGetError(rs);
++
++    if (se.domain == kCFStreamErrorDomainCustom) {
++    } else if (se.domain == kCFStreamErrorDomainPOSIX) {
++        _error->Error("POSIX: %s", strerror(se.error));
++    } else if (se.domain == kCFStreamErrorDomainMacOSStatus) {
++        _error->Error("MacOSStatus: %ld", se.error);
++    } else if (se.domain == kCFStreamErrorDomainNetDB) {
++        _error->Error("NetDB: %s", gai_strerror(se.error));
++    } else if (se.domain == kCFStreamErrorDomainMach) {
++        _error->Error("Mach: %ld", se.error);
++    } else if (se.domain == kCFStreamErrorDomainHTTP) {
++        switch (se.error) {
++            case kCFStreamErrorHTTPParseFailure:
++                _error->Error("Parse failure");
++            break;
++
++            case kCFStreamErrorHTTPRedirectionLoop:
++                _error->Error("Redirection loop");
++            break;
++
++            case kCFStreamErrorHTTPBadURL:
++                _error->Error("Bad URL");
++            break;
++
++            default:
++                _error->Error("Unknown HTTP error: %ld", se.error);
++            break;
++        }
++    } else if (se.domain == kCFStreamErrorDomainSOCKS) {
++        _error->Error("SOCKS: %ld", se.error);
++    } else if (se.domain == kCFStreamErrorDomainSystemConfiguration) {
++        _error->Error("SystemConfiguration: %ld", se.error);
++    } else if (se.domain == kCFStreamErrorDomainSSL) {
++        _error->Error("SSL: %ld", se.error);
++    } else {
++        _error->Error("Domain #%d: %ld", se.domain, se.error);
++    }
++}
++
+ string HttpMethod::FailFile;
+ int HttpMethod::FailFd = -1;
+ time_t HttpMethod::FailTime = 0;
+@@ -1062,159 +1111,209 @@
  
        if (Queue == 0)
  	 continue;
@@ -108,6 +157,10 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);
 +
++      CFDictionaryRef dr = SCDynamicStoreCopyProxies(NULL);
++      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPProxy, dr);
++      CFRelease(dr);
++
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPAttemptPersistentConnection, kCFBooleanTrue);
 +
@@ -122,7 +175,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      Status("Connecting to %s", uri.Host.c_str());
 +
 +      if (!CFReadStreamOpen(rs)) {
-+         _error->Error("Unable to open stream");
++         CfrsError(rs);
 +         Fail(true);
 +         goto done;
 +      }
@@ -130,7 +183,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      CFIndex rd = CFReadStreamRead(rs, data, sizeof(data));
 +
 +      if (rd == -1) {
-+         _error->Error("Stream read failure");
++         CfrsError(rs);
 +         Fail(true);
 +         goto done;
 +      }
@@ -157,7 +210,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +
 +         if (!CFStringGetCString(sr, cr, ln, se)) {
 +            Fail();
-+            goto done;
++            goto done_;
 +         }
 +
 +         CFRelease(sr);
@@ -165,13 +218,13 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         if (sscanf(cr, "bytes %lu-%*u/%lu", &offset, &Res.Size) != 2) {
 +	    _error->Error(_("The HTTP server sent an invalid Content-Range header"));
 +            Fail();
-+            goto done;
++            goto done_;
 +         }
 +
 +         if (offset > Res.Size) {
 +	    _error->Error(_("This HTTP server has broken range support"));
 +            Fail();
-+            goto done;
++            goto done_;
 +         }
 +      } else {
 +         sr = CFHTTPMessageCopyHeaderFieldValue(hm, CFSTR("Content-Length"));
@@ -190,7 +243,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +
 +         if (!CFStringGetCString(sr, cr, ln, se)) {
 +            Fail();
-+            goto done;
++            goto done_;
 +         }
 +
 +         CFRelease(sr);
@@ -198,7 +251,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         if (!StrToTime(cr, Res.LastModified)) {
 +	    _error->Error(_("Unknown date format"));
 +            Fail();
-+            goto done;
++            goto done_;
 +         }
 +      }
 +
@@ -246,7 +299,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +	 URIStart(Res);
 +
 +         read: if (rd == -1) {
-+            _error->Error("Stream read failure");
++            CfrsError(rs);
 +            Fail(true);
 +         } else if (rd == 0) {
  	    if (Res.Size == 0)
@@ -300,31 +353,14 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -	 {
 -	    delete File;
 -	    File = 0;
--
++         } else {
++	    hash.Add(data, rd);
+ 
 -	    Fail();
 -	    RotateDNS();
 -	    Server->Close();
 -	    break;
 -	 }
-+         } else {
-+	    hash.Add(data, rd);
- 
--	 // We need to flush the data, the header is like a 404 w/ error text
--	 case 4:
--	 {
--	    Fail();
--	    
--	    // Send to content to dev/null
--	    File = new FileFd("/dev/null",FileFd::WriteExists);
--	    Server->RunData();
--	    delete File;
--	    File = 0;
--	    break;
--	 }
--	 
--	 default:
--	 Fail(_("Internal error"));
--	 break;
 +            uint8_t *dt = data;
 +            while (rd != 0) {
 +               int sz = write(File->Fd(), dt, rd);
@@ -343,24 +379,45 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +            rd = CFReadStreamRead(rs, data, sizeof(data));
 +            goto read;
 +         }
-       }
--      
++      }
 +
++     goto done;
++    done_:
++      CFRelease(hm);
 +    done:
++      CFReadStreamClose(rs);
 +      CFRelease(rs);
-+
+ 
+-	 // We need to flush the data, the header is like a 404 w/ error text
+-	 case 4:
+-	 {
+-	    Fail();
+-	    
+-	    // Send to content to dev/null
+-	    File = new FileFd("/dev/null",FileFd::WriteExists);
+-	    Server->RunData();
+-	    delete File;
+-	    File = 0;
+-	    break;
+-	 }
+-	 
+-	 default:
+-	 Fail(_("Internal error"));
+-	 break;
+-      }
+-      
        FailCounter = 0;
     }
     
 diff -ru apt-0.6.46.4.1/methods/makefile apt-0.6.46.4.1+iPhone/methods/makefile
 --- apt-0.6.46.4.1/methods/makefile	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-02-25 10:24:23.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-02-26 23:54:07.000000000 +0000
 @@ -47,7 +47,7 @@
  
  # The http method
  PROGRAM=http
 -SLIBS = -lapt-pkg $(SOCKETLIBS)
-+SLIBS = -lapt-pkg $(SOCKETLIBS) -framework CFNetwork -framework CoreFoundation
++SLIBS = -lapt-pkg $(SOCKETLIBS) -framework CFNetwork -framework CoreFoundation -framework SystemConfiguration
  LIB_MAKES = apt-pkg/makefile
  SOURCE = http.cc rfc2553emu.cc connect.cc
  include $(PROGRAM_H)
