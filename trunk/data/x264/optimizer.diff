@@ -1,0 +1,12 @@
+diff -ru x264-snapshot-20080226-2245/configure x264-snapshot-20080226-2245+iPhone/configure
+--- x264-snapshot-20080226-2245/configure	2008-02-26 21:45:02.000000000 +0000
++++ x264-snapshot-20080226-2245+iPhone/configure	2008-02-27 08:09:51.000000000 +0000
+@@ -407,7 +407,7 @@
+ if [ "$debug" = "yes" ]; then
+     CFLAGS="-O1 -g $CFLAGS"
+ else
+-    CFLAGS="-O4 -ffast-math $CFLAGS"
++    CFLAGS="-O3 -ffast-math $CFLAGS"
+ fi
+ 
+ if cc_check "stdio.h" "" "fseeko(stdin,0,0);" ; then
