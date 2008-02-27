@@ -1,0 +1,12 @@
+diff -ru x264-snapshot-20080226-2245/configure x264-snapshot-20080226-2245+iPhone/configure
+--- x264-snapshot-20080226-2245/configure	2008-02-26 21:45:02.000000000 +0000
++++ x264-snapshot-20080226-2245+iPhone/configure	2008-02-27 08:09:51.000000000 +0000
+@@ -183,7 +183,7 @@
+   darwin*)
+     SYS="MACOSX"
+     CFLAGS="$CFLAGS -falign-loops=16"
+-    LDFLAGS="$LDFLAGS -lm -lmx"
++    LDFLAGS="$LDFLAGS -lm"
+     ;;
+   freebsd*)
+     SYS="FREEBSD"
