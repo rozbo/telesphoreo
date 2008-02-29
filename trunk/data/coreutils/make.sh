@@ -9,3 +9,5 @@ pkg: mkdir -p /usr/sbin
 pkg: mv /usr/bin/chroot /usr/sbin
 pkg: mkdir -p /etc/profile.d
 pkg: cp -a %/coreutils.sh /etc/profile.d
+pkg: cp -a /bin/chown /usr/bin/chown
+pkg: cp -a /bin/chown /usr/sbin/chown
