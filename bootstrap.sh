@@ -10,7 +10,7 @@ svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
 arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/godmode" "${PKG_BASE}/tool/godmode.c"
 arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/symlink" "${PKG_BASE}/tool/symlink.c"
-chmod +s "${PKG_BOOT}/usr/libexec/cydia_/godmode"
+chmod +s "${PKG_BOOT}/usr/libexec/cydia_"/{godmode,symlink}
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
@@ -46,10 +46,14 @@ find * -type l -print -o -name "terminfo" -prune | while read -r link; do
 done >>../Packager.xml
 
 cp -a bin/bash usr/libexec/cydia_
+cp -a bin/chmod usr/libexec/cydia_
+cp -a bin/chown usr/libexec/cydia_
+cp -a bin/cp usr/libexec/cydia_
 cp -a bin/df usr/libexec/cydia_
 cp -a bin/ln usr/libexec/cydia_
+cp -a bin/mkdir usr/libexec/cydia_
 cp -a bin/mktemp usr/libexec/cydia_
-cp -a bin/mv usr/libexec/cydia_
+cp -a bin/rm usr/libexec/cydia_
 cp -a usr/bin/basename usr/libexec/cydia_
 cp -a usr/bin/du usr/libexec/cydia_
 cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_
