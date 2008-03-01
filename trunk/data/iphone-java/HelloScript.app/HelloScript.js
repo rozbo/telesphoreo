@@ -5,7 +5,7 @@ var contacts = [];
 var sections = [];
 
 var ab = new sql.Database();
-ab.open("/var/root/Library/AddressBook/AddressBook.sqlitedb", 0666); try {
+ab.open(application.userHomeDirectory().toString() + "/Library/AddressBook/AddressBook.sqlitedb", 0666); try {
     var st = ab.prepare("select first, last from ABPerson where first is not null order by first"); try {
         while (st.step())
             contacts.push({
