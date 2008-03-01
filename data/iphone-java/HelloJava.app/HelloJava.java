@@ -51,7 +51,7 @@ private ArrayList<Section> sections_ = new ArrayList<Section>();
     throws Exception
 {
     SQLite.Database ab = new SQLite.Database();
-    ab.open("/var/root/Library/AddressBook/AddressBook.sqlitedb", 0666); try {
+    ab.open(userHomeDirectory().toString() + "/Library/AddressBook/AddressBook.sqlitedb", 0666); try {
         SQLite.Stmt st = ab.prepare("select first, last from ABPerson where first is not null order by first"); try {
             while (st.step())
                 contacts_.add(new Contact(st.column_string(0), st.column_string(1)));
@@ -74,7 +74,7 @@ private ArrayList<Section> sections_ = new ArrayList<Section>();
 
     navbar.setDelegate$(new NSObject() {
         @Message void navigationBar$buttonClicked$(UINavigationBar navbar, int button) {
-            java.lang.Runtime.getRuntime().gc();
+            navbar.showButtonsWithLeftTitle$rightTitle$leftBack$("I was clicked!", null, YES);
         }
     }.init());
 
