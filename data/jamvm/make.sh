@@ -1,7 +1,8 @@
 pkg:extract
 cd *
 pkg:patch
-CFLAGS=-O0 pkg:configure --with-classpath-install-dir=/usr --disable-ffi
+autoconf
+CFLAGS=-O0 pkg:configure --with-classpath-install-dir=/usr --enable-ffi=no
 make
 pkg:install
 pkg: rm -rf /usr/include
