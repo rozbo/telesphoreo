@@ -11,3 +11,4 @@ ln -s /usr/share/msf3/msfopcode "${PKG_DEST}"/usr/bin/msfopcode
 ln -s /usr/share/msf3/msfpayload "${PKG_DEST}"/usr/bin/msfpayload
 ln -s /usr/share/msf3/msfpescan "${PKG_DEST}"/usr/bin/msfpescan
 ln -s /usr/share/msf3/msfweb "${PKG_DEST}"/usr/bin/msfweb
+ln -s /usr/share/msf3/msfelfscan "${PKG_DEST}"/usr/bin/msfelfscan
