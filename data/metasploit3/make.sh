@@ -1,6 +1,6 @@
 pkg:extract
 pkg: mkdir -p /var/local /usr/bin
-pkg: cp -a framework-3.1 /var/local/msf3
+pkg: cp -a % /var/local/msf3
 pkg: ln -s /var/local/msf3/msfcli /usr/bin/msfcli
 pkg: ln -s /var/local/msf3/msfconsole /usr/bin/msfconsole
 pkg: ln -s /var/local/msf3/msfd /usr/bin/msfd
