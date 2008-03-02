@@ -1,4 +1,4 @@
-pkg: svn co http://metasploit.com/svn/framework3/trunk/ framework-3.1
+pkg: tar -zxvf "${PKG_DATA}/framework-3.1.tar.gz"
 pkg: mkdir -p /var/local /usr/bin
 pkg: cp -a framework-3.1 /var/local/msf3
 pkg: ln -s /var/local/msf3/msfcli /usr/bin/msfcli
