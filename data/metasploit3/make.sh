@@ -1,12 +1,12 @@
 pkg:extract
-pkg: mkdir -p /var/local /usr/bin
-pkg: cp -a * /var/local/msf3
-pkg: ln -s /var/local/msf3/msfcli /usr/bin/msfcli
-pkg: ln -s /var/local/msf3/msfconsole /usr/bin/msfconsole
-pkg: ln -s /var/local/msf3/msfd /usr/bin/msfd
-pkg: ln -s /var/local/msf3/msfencode /usr/bin/msfencode
-pkg: ln -s /var/local/msf3/msfgui /usr/bin/msfgui
-pkg: ln -s /var/local/msf3/msfopcode /usr/bin/msfopcode
-pkg: ln -s /var/local/msf3/msfpayload /usr/bin/msfpayload
-pkg: ln -s /var/local/msf3/msfpescan /usr/bin/msfpescan
-pkg: ln -s /var/local/msf3/msfweb /usr/bin/msfweb
+pkg: mkdir -p /usr/share /usr/bin
+pkg: cp -a * /usr/share/msf3
+ln -s /usr/share/msf3/msfcli "${PKG_DEST}"/usr/bin/msfcli
+ln -s /usr/share/msf3/msfconsole "${PKG_DEST}"/usr/bin/msfconsole
+ln -s /usr/share/msf3/msfd "${PKG_DEST}"/usr/bin/msfd
+ln -s /usr/share/msf3/msfencode "${PKG_DEST}"/usr/bin/msfencode
+ln -s /usr/share/msf3/msfgui "${PKG_DEST}"/usr/bin/msfgui
+ln -s /usr/share/msf3/msfopcode "${PKG_DEST}"/usr/bin/msfopcode
+ln -s /usr/share/msf3/msfpayload "${PKG_DEST}"/usr/bin/msfpayload
+ln -s /usr/share/msf3/msfpescan "${PKG_DEST}"/usr/bin/msfpescan
+ln -s /usr/share/msf3/msfweb "${PKG_DEST}"/usr/bin/msfweb
