@@ -89,6 +89,12 @@ Name: $(cat "${PKG_DATA}/_metadata/name")
 EOF
 fi
 
+if [[ -e ${PKG_DATA}/_metadata/website ]]; then
+    cat <<EOF
+Website: $(cat "${PKG_DATA}/_metadata/website")
+EOF
+fi
+
 if [[ $1 == status || $1 == available ]]; then
     echo
 fi
