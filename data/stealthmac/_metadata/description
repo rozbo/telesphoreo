@@ -1,0 +1,2 @@
+set arbitrary wireless mac address on boot
+This tool was created to provide some anonymity for iTouch/iPhone users while traveling. Changing your hardware address removes at least one indication of your pressence. However, you may want to consider limiting any network traffic that is unique to you such as chat, email, cookies, and even mDNS. Modify the MAC address in /etc/stealthmac to suite your preferences. Feel free to run /usr/bin/smac.sh at any time.
