@@ -1,7 +1,7 @@
 pkg:extract
 cd *
 pkg:patch
-./Configure darwin-arm-gcc --prefix=/usr --openssldir=/usr/lib/ssl shared
+./Configure -D__DARWIN_UNIX03 darwin-arm-gcc --prefix=/usr --openssldir=/usr/lib/ssl shared
 make AR='arm-apple-darwin-ar -r'
 make install INSTALL_PREFIX="${PKG_DEST}"
 pkg: rm -rf /usr/lib/man /usr/lib/ssl/man
