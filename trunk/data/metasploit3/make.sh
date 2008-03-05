@@ -1,7 +1,7 @@
 pkg:extract
 pkg: mkdir -p /usr/share /usr/bin
 pkg: cp -a * /usr/share/msf3
-pkg: chmod 755 /usr/share/msf3/msfelfscan
+pkg: find / -name '.svn' -prune -exec rm -rfv {} \;
 ln -s /usr/share/msf3/msfcli "${PKG_DEST}"/usr/bin/msfcli
 ln -s /usr/share/msf3/msfconsole "${PKG_DEST}"/usr/bin/msfconsole
 ln -s /usr/share/msf3/msfd "${PKG_DEST}"/usr/bin/msfd
