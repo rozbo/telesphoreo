@@ -1,3 +1,16 @@
+Index: libstdc++-v3/include/bits/c++config
+===================================================================
+--- libstdc++-v3/include/bits/c++config	(revision 47984)
++++ libstdc++-v3/include/bits/c++config	(working copy)
+@@ -172,7 +172,7 @@
+ // are already explicitly instantiated in the library binary. This
+ // substantially reduces the binary size of resulting executables.
+ #ifndef _GLIBCXX_EXTERN_TEMPLATE
+-# define _GLIBCXX_EXTERN_TEMPLATE 1
++# define _GLIBCXX_EXTERN_TEMPLATE 0
+ #endif
+ 
+ 
 Index: configure
 ===================================================================
 --- configure	(revision 47984)
