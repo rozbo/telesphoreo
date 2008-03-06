@@ -1,0 +1,538 @@
+Index: include/mach-o/arm/reloc.h
+===================================================================
+--- include/mach-o/arm/reloc.h	(revision 209)
++++ include/mach-o/arm/reloc.h	(working copy)
+@@ -21,7 +21,8 @@
+     ARM_RELOC_PCREL_DATA_IMM12, /* Load and Store Word/Immediate Offset, r15 */
+     ARM_RELOC_SHIFT_IMM12,      /* Data-processing operands - Immediate */
+     ARM_RELOC_PCREL_VFP_IMM8_TIMES_4,   /* VFP Load and Store Word, r15 */
+-    ARM_RELOC_SHIFT_IMM         /* immediate shifter operand */
++    ARM_RELOC_SHIFT_IMM,         /* immediate shifter operand */
++    ARM_RELOC_ADR               /* immediate shifter operand with add/sub */
+ };
+ 
+ /* Determines whether a reloc can be exported to object files (1) or whether
+Index: include/mach/machine.h
+===================================================================
+--- include/mach/machine.h	(revision 209)
++++ include/mach/machine.h	(working copy)
+@@ -330,4 +330,7 @@
+ #define CPU_SUBTYPE_VEO_2	((cpu_subtype_t) 2)
+ #define CPU_SUBTYPE_VEO_ALL	CPU_SUBTYPE_VEO_2
+ 
++#define CPU_SUBTYPE_ARM_ALL     ((cpu_subtype_t) 0)
++#define CPU_SUBTYPE_ARM_V6      ((cpu_subtype_t) 6)
++
+ #endif	/* _MACH_MACHINE_H_ */
+Index: as/read.c
+===================================================================
+--- as/read.c	(revision 209)
++++ as/read.c	(working copy)
+@@ -488,6 +488,7 @@
+   { "lcomm",	s_lcomm,	0	},
+   { "line",	s_line,		0	},
+   { "long",	cons,		4	},
++  { "word",	cons,		4	},
+   { "quad",	cons,		8	},
+   { "lsym",	s_lsym,		0	},
+   { "section",	s_section,	0	},
+@@ -524,6 +525,7 @@
+   { "rept", s_rept, 0       },
+   { "endr", s_endr, 0       },
+   { "ifc", s_ifc,   0       },
++  { "ifnc", s_ifnc,   0       },
+   { NULL }	/* end sentinel */
+ };
+ 
+@@ -1698,7 +1700,7 @@
+ 
+ /*
+  * s_comm() implements the pseudo op:
+- *	.comm name , expression
++ *	.comm name , expression [ , align_expression ]
+  */
+ static
+ void
+@@ -1710,6 +1712,7 @@
+     char *p;
+     signed_target_addr_t temp;
+     symbolS *symbolP;
++    int align;
+ 
+ 	if(*input_line_pointer == '"')
+ 	    name = input_line_pointer + 1;
+@@ -1731,6 +1734,13 @@
+ 	    ignore_rest_of_line();
+ 	    return;
+ 	}
++        align = 0;
++        if(*input_line_pointer == ','){
++            input_line_pointer++;
++            align = get_absolute_expression();
++            as_warn("Alignment of %u specified on .comm, and we didn't care.", align);
++        }
++
+ 	*p = 0;
+ 	symbolP = symbol_find_or_make(name);
+ 	*p = c;
+@@ -3826,6 +3836,15 @@
+ 	return(s);
+ }
+ 
++static int is_identifier_char(char c) {
++    return
++	(c >= 'a' && c <= 'z') ||
++	(c >= 'A' && c <= 'Z') ||
++	(c >= '0' && c <= '9') ||
++	(c == '_' || c == '.') ||
++        (c == '=' || c == '$');
++}
++
+ /*
+  *			demand_copy_string()
+  *
+@@ -3855,19 +3874,20 @@
+ 		obstack_1grow(&notes, c);
+ 		len++;
+ 	    }
+-	    /*
+-	     * This next line is so demand_copy_C_string will return a null
+-	     * termanated string.
+-	     */
+-	    obstack_1grow(&notes, '\0');
+-	    retval = obstack_finish(&notes);
+ 	}
+ 	else{
+-	    as_bad("Missing string");
+-	    retval = NULL;
+-	    ignore_rest_of_line();
++	    while (is_identifier_char(*input_line_pointer)) {
++		obstack_1grow(&notes, *input_line_pointer++);
++		len++;
++	    }
+ 	}
++	/*
++	 * This next line is so demand_copy_C_string will return a null
++	 * termanated string.
++	 */
++	obstack_1grow(&notes, '\0');
+ 	*lenP = len;
++	retval = obstack_finish(&notes);
+ 	return(retval);
+ }
+ 
+@@ -3964,6 +3984,36 @@
+ }
+ 
+ /* iPhone binutils extension: .ifc assembles if the two strings are the same */
++void s_ifnc(int value)
++{
++    char *ptr1, *ptr2;
++    int len1, len2;
++
++    if (if_depth >= MAX_IF_DEPTH)
++        as_fatal("Maximum if nesting level reached");
++    last_states[if_depth++] = the_cond_state;
++    the_cond_state.the_cond = if_cond;
++
++    if (the_cond_state.ignore)
++        totally_ignore_line();
++    else {
++        ptr1 = demand_copy_string(&len1);
++        
++        SKIP_WHITESPACE();
++        if (*input_line_pointer != ',')
++            as_bad(".ifnc needs two strings separated by a comma (',')");
++        else
++            input_line_pointer++;
++        
++        ptr2 = demand_copy_string(&len2);
++
++        the_cond_state.cond_met = (len1 != len2 || strncmp(ptr1, ptr2, len1));
++        the_cond_state.ignore = !the_cond_state.cond_met;
++        demand_empty_rest_of_line();
++    }
++}
++
++/* iPhone binutils extension: .ifc assembles if the two strings are the same */
+ void s_ifc(int value)
+ {
+     char *ptr1, *ptr2;
+@@ -4381,7 +4431,7 @@
+          * determine which it is. */
+         named_invocation = 0;
+         ptr = input_line_pointer;
+-        while (!is_end_of_line(*ptr)) {
++        while (is_identifier_char(*ptr)) {
+             if (*ptr == '=') {
+                 named_invocation = 1;
+                 break;
+@@ -4391,66 +4441,58 @@
+ 
+         index = 0;
+ 
+-        while (is_ignorable_ws(*input_line_pointer))
+-            input_line_pointer++; 
+-        ptr = input_line_pointer;
++	SKIP_WHITESPACE();
+ 
+         /* Ok, now parse each argument. */
+         while (1) {
+-            if (is_end_of_line(*input_line_pointer) || *input_line_pointer ==
+-                ',' || is_ignorable_ws(*input_line_pointer)) {
+-                len = input_line_pointer - ptr;
+-                arg_buf = malloc(len + 1);
+-                if (len)
+-                    strncpy(arg_buf, ptr, len);
+-                arg_buf[len] = '\0';
++            int length;
++            char *value = demand_copy_string(&length);
+ 
+-#if 0
+-                printf("arg is '%s'\n", arg_buf);
+-#endif
++            if (named_invocation) {
++                if (*input_line_pointer++ != '=') {
++                    as_bad("In a named-argument-style macro invocation, "
++                        "all of the arguments must be specified in the "
++                        "named-argument style, but one or more weren't");
++                    break;
++                }
+ 
+-                if (named_invocation) {
+-                    arg_val_ptr = arg_buf;
+-                    strsep(&arg_val_ptr, "=");
+-                    if (arg_val_ptr == NULL) {
+-                        as_bad("In a named-argument-style macro invocation, "
+-                            "all of the arguments must be specified in the "
+-                            "named-argument style, but one or more weren't");
++                /* We've parsed it fine, now just find which argument the
++                 * user meant. */
++                which_arg = -1;
++                for (i = 0; i < info->arg_count; i++) {
++                    if (!strcmp(value, info->args[i]->name)) {
++                        which_arg = i;
+                         break;
+                     }
++                }
+ 
+-                    /* We've parsed it fine, now just find which argument the
+-                     * user meant. */
+-                    which_arg = -1;
+-                    for (i = 0; i < info->arg_count; i++) {
+-                        if (!strcmp(arg_buf, info->args[i]->name)) {
+-                            which_arg = i;
+-                            break;
+-                        }
+-                    }
++                if (which_arg == -1) {
++                    as_bad("'%s' doesn't name an argument of the macro "
++                        "'%s'", arg_buf, info->name);
++                    break;
++                }
+ 
+-                    if (which_arg == -1) {
+-                        as_bad("'%s' doesn't name an argument of the macro "
+-                            "'%s'", arg_buf, info->name);
+-                        break;
+-                    }
++                arguments[which_arg] = demand_copy_string(&length); 
++            } else {
++                /* If not a named invocation, it's simple. */
++                arguments[index++] = value; 
++            }
+ 
+-                    arguments[which_arg] = arg_val_ptr; 
+-                } else {
+-                    /* If not a named invocation, it's simple. */
+-                    arguments[index++] = arg_buf; 
+-                }
++            if (*input_line_pointer == ',') {
++                ++input_line_pointer;
++                SKIP_WHITESPACE();
++                continue;
++            } else if (
++                !is_end_of_line(*input_line_pointer) &&
++                !is_ignorable_ws(*input_line_pointer)
++            ) {
++                as_bad("invalid macro expansion argument character (%c)", *input_line_pointer);
++            }
+ 
+-                if (*input_line_pointer == ',' || is_ignorable_ws(
+-                    *input_line_pointer)) {
+-                    input_line_pointer++;
+-                    while (is_ignorable_ws(*input_line_pointer))
+-                        input_line_pointer++; 
+-                    ptr = input_line_pointer;
+-                } else  /* must be end of line */
+-                    break;
+-            } else
+-                input_line_pointer++;
++            SKIP_WHITESPACE();
++
++            if (is_end_of_line(*input_line_pointer))
++                break;
+         }
+ 
+         nargs = info->arg_count;
+Index: as/armop.c
+===================================================================
+--- as/armop.c	(revision 209)
++++ as/armop.c	(working copy)
+@@ -5,7 +5,7 @@
+ 
+ #include "army.h"
+ 
+-int arm_op_count = 5823;
++int arm_op_count = 5863;
+ struct arm_op_info arm_op_info[] = {
+     { "adc", OP_DATA_PROC_3, 0xe0a00000 },
+     { "adcal", OP_DATA_PROC_3, 0xe0a00000 },
+@@ -87,6 +87,46 @@
+     { "addvcs", OP_DATA_PROC_3, 0x70900000 },
+     { "addvs", OP_DATA_PROC_3, 0x60800000 },
+     { "addvss", OP_DATA_PROC_3, 0x60900000 },
++    { "adr", OP_ADR, 0xe0000000 },
++    { "adral", OP_ADR, 0xe0000000 },
++    { "adrals", OP_ADR, 0xe0100000 },
++    { "adrcc", OP_ADR, 0x30000000 },
++    { "adrccs", OP_ADR, 0x30100000 },
++    { "adrcs", OP_ADR, 0x20000000 },
++    { "adrcss", OP_ADR, 0x20100000 },
++    { "adreq", OP_ADR, 0x00000000 },
++    { "adreqs", OP_ADR, 0x00100000 },
++    { "adrge", OP_ADR, 0xa0000000 },
++    { "adrges", OP_ADR, 0xa0100000 },
++    { "adrgt", OP_ADR, 0xc0000000 },
++    { "adrgts", OP_ADR, 0xc0100000 },
++    { "adrhi", OP_ADR, 0x80000000 },
++    { "adrhis", OP_ADR, 0x80100000 },
++    { "adrhs", OP_ADR, 0x20000000 },
++    { "adrhss", OP_ADR, 0x20100000 },
++    { "adrle", OP_ADR, 0xd0000000 },
++    { "adrles", OP_ADR, 0xd0100000 },
++    { "adrlo", OP_ADR, 0x30000000 },
++    { "adrlos", OP_ADR, 0x30100000 },
++    { "adrls", OP_ADR, 0x90000000 },
++    { "adrlss", OP_ADR, 0x90100000 },
++    { "adrlt", OP_ADR, 0xb0000000 },
++    { "adrlts", OP_ADR, 0xb0100000 },
++    { "adrmi", OP_ADR, 0x40000000 },
++    { "adrmis", OP_ADR, 0x40100000 },
++    { "adrne", OP_ADR, 0x10000000 },
++    { "adrnes", OP_ADR, 0x10100000 },
++    { "adrnv", OP_ADR, 0xf0000000 },
++    { "adrnvs", OP_ADR, 0xf0100000 },
++    { "adrpl", OP_ADR, 0x50000000 },
++    { "adrpls", OP_ADR, 0x50100000 },
++    { "adrs", OP_ADR, 0xe0100000 },
++    { "adrul", OP_ADR, 0x30000000 },
++    { "adruls", OP_ADR, 0x30100000 },
++    { "adrvc", OP_ADR, 0x70000000 },
++    { "adrvcs", OP_ADR, 0x70100000 },
++    { "adrvs", OP_ADR, 0x60000000 },
++    { "adrvss", OP_ADR, 0x60100000 },
+     { "and", OP_DATA_PROC_3, 0xe0000000 },
+     { "andal", OP_DATA_PROC_3, 0xe0000000 },
+     { "andals", OP_DATA_PROC_3, 0xe0100000 },
+Index: as/arm.c
+===================================================================
+--- as/arm.c	(revision 209)
++++ as/arm.c	(working copy)
+@@ -592,7 +592,7 @@
+ void md_number_to_imm(unsigned char *buf, signed_expr_t val, int size, fixS *
+     fixP, int nsect)
+ {
+-    unsigned int n = 0;
++    unsigned int n = 0, err;
+ 
+     switch (fixP->fx_r_type) {
+         case ARM_RELOC_VANILLA:
+@@ -644,8 +644,19 @@
+             break;
+ 
+         case ARM_RELOC_SHIFT_IMM12:
+-            n = generate_shifted_immediate(val, NULL);
+-            fill_reloc_value(buf, (unsigned int)n, 0x00000fff); 
++            n = generate_shifted_immediate(val, &err);
++            if (err) {
++                n = (0x3 << 21) | generate_shifted_immediate(~val, &err);
++                    if (!err)
++                        as_warn("Immediate value is out of range: converting "
++                            "automatically to a MVN instruction, but if this "
++                            "was not a MOV instruction then this is unsafe!");
++                    else
++                        as_bad("Immediate value out of range");
++                    printf("%x\n", n);
++                fill_reloc_value(buf, (unsigned int)n, (0x3 << 21) | 0x00000fff);
++            } else
++                fill_reloc_value(buf, (unsigned int)n, 0x00000fff);
+             break;
+ 
+         case ARM_RELOC_SHIFT_IMM:
+@@ -655,6 +666,18 @@
+             fill_reloc_value(buf, n << 7, 31 << 7);
+             break;
+ 
++        case ARM_RELOC_ADR:
++            val -= 4;
++            if (val >= 0)
++                n = 1 << 23;
++            else {
++                n = 1 << 22;
++                val = -val;
++            }
++            n |= generate_shifted_immediate(val, NULL);
++            fill_reloc_value(buf, (unsigned int)n, 0x00c00fff); 
++            break;
++
+         default:
+             fprintf(stderr, "reloc type %d\n", fixP->fx_r_type);
+             as_fatal("md_number_to_imm: reloc unimplemented");
+Index: as/read.h
+===================================================================
+--- as/read.h	(revision 209)
++++ as/read.h	(working copy)
+@@ -110,6 +110,8 @@
+     int value);
+ extern void s_endr(
+     int value);
++extern void s_ifnc(
++    int value);
+ extern void s_ifc(
+     int value);
+ extern void big_cons(
+Index: as/armop.in
+===================================================================
+--- as/armop.in	(revision 209)
++++ as/armop.in	(working copy)
+@@ -27,6 +27,7 @@
+ mov{<cond>}{s}      t: OP_DATA_PROC_1   e: 1101     (21)
+ bic{<cond>}{s}      t: OP_DATA_PROC_3   e: 1110     (21)
+ mvn{<cond>}{s}      t: OP_DATA_PROC_1   e: 1111     (21)
++adr{<cond>}{s}      t: OP_ADR           e: 0000     (21)
+ 
+ # Multiply instructions
+ mul{<cond>}{s}      t: OP_MUL           e: 0000000 (21), 1001 (4)
+@@ -164,6 +165,7 @@
+ # -----------------------------------------------------------------------------
+ 
+ blx{<cond>}             t: OP_BLX       e: 0 (0)
++bxj{<cond>}             t: OP_BXJ       e: 0 (0)
+ 
+ smla{<x>}{<y>}{<cond>}  t: OP_SMLA_XY   e: 00010000 (20), 1 (7), 0 (4)
+ smlaw{<y>}{<cond>}      t: OP_SMLA_XY   e: 00010010 (20), 1 (7), 0 (5), 0 (4)
+Index: as/army.y
+===================================================================
+--- as/army.y	(revision 209)
++++ as/army.y	(working copy)
+@@ -31,7 +31,7 @@
+ %token <nval> OPRD_REG
+ %token <ival> OPRD_IMM
+ %token <nval> OP_BRANCH OP_DATA_PROC_1 OP_DATA_PROC_2 OP_DATA_PROC_3 OP_MUL
+-%token <nval> OP_MLA OP_SMLAL OP_CLZ OP_LDR OP_LDRH OP_LDM OP_SWI OP_BKPT
++%token <nval> OP_MLA OP_SMLAL OP_CLZ OP_LDR OP_LDRH OP_LDM OP_SWI OP_BKPT OP_BXJ
+ %token <nval> OP_CPS_EFFECT OP_CPS OP_LDREX OP_MCRR2 OP_PKHBT OP_QADD16 OP_REV
+ %token <nval> OP_RFE OP_SXTAH OP_SEL OP_SETEND OP_SMLAD OP_SMLALD OP_SMMUL
+ %token <nval> OP_SRS OP_SSAT OP_SSAT16 OP_STREX OP_SXTH OP_SWP OP_USAD8 OP_USADA8
+@@ -41,7 +41,7 @@
+ %token <nval> OP_VFP_ST_D OP_VFP_MSR OP_VFP_MRS OP_VFP_MDXR OP_VFP_MRDX
+ %token <nval> OP_VFP_MXR OP_VFP_MRX OP_VFP_FMSTAT OP_VFP_DPX1_S OP_VFP_DPX1_D
+ %token <nval> OP_VFP_FMDRR OP_VFP_FMRRD OP_VFP_FMSRR OP_VFP_FMRRS OP_VFP_DPX_SD
+-%token <nval> OP_VFP_DPX_DS OP_MSR OP_MRS OP_LDC OP_MCR
++%token <nval> OP_VFP_DPX_DS OP_MSR OP_MRS OP_LDC OP_MCR OP_ADR
+ %token <nval> OPRD_LSL_LIKE OPRD_RRX OPRD_IFLAGS OPRD_COPROC OPRD_CR OPRD_REG_S
+ %token <nval> OPRD_REG_D OPRD_REG_VFP_SYS OPRD_ENDIANNESS OPRD_PSR
+ %token <nval> OPRD_COPRO_REG
+@@ -66,6 +66,7 @@
+ %type  <nval> vfp_maybe_imm_offset generic_reg vfp_data_proc_inst
+ %type  <nval> vfp_store_inst vfp_misc_inst vfp2_inst vfp_imm_offset_with_u_bit
+ %type  <nval> vfp_store_am armv3_inst clz_class_inst armv2_inst
++%type  <nval> bxj_class_inst
+ %type  <nval> load_store_copro_am imm_div_4_with_u_bit mcr_opcode_2
+ 
+ %%
+@@ -101,6 +102,11 @@
+         { $$ = ($1 | $2 | $4 | (1 << 20)); }
+     | OP_DATA_PROC_3 dest_reg ',' src_reg ',' shifter_operand
+         { $$ = ($1 | $2 | $4 | $6); }
++    | OP_ADR dest_reg ',' expr
++        {
++            register_reloc_type(ARM_RELOC_ADR, 4, 1);
++            $$ = ($1 | $2 | (15 << 16) | (1 << 25));
++        }
+     ;
+ 
+ load_inst:
+@@ -249,7 +255,7 @@
+     | expr
+         {
+             register_reloc_type(ARM_RELOC_SHIFT_IMM12, 4, 0);
+-            $$ = ((0x1 << 25) | $1);
++            $$ = ((0x1 << 25) | $1 & 0xfff);
+         }
+     ;
+ 
+@@ -378,6 +384,7 @@
+ 
+ armv5_inst:
+       blx_class_inst        { $$ = $1; }
++    | bxj_class_inst        { $$ = $1; }
+     | smla_xy_class_inst    { $$ = $1; }
+     | smlal_xy_class_inst   { $$ = $1; }
+     | smul_xy_class_inst    { $$ = $1; }
+@@ -389,6 +396,10 @@
+       OP_CLZ OPRD_REG ',' OPRD_REG  { $$ = ($1 | ($2 << 12) | $4); }
+     ;
+ 
++bxj_class_inst:
++      OP_BXJ OPRD_REG   { $$ = ($1 | (0x12 << 20) | (0xfff2 << 4) | $2); }
++    ;
++
+ blx_class_inst:
+       OP_BLX branch_am  { $$ = ((0x7d << 25) | $2); }
+     | OP_BLX OPRD_REG   { $$ = ($1 | (0x12 << 20) | (0xfff3 << 4) | $2); }
+Index: libstuff/ofile.c
+===================================================================
+--- libstuff/ofile.c	(revision 209)
++++ libstuff/ofile.c	(working copy)
+@@ -105,7 +105,7 @@
+     unsigned long module_index);
+ 
+ #ifndef OTOOL
+-#ifdef ALIGNMENT_CHECKS
++#ifdef ALIGNMENT_CHECKS_ARCHIVE_64_BIT
+ static
+ void
+ temporary_archive_member_warning(
+@@ -128,7 +128,7 @@
+         print("\n");
+ 	va_end(ap);
+ }
+-#endif /* defined(ALIGNMENT_CHECKS) */
++#endif /* defined(ALIGNMENT_CHECKS_ARCHIVE_64_BIT) */
+ #endif /* !defined(OTOOL) */
+ 
+ #ifndef OFI
+Index: libstuff/arch.c
+===================================================================
+--- libstuff/arch.c	(revision 209)
++++ libstuff/arch.c	(working copy)
+@@ -62,7 +62,7 @@
+     { "m88k",   CPU_TYPE_MC88000, CPU_SUBTYPE_MC88000_ALL },
+     { "i860",   CPU_TYPE_I860,    CPU_SUBTYPE_I860_ALL },
+     { "veo",    CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_ALL },
+-    { "arm",    CPU_TYPE_ARM,     6 },
++    { "arm",    CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_ALL },
+     /* specific architecture implementations */
+     { "ppc601", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_601 },
+     { "ppc603", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_603 },
+@@ -88,7 +88,7 @@
+     { "hppa7100LC", CPU_TYPE_HPPA,  CPU_SUBTYPE_HPPA_7100LC },
+     { "veo1",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_1 },
+     { "veo2",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_2 },
+-    { "arm",    CPU_TYPE_ARM,     6 },
++    { "armv6",    CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_V6 },
+     { NULL,	0,		  0 }
+ };
+ 
