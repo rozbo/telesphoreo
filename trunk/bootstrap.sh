@@ -8,8 +8,8 @@ export PKG_BOOT=${PKG_BASE}/Packager
 rm -rf "${PKG_BOOT}"
 svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
-arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/godmode" "${PKG_BASE}/tool/godmode.c"
-arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/symlink" "${PKG_BASE}/tool/symlink.c"
+arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/godmode" "${PKG_BASE}/util/godmode.c"
+arm-apple-darwin-gcc -o "${PKG_BOOT}/usr/libexec/cydia_/symlink" "${PKG_BASE}/util/symlink.c"
 chmod +s "${PKG_BOOT}/usr/libexec/cydia_"/{godmode,symlink}
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
@@ -50,10 +50,13 @@ cp -a bin/chmod usr/libexec/cydia_
 cp -a bin/chown usr/libexec/cydia_
 cp -a bin/cp usr/libexec/cydia_
 cp -a bin/df usr/libexec/cydia_
+cp -a bin/grep usr/libexec/cydia_
 cp -a bin/ln usr/libexec/cydia_
 cp -a bin/mkdir usr/libexec/cydia_
 cp -a bin/mktemp usr/libexec/cydia_
 cp -a bin/rm usr/libexec/cydia_
+cp -a bin/sed usr/libexec/cydia_
+cp -a sbin/reboot usr/libexec/cydia_
 cp -a usr/bin/basename usr/libexec/cydia_
 cp -a usr/bin/du usr/libexec/cydia_
 cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_

@@ -1,0 +1,166 @@
+Index: configure
+===================================================================
+--- configure	(revision 47984)
++++ configure	(working copy)
+@@ -1211,7 +1211,7 @@
+   # APPLE LOCAL begin ARM darwin target
+   arm-*-darwin*)
+     noconfigdirs="$noconfigdirs target-libgomp target-libobjc"
+-    noconfigdirs="$noconfigdirs target-libstdc++-v3 target-libssp"
++    noconfigdirs="$noconfigdirs target-libssp"
+     # LLVM LOCAL begin
+     noconfigdirs="$noconfigdirs target-boehm-gc target-libffi"
+     noconfigdirs="$noconfigdirs target-libjava"
+Index: gcc/opts.c
+===================================================================
+--- gcc/opts.c	(revision 47984)
++++ gcc/opts.c	(working copy)
+@@ -1300,6 +1300,7 @@
+ set_debug_level (enum debug_info_type type, int extended, const char *arg)
+ {
+   static bool type_explicit;
++  return;
+ 
+   use_gnu_debug_info_extensions = extended;
+ 
+Index: gcc/llvm-abi.h
+===================================================================
+--- gcc/llvm-abi.h	(revision 47984)
++++ gcc/llvm-abi.h	(working copy)
+@@ -206,7 +206,7 @@
+ // should be returned using the aggregate shadow (sret) convention, 0 otherwise.
+ // X may be evaluated more than once.
+ #ifndef LLVM_SHOULD_RETURN_VECTOR_AS_SHADOW
+-#define LLVM_SHOULD_RETURN_VECTOR_AS_SHADOW(X) 0
++#define LLVM_SHOULD_RETURN_VECTOR_AS_SHADOW(X,Y) 0
+ #endif
+ 
+ /// DefaultABI - This class implements the default LLVM ABI where structures are
+Index: gcc/config/darwin.h
+===================================================================
+--- gcc/config/darwin.h	(revision 47984)
++++ gcc/config/darwin.h	(working copy)
+@@ -1038,6 +1038,7 @@
+ /* Macros defining the various PIC cases.  */
+ 
+ /* APPLE LOCAL mdynamic-no-pic */
++#undef MACHO_DYNAMIC_NO_PIC_P
+ #define MACHO_DYNAMIC_NO_PIC_P	(TARGET_MACHO_DYNAMIC_NO_PIC)
+ /* APPLE LOCAL begin mach-o cleanup */
+ #undef MACHOPIC_INDIRECT
+Index: gcc/config/arm/lib1funcs.asm
+===================================================================
+--- gcc/config/arm/lib1funcs.asm	(revision 47984)
++++ gcc/config/arm/lib1funcs.asm	(working copy)
+@@ -232,11 +232,7 @@
+ .endm
+ 
+ .macro FUNC_END name
+-#if defined(__MACH__)
+-	SIZE (__$0)
+-#else
+ 	SIZE (__\name)
+-#endif
+ .endm
+ 
+ .macro DIV_FUNC_END name
+@@ -249,26 +245,15 @@
+ #else
+ 	ARM_LDIV0 \name
+ #endif
+-#if defined(__MACH__)
+-	FUNC_END $0
+-#else
+ 	cfi_end	LSYM(Lend_div0)
+ 	FUNC_END \name
+-#endif
+ .endm
+ 
+ .macro THUMB_FUNC_START name
+-#if defined(__MACH__)
+-	.globl	SYM ($0)
+-	TYPE	($0)
+-	.thumb_func
+-SYM ($0):
+-#else
+ 	.globl	SYM (\name)
+ 	TYPE	(\name)
+ 	.thumb_func
+ SYM (\name):
+-#endif
+ .endm
+ /* APPLE LOCAL end ARM MACH assembler */
+ 
+@@ -288,23 +273,13 @@
+ 	
+ /* APPLE LOCAL begin ARM MACH assembler */
+ .macro FUNC_START name
+-#if defined(__MACH__)
+ 	.text
+-	.globl SYM (__$0)
+-	TYPE (__$0)
+-	FUNC_ALIGN
+-	THUMB_CODE
+-	THUMB_FUNC
+-SYM (__$0):
+-#else
+-	.text
+ 	.globl SYM (__\name)
+ 	TYPE (__\name)
+ 	.align 0
+ 	THUMB_CODE
+ 	THUMB_FUNC
+ SYM (__\name):
+-#endif
+ .endm
+ 
+ /* Special function that will always be coded in ARM assembly, even if
+@@ -323,47 +298,26 @@
+ 	.arm
+ /* A hook to tell gdb that we've switched to ARM mode.  Also used to call
+    directly from other local arm routines.  */
+-#if defined(__MACH__)
+-_L__$0:
+-#else
+ _L__\name:		
+-#endif
+ .endm
+ #define EQUIV .thumb_set
+ /* Branch directly to a function declared with ARM_FUNC_START.
+    Must be called in arm mode.  */
+ .macro  ARM_CALL name
+-#if defined(__MACH__)
+-	bl	_L__$0
+-#else
+ 	bl	_L__\name
+-#endif
+ .endm
+ #else
+ .macro	ARM_FUNC_START name
+-#if defined(__MACH__)
+ 	.text
+-	.globl SYM (__$0)
+-	TYPE (__$0)
+-	.align 0
+-	.arm
+-SYM (__$0):
+-#else
+-	.text
+ 	.globl SYM (__\name)
+ 	TYPE (__\name)
+ 	.align 0
+ 	.arm
+ SYM (__\name):
+-#endif
+ .endm
+ #define EQUIV .set
+ .macro  ARM_CALL name
+-#if defined(__MACH__)
+-	bl	SYM (__$0)
+-#else
+-	bl	__\name
+-#endif
++	bl	SYM (__\name)
+ .endm
+ #endif
+ 
