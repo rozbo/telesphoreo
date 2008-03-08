@@ -1,0 +1,12 @@
+diff -ru llvm-gcc-4.2-47984/configure llvm-gcc-4.2-47984+iPhone/configure
+--- llvm-gcc-4.2-47984/configure	2008-01-22 01:38:56.000000000 +0000
++++ llvm-gcc-4.2-47984+iPhone/configure	2008-03-06 12:37:33.000000000 +0000
+@@ -1211,7 +1211,7 @@
+   # APPLE LOCAL begin ARM darwin target
+   arm-*-darwin*)
+     noconfigdirs="$noconfigdirs target-libgomp target-libobjc"
+-    noconfigdirs="$noconfigdirs target-libstdc++-v3 target-libssp"
++    noconfigdirs="$noconfigdirs target-libssp"
+     # LLVM LOCAL begin
+     noconfigdirs="$noconfigdirs target-boehm-gc target-libffi"
+     noconfigdirs="$noconfigdirs target-libjava"
