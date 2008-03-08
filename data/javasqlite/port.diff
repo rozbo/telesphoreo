@@ -1,8 +1,12 @@
 diff -ru javasqlite-20071108/Makefile.in javasqlite-20071108+iPhone/Makefile.in
 --- javasqlite-20071108/Makefile.in	2007-10-25 06:30:12.000000000 +0000
-+++ javasqlite-20071108+iPhone/Makefile.in	2007-12-28 12:12:23.000000000 +0000
-@@ -125,9 +125,9 @@
- 	    -rpath $(NATIVE_LIB_DIR) $(LIBS)
++++ javasqlite-20071108+iPhone/Makefile.in	2008-03-03 06:42:20.000000000 +0000
+@@ -122,12 +122,12 @@
+ 
+ libsqlite_jni.la:	sqlite_jni.lo
+ 	$(LIBTOOL) $(CC) -o libsqlite_jni.la sqlite_jni.lo \
+-	    -rpath $(NATIVE_LIB_DIR) $(LIBS)
++	    $(LIBS)
  
  native/mkconst:	native/mkconst.c
 -	$(LIBTOOL) $(CC) $(SQLITE_INC) $(SQLITE3_INC) \
