@@ -1,8 +1,8 @@
 diff -ru odcctools/as/arm.c odcctools+iPhone/as/arm.c
 --- odcctools/as/arm.c	2007-09-13 02:31:45.000000000 +0000
 +++ odcctools+iPhone/as/arm.c	2007-12-29 08:49:20.000000000 +0000
-@@ -648,6 +648,18 @@
-             fill_reloc_value(buf, (unsigned int)n, 0x00000fff); 
+@@ -655,6 +666,18 @@
+             fill_reloc_value(buf, n << 7, 31 << 7);
              break;
  
 +        case ARM_RELOC_ADR:
@@ -17,9 +17,9 @@ diff -ru odcctools/as/arm.c odcctools+iPhone/as/arm.c
 +            fill_reloc_value(buf, (unsigned int)n, 0x00c00fff); 
 +            break;
 +
-         case ARM_RELOC_SHIFT_IMM:
-             if (val == 32)
-                 val = 0;
+         default:
+             fprintf(stderr, "reloc type %d\n", fixP->fx_r_type);
+             as_fatal("md_number_to_imm: reloc unimplemented");
 diff -ru odcctools/as/armop.c odcctools+iPhone/as/armop.c
 --- odcctools/as/armop.c	2007-10-16 20:20:35.000000000 +0000
 +++ odcctools+iPhone/as/armop.c	2007-12-29 08:49:59.000000000 +0000

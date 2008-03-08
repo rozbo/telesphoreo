@@ -1,0 +1,46 @@
+diff -ru odcctools/as/arm.c odcctools+iPhone/as/arm.c
+--- odcctools/as/arm.c	2007-09-13 02:31:45.000000000 +0000
++++ odcctools+iPhone/as/arm.c	2008-03-06 10:46:58.000000000 +0000
+@@ -592,7 +592,7 @@
+ void md_number_to_imm(unsigned char *buf, signed_expr_t val, int size, fixS *
+     fixP, int nsect)
+ {
+-    unsigned int n = 0;
++    unsigned int n = 0, err;
+ 
+     switch (fixP->fx_r_type) {
+         case ARM_RELOC_VANILLA:
+@@ -644,8 +644,19 @@
+             break;
+ 
+         case ARM_RELOC_SHIFT_IMM12:
+-            n = generate_shifted_immediate(val, NULL);
+-            fill_reloc_value(buf, (unsigned int)n, 0x00000fff); 
++            n = generate_shifted_immediate(val, &err);
++            if (err) {
++                n = (0x3 << 21) | generate_shifted_immediate(~val, &err);
++                    if (!err)
++                        as_warn("Immediate value is out of range: converting "
++                            "automatically to a MVN instruction, but if this "
++                            "was not a MOV instruction then this is unsafe!");
++                    else
++                        as_bad("Immediate value out of range");
++                    printf("%x\n", n);
++                fill_reloc_value(buf, (unsigned int)n, (0x3 << 21) | 0x00000fff);
++            } else
++                fill_reloc_value(buf, (unsigned int)n, 0x00000fff);
+             break;
+ 
+         case ARM_RELOC_SHIFT_IMM:
+diff -ru odcctools/as/army.y odcctools+iPhone/as/army.y
+--- odcctools/as/army.y	2007-10-16 23:11:52.000000000 +0000
++++ odcctools+iPhone/as/army.y	2008-03-06 10:47:08.000000000 +0000
+@@ -249,7 +249,7 @@
+     | expr
+         {
+             register_reloc_type(ARM_RELOC_SHIFT_IMM12, 4, 0);
+-            $$ = ((0x1 << 25) | $1);
++            $$ = ((0x1 << 25) | $1 & 0xfff);
+         }
+     ;
+ 
