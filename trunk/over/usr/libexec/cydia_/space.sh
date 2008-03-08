@@ -1,7 +1,7 @@
 #!/usr/libexec/cydia_/bash
+export PATH=/usr/libexec/cydia_
 
 shopt -s extglob nullglob
-export PATH=/usr/libexec/cydia_
 
 function df_() {
     free=$(df -B1 "$1")
