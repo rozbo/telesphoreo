@@ -1,6 +1,6 @@
 pkg:extract
 cd *
-pkg:configure
+pkg:configure --enable-all
 make
 pkg:install
 pkg: mkdir -p /etc/profile.d
