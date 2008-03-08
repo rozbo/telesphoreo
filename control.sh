@@ -15,7 +15,7 @@ cat <<EOF
 Package: ${PKG_NAME}
 EOF
 
-if [[ ${PKG_PRIO} == required ]]; then
+if [[ ${PKG_PRIO} == required || ${PKG_PRIO} == +* ]]; then
     cat <<EOF
 Essential: yes
 EOF
@@ -28,13 +28,17 @@ EOF
 fi
 
 cat <<EOF
-Priority: ${PKG_PRIO}
+Priority: ${PKG_PRIO#+}
 Section: $(cat "${PKG_DATA}/_metadata/section")
 EOF
 
 if [[ $1 == status || $1 == available ]]; then
     cat <<EOF
 Installed-Size: $(dpkg -f "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_darwin-arm.deb" Installed-Size)
+EOF
+elif [[ $1 == control ]]; then
+    cat <<EOF
+Installed-Size: $(du -s "${PKG_DEST}" | cut -d $'\t' -f 1)
 EOF
 fi
 
