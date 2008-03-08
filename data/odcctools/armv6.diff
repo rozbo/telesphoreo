@@ -1,0 +1,32 @@
+diff -ru odcctools/include/mach/machine.h odcctools+iPhone/include/mach/machine.h
+--- odcctools/include/mach/machine.h	2007-09-08 01:05:35.000000000 +0000
++++ odcctools+iPhone/include/mach/machine.h	2008-03-06 11:16:03.000000000 +0000
+@@ -330,4 +330,7 @@
+ #define CPU_SUBTYPE_VEO_2	((cpu_subtype_t) 2)
+ #define CPU_SUBTYPE_VEO_ALL	CPU_SUBTYPE_VEO_2
+ 
++#define CPU_SUBTYPE_ARM_ALL     ((cpu_subtype_t) 0)
++#define CPU_SUBTYPE_ARM_V6      ((cpu_subtype_t) 6)
++
+ #endif	/* _MACH_MACHINE_H_ */
+diff -ru odcctools/libstuff/arch.c odcctools+iPhone/libstuff/arch.c
+--- odcctools/libstuff/arch.c	2007-09-08 01:05:35.000000000 +0000
++++ odcctools+iPhone/libstuff/arch.c	2008-03-06 11:18:04.000000000 +0000
+@@ -62,7 +62,7 @@
+     { "m88k",   CPU_TYPE_MC88000, CPU_SUBTYPE_MC88000_ALL },
+     { "i860",   CPU_TYPE_I860,    CPU_SUBTYPE_I860_ALL },
+     { "veo",    CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_ALL },
+-    { "arm",    CPU_TYPE_ARM,     6 },
++    { "arm",    CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_ALL },
+     /* specific architecture implementations */
+     { "ppc601", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_601 },
+     { "ppc603", CPU_TYPE_POWERPC, CPU_SUBTYPE_POWERPC_603 },
+@@ -88,7 +88,7 @@
+     { "hppa7100LC", CPU_TYPE_HPPA,  CPU_SUBTYPE_HPPA_7100LC },
+     { "veo1",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_1 },
+     { "veo2",   CPU_TYPE_VEO,     CPU_SUBTYPE_VEO_2 },
+-    { "arm",    CPU_TYPE_ARM,     6 },
++    { "armv6",    CPU_TYPE_ARM,     CPU_SUBTYPE_ARM_V6 },
+     { NULL,	0,		  0 }
+ };
+ 
