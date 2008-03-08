@@ -18,6 +18,10 @@ export PKG_BASE=$(realpath "$(dirname "$0")")
 pkg: mkdir -p /DEBIAN
 ./control.sh "${PKG_NAME}" control >"$(pkg_ /DEBIAN/control)"
 
+if [[ -e "${PKG_DATA}"/_metadata/preinst ]]; then
+    cp -a "${PKG_DATA}"/_metadata/preinst "$(pkg_ /DEBIAN)"
+fi
+
 if [[ -e "${PKG_DATA}"/_metadata/postinst ]]; then
     cp -a "${PKG_DATA}"/_metadata/postinst "$(pkg_ /DEBIAN)"
 fi
