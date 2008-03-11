@@ -1,15 +1,15 @@
-diff -ru javasqlite-20071108/configure.in javasqlite-20071108+iPhone/configure.in
---- javasqlite-20071108/configure.in	2007-10-25 06:29:14.000000000 +0000
-+++ javasqlite-20071108+iPhone/configure.in	2007-11-22 05:04:05.000000000 +0000
-@@ -155,6 +155,11 @@
-       SQLITE3_LIB="$i/lib/libsqlite3.la"
-       SQLITE3_LIBDIR="$i/lib"
-       break
-+    elif test -r $i/lib/libsqlite3.dylib ; then
-+      SQLITE3_INC="$i/include"
-+      SQLITE3_LIB="$i/lib/libsqlite3.dylib"
-+      SQLITE3_LIBDIR="$i/lib"
-+      break;
-     elif test -r $i/lib/libsqlite3.a ; then
-       SQLITE3_INC="$i/include"
-       SQLITE3_LIB="$i/lib/libsqlite3.a"
+diff -ru javasqlite-20080130/configure.in javasqlite-20080130+iPhone/configure.in
+--- javasqlite-20080130/configure.in	2008-01-07 18:21:33.000000000 +0000
++++ javasqlite-20080130+iPhone/configure.in	2008-03-11 02:53:50.000000000 +0000
+@@ -166,6 +166,11 @@
+         SQLITE3_LIB="$i/$lib/libsqlite3.a"
+         SQLITE3_LIBDIR="$i/$lib"
+         break
++      elif test -r $i/$lib/libsqlite3.dylib ; then
++        SQLITE3_INC="$i/include"
++        SQLITE3_LIB="-lsqlite3"
++        SQLITE3_LIBDIR="$i/$lib"
++        break
+       elif test -r $i/$lib/libsqlite3.so ; then
+         SQLITE3_INC="$i/include"
+         SQLITE3_LIB="-lsqlite3"
