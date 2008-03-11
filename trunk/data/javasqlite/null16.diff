@@ -1,7 +1,7 @@
-diff -ru javasqlite-20071108/native/sqlite_jni.c javasqlite-20071108+iPhone/native/sqlite_jni.c
---- javasqlite-20071108/native/sqlite_jni.c	2007-10-27 06:58:54.000000000 +0000
-+++ javasqlite-20071108+iPhone/native/sqlite_jni.c	2008-02-06 01:18:37.000000000 +0000
-@@ -3346,6 +3346,8 @@
+diff -ru javasqlite-20080130/native/sqlite_jni.c javasqlite-20080130+iPhone/native/sqlite_jni.c
+--- javasqlite-20080130/native/sqlite_jni.c	2008-01-29 09:23:25.000000000 +0000
++++ javasqlite-20080130+iPhone/native/sqlite_jni.c	2008-03-10 23:15:41.000000000 +0000
+@@ -3360,6 +3360,8 @@
      jsize len16;
      const jchar *sql16, *tail = 0;
      int ret;
@@ -10,7 +10,7 @@ diff -ru javasqlite-20071108/native/sqlite_jni.c javasqlite-20071108+iPhone/nati
  
      if (!h) {
  	throwclosed(env);
-@@ -3371,11 +3373,15 @@
+@@ -3385,11 +3387,15 @@
      }
      h->env = env;
      sql16 = (*env)->GetStringChars(env, sql, 0);
@@ -28,7 +28,7 @@ diff -ru javasqlite-20071108/native/sqlite_jni.c javasqlite-20071108+iPhone/nati
  			    (sqlite3_stmt **) &svm, (const void **) &tail);
  #endif
      if (ret != SQLITE_OK) {
-@@ -3387,22 +3393,23 @@
+@@ -3401,22 +3407,23 @@
      if (ret != SQLITE_OK) {
  	const char *err = sqlite3_errmsg(h->sqlite);
  
@@ -56,7 +56,7 @@ diff -ru javasqlite-20071108/native/sqlite_jni.c javasqlite-20071108+iPhone/nati
  	sqlite3_finalize((sqlite3_stmt *) svm);
  	throwoom(env, "unable to get SQLite handle");
  	return;
-@@ -3418,7 +3425,7 @@
+@@ -3432,7 +3439,7 @@
      memcpy(v->tail, tail, len16);
      len16 /= sizeof (jchar);
      ((jchar *) v->tail)[len16 - 1] = 0;
