@@ -1,6 +1,6 @@
-tar -zxvf "${PKG_DATA}/coreutils-6.9.tar.gz"
-cd coreutils-6.9
-./configure --prefix=/usr --host=arm-apple-darwin
+pkg:extract
+cd *
+pkg:configure
 make
 pkg:install
 pkg: rm -f /usr/bin/sync
