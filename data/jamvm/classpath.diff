@@ -1,0 +1,12 @@
+diff -ru jamvm-20080302/lib/Makefile.am jamvm-20080302+iPhone/lib/Makefile.am
+--- jamvm-20080302/lib/Makefile.am	2008-02-22 02:06:05.000000000 +0000
++++ jamvm-20080302+iPhone/lib/Makefile.am	2008-03-02 08:07:56.000000000 +0000
+@@ -48,7 +48,7 @@
+ 
+ classes.zip: $(JAVA_FILES)
+ 	-mkdir classes
+-	$(JAVAC) -bootclasspath ${GLIBJ_ZIP} -d classes $(JAVA_FILES)
++	$(JAVAC) -bootclasspath ${PKG_ROOT}${GLIBJ_ZIP} -d classes $(JAVA_FILES)
+ 	cd classes && zip -r ../classes.zip .
+ 	rm -rf classes
+ 
