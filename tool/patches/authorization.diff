@@ -1,0 +1,11 @@
+--- /home/dat/bin/MacOSX10.5.sdk/System/Library/Frameworks/Security.framework/Versions/A/Headers/Authorization.h	2008-02-19 11:34:25.000000000 +0000
++++ /home/dat/apl/inc/Security/Authorization.h	2008-03-24 11:07:40.000000000 +0000
+@@ -30,7 +30,7 @@
+ #ifndef _SECURITY_AUTHORIZATION_H_
+ #define _SECURITY_AUTHORIZATION_H_
+ 
+-#include <CoreServices/../Frameworks/CarbonCore.framework/Headers/MacTypes.h>
++#include <MacTypes.h>
+ #include <stdio.h>
+ 
+ #if defined(__cplusplus)
