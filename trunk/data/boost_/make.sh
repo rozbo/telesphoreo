@@ -1,6 +1,6 @@
 shopt -s extglob
-tar -zxvf "${PKG_DATA}/boost_1_34_1.tar.gz"
-cd boost_1_34_1
+pkg:extract
+cd *
 pkg:patch
 ./configure --prefix=/usr --without-icu --without-libraries=python
 echo 'using darwin ;' >user-config.jam
