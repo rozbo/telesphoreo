@@ -61,7 +61,7 @@ diff -ru boost_1_34_1/tools/build/v2/tools/darwin.jam boost_1_34_1+iPhone/tools/
  {
      local condition = [ common.check-init-parameters darwin : version $(version) ] ;    
 -    local command = [ common.get-invocation-command darwin : g++ : $(command) ] ;
-+    local command = [ common.get-invocation-command darwin : arm-apple-darwin-g++ : $(command) ] ;
++    local command = [ common.get-invocation-command darwin : $(PKG_TARG)-g++ : $(command) ] ;
      
      common.handle-options darwin : $(condition) : $(command) : $(options) ;
      
@@ -90,7 +90,7 @@ diff -ru boost_1_34_1/tools/build/v2/tools/gcc.jam boost_1_34_1+iPhone/tools/bui
      # Information about the gcc command...
      #   The command.
 -    local command = [ common.get-invocation-command gcc : g++ : $(command) ] ;
-+    local command = [ common.get-invocation-command gcc : arm-apple-darwin-g++ : $(command) ] ;
++    local command = [ common.get-invocation-command gcc : $(PKG_TARG)-g++ : $(command) ] ;
      #   The root directory of the tool install.
      local root = [ feature.get-values <root> : $(options) ] ;
      #   The bin directory where to find the command to execute.
