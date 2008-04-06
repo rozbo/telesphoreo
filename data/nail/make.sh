@@ -1,4 +1,5 @@
 pkg:extract
 cd *
-make all install PREFIX=/usr SYSCONFDIR=/etc DESTDIR=/home/saurik/telesphoreo/dest/nail UCBINSTALL=/usr/bin/install STRIP=arm-apple-darwin-strip CC=arm-apple-darwin-gcc
+pkg:patch
+make all install PREFIX=/usr SYSCONFDIR=/etc DESTDIR="${PKG_DEST}" UCBINSTALL=/usr/bin/install CC="${PKG_TARG}-gcc"
 pkg: ln -s mailx /usr/bin/mail

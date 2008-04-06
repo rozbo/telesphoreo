@@ -1,7 +1,6 @@
-tar -zxvf "${PKG_DATA}/grep-2.5.tar.gz"
-cd grep-2.5
+pkg:extract
+cd *
 pkg:patch
-pkg:configure --disable-perl-regexp
+pkg:configure --disable-perl-regexp --bindir=/bin
 make
 pkg:install
-pkg:bin grep

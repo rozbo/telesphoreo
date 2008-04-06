@@ -1,5 +1,6 @@
-tar -zxvf "${PKG_DATA}/unrarsrc-3.6.8.tar.gz"
-cd unrar
+pkg:extract
+cd *
 pkg:patch
-make -f makefile.unix CXX=arm-apple-darwin-g++ STRIP=arm-apple-darwin-strip all
-pkg:usrbin unrar
+make -f makefile.unix CXX="${PKG_TARG}-g++" all
+pkg: mkdir -p /usr/bin
+pkg: cp -a unrar /usr/bin

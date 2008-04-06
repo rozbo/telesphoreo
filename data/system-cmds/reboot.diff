@@ -1,7 +1,15 @@
-diff -r -u system_cmds-431/reboot.tproj/reboot.c system_cmds-431+iPhone/reboot.tproj/reboot.c
+diff -ru system_cmds-431/reboot.tproj/reboot.c system_cmds-431+iPhone/reboot.tproj/reboot.c
 --- system_cmds-431/reboot.tproj/reboot.c	2007-09-06 20:46:17.000000000 +0000
-+++ system_cmds-431+iPhone/reboot.tproj/reboot.c	2008-02-12 11:29:02.000000000 +0000
-@@ -81,11 +81,9 @@
++++ system_cmds-431+iPhone/reboot.tproj/reboot.c	2008-03-30 20:43:53.000000000 +0000
+@@ -63,7 +63,6 @@
+ #include <mach/mach_port.h>		// allocate
+ #include <mach/mach.h>			// task_self, etc
+ #include <servers/bootstrap.h>	// bootstrap
+-#include <reboot2.h>
+ #endif
+ 
+ void usage(void);
+@@ -81,11 +80,9 @@
  	int ch, howto, kflag, lflag, nflag, qflag, uflag;
  	char *p;
  	const char *user;
@@ -13,7 +21,7 @@ diff -r -u system_cmds-431/reboot.tproj/reboot.c system_cmds-431+iPhone/reboot.t
  
  	if (strstr((p = rindex(*argv, '/')) ? p + 1 : *argv, "halt")) {
  		dohalt = 1;
-@@ -240,19 +238,16 @@
+@@ -240,19 +237,16 @@
  	}
  #endif
  

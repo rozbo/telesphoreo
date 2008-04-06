@@ -1,7 +1,7 @@
 pkg:extract
 cd *
 pkg:patch
-CC=$(which arm-apple-darwin-gcc) ./configure --prefix=/usr
+RANLIB=$(which "${PKG_TARG}-ranlib") CC=$(which "${PKG_TARG}-gcc") pkg:configure
 make
 mkdir -p "${PKG_DEST}/usr/share"
 pkg:install

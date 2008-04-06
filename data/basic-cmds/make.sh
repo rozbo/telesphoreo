@@ -1,6 +1,6 @@
-tar -zxvf "${PKG_DATA}/basic_cmds-48.tar.gz"
-cd basic_cmds-48
+pkg:extract
+cd *
 for bin in mesg write uudecode uuencode; do
-    arm-apple-darwin-gcc -o "${bin}/${bin}" "${bin}"/*.c
+    "${PKG_TARG}-gcc" -o "${bin}/${bin}" "${bin}"/*.c
     pkg:usrbin "${bin}/${bin}"
 done

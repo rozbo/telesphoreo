@@ -1,0 +1,53 @@
+diff -ru odcctools-236/libstuff/swap_headers.c odcctools-236+iPhone/libstuff/swap_headers.c
+--- odcctools-236/libstuff/swap_headers.c	2008-03-20 16:32:08.000000000 +0000
++++ odcctools-236+iPhone/libstuff/swap_headers.c	2008-03-30 20:18:22.000000000 +0000
+@@ -634,13 +634,13 @@
+ 		   || cputype == CPU_TYPE_X86_64
+ #endif /* x86_THREAD_STATE64 */
+ 		   ){
+-		    i386_thread_state_t *cpu;
++		    x86_thread_state_t *cpu;
+ #ifdef x86_THREAD_STATE64
+ 		    x86_thread_state64_t *cpu64;
+ #endif /* x86_THREAD_STATE64 */
+ /* current i386 thread states */
+ #if i386_THREAD_STATE == 1
+-		    struct i386_float_state *fpu;
++		    struct x86_float_state *fpu;
+ 		    i386_exception_state_t *exc;
+ #endif /* i386_THREAD_STATE == 1 */
+ 
+@@ -678,8 +678,8 @@
+ 				    "LC_THREAD", i);
+ 				return(FALSE);
+ 			    }
+-			    cpu = (i386_thread_state_t *)state;
+-			    state += sizeof(i386_thread_state_t);
++			    cpu = (x86_thread_state_t *)state;
++			    state += sizeof(x86_thread_state_t);
+ 			    break;
+ /* current i386 thread states */
+ #if i386_THREAD_STATE == 1
+@@ -694,8 +694,8 @@
+ 				    "LC_THREAD", i);
+ 				return(FALSE);
+ 			    }
+-			    fpu = (struct i386_float_state *)state;
+-			    state += sizeof(struct i386_float_state);
++			    fpu = (struct x86_float_state *)state;
++			    state += sizeof(struct x86_float_state);
+ 			    break;
+ 			case i386_EXCEPTION_STATE:
+ 			    if(count != I386_EXCEPTION_STATE_COUNT){
+@@ -1313,9 +1313,9 @@
+ /* current i386 thread states */
+ #if i386_THREAD_STATE == 1
+ 			case i386_FLOAT_STATE:
+-			    fpu = (struct i386_float_state *)state;
++			    fpu = (struct x86_float_state *)state;
+ 			    swap_i386_float_state(fpu, target_byte_sex);
+-			    state += sizeof(struct i386_float_state);
++			    state += sizeof(struct x86_float_state);
+ 			    break;
+ 			case i386_EXCEPTION_STATE:
+ 			    exc = (i386_exception_state_t *)state;

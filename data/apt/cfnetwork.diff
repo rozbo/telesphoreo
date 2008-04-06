@@ -1,6 +1,6 @@
 diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 --- apt-0.6.46.4.1/methods/http.cc	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-02-27 01:21:07.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-04-06 10:00:37.000000000 +0000
 @@ -44,6 +48,10 @@
  // Internet stuff
  #include <netdb.h>
@@ -53,14 +53,14 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +    } else if (se.domain == kCFStreamErrorDomainSSL) {
 +        _error->Error("SSL: %ld", se.error);
 +    } else {
-+        _error->Error("Domain #%d: %ld", se.domain, se.error);
++        _error->Error("Domain #%ld: %ld", se.domain, se.error);
 +    }
 +}
 +
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1111,209 @@
+@@ -1062,159 +1111,234 @@
  
        if (Queue == 0)
  	 continue;
@@ -132,7 +132,9 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -      };
 +      CFStringEncoding se = kCFStringEncodingUTF8;
 +
-+      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, Queue->Uri.c_str(), se);
++      char *url = strdup(Queue->Uri.c_str());
++    url:
++      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, url, se);
 +      CFURLRef ur = CFURLCreateWithString(kCFAllocatorDefault, sr, NULL);
 +      CFRelease(sr);
 +      CFHTTPMessageRef hm = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("GET"), ur, kCFHTTPVersion1_1);
@@ -161,13 +163,15 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPProxy, dr);
 +      CFRelease(dr);
 +
-+      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
++      //CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPAttemptPersistentConnection, kCFBooleanTrue);
 +
 +      URI uri = Queue->Uri;
  
 -      // Decide what to do.
        FetchResult Res;
++      CFIndex rd;
++      UInt32 sc;
 +
 +      uint8_t data[10240];
 +      size_t offset = 0;
@@ -180,7 +184,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         goto done;
 +      }
 +
-+      CFIndex rd = CFReadStreamRead(rs, data, sizeof(data));
++      rd = CFReadStreamRead(rs, data, sizeof(data));
 +
 +      if (rd == -1) {
 +         CfrsError(rs);
@@ -199,10 +203,30 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -	    // Run the data
 -	    bool Result =  Server->RunData();
 +      hm = (CFHTTPMessageRef) CFReadStreamCopyProperty(rs, kCFStreamPropertyHTTPResponseHeader);
-+      UInt32 sc = CFHTTPMessageGetResponseStatusCode(hm);
++      sc = CFHTTPMessageGetResponseStatusCode(hm);
  
 -	    /* If the server is sending back sizeless responses then fill in
 -	       the size now */
++      if (sc == 302) {
++         sr = CFHTTPMessageCopyHeaderFieldValue(hm, CFSTR("Location"));
++         if (sr == NULL) {
++            Fail();
++            goto done_;
++         } else {
++            size_t ln = CFStringGetLength(sr) + 1;
++            free(url);
++            url = static_cast<char *>(malloc(ln));
++
++            if (!CFStringGetCString(sr, url, ln, se)) {
++               Fail();
++               goto done_;
++            }
++
++            CFRelease(sr);
++            goto url;
++         }
++      }
++
 +      sr = CFHTTPMessageCopyHeaderFieldValue(hm, CFSTR("Content-Range"));
 +      if (sr != NULL) {
 +         size_t ln = CFStringGetLength(sr) + 1;
@@ -387,6 +411,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +    done:
 +      CFReadStreamClose(rs);
 +      CFRelease(rs);
++      free(url);
  
 -	 // We need to flush the data, the header is like a 404 w/ error text
 -	 case 4:
@@ -411,7 +436,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
     
 diff -ru apt-0.6.46.4.1/methods/makefile apt-0.6.46.4.1+iPhone/methods/makefile
 --- apt-0.6.46.4.1/methods/makefile	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-02-26 23:54:07.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-04-06 09:55:04.000000000 +0000
 @@ -47,7 +47,7 @@
  
  # The http method

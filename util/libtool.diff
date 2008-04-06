@@ -5,7 +5,7 @@
  	  continue
  	  ;;
 -	*.la) lib="$deplib" ;;
-+	*.la) if [[ ${deplib:0:1} == '/' ]]; then lib="$PKG_ROOT$deplib"; else lib="$deplib"; fi ;;
++	*.la) lib="$("${PKG_BASE}/util/find.sh" "$deplib")" ;;
  	*.$libext)
  	  if test "$pass" = conv; then
  	    deplibs="$deplib $deplibs"
@@ -14,7 +14,7 @@
  		  path="$absdir/$objdir"
  		else
 -		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
-+		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $PKG_ROOT$deplib`
++		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' "$("${PKG_BASE}/util/find.sh" "$deplib")"`
  		  if test -z "$libdir"; then
  		    $echo "$modename: \`$deplib' is not a valid libtool archive" 1>&2
  		    exit $EXIT_FAILURE
@@ -23,7 +23,7 @@
  	      *.la)
  		name=`$echo "X$deplib" | $Xsed -e 's%^.*/%%'`
 -		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
-+		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $PKG_ROOT$deplib`
++		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' "$("${PKG_BASE}/util/find.sh" "$deplib")"`
  		if test -z "$libdir"; then
  		  $echo "$modename: \`$deplib' is not a valid libtool archive" 1>&2
  		  exit $EXIT_FAILURE

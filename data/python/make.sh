@@ -7,13 +7,13 @@ cp -a python{,_}
 sleep 10
 pkg:patch
 autoconf
-SO=.dylib CXX=arm-apple-darwin-g++ pkg:configure --enable-shared --with-system-ffi --with-signal-module --disable-toolbox-glue
+SO=.dylib CXX=${PKG_TARG}-g++ pkg:configure --enable-shared --with-system-ffi --with-signal-module --disable-toolbox-glue
 make clean
 rm libpython2.5.a
 #make Include/graminit.h Python/graminit.c CC=gcc BASECFLAGS=
 #cp -a Parser/pgen pgen-host
 #make clean
-make python AR=arm-apple-darwin-ar
+make python AR=${PKG_TARG}-ar
 sleep 2
 touch python_
 make BUILDPYTHON=python_

@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 shopt -s extglob
-for package in data/!(*_); do
+for package in data/!(*_|cydia|ui*|iphone-python|llvm-gcc|mobileterminal|nethack); do
     PKG_NAME=$(basename "${package}")
-    ./package.sh "${PKG_NAME}"
+    echo "========== ${PKG_NAME} =========="
+    ./make.sh "${PKG_NAME}"
 done
-./construct.sh

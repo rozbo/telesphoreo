@@ -1,5 +1,5 @@
-tar -zxvf "${PKG_DATA}/tcpdump-3.9.8.tar.gz"
-cd tcpdump-3.9.8
-Xprefix="${PKG_ROOT}/usr" pkg:configure
+pkg:extract
+cd *
+Xprefix="$(PKG_DEST_ openssl)/usr" pkg:configure
 make
 pkg:install

@@ -4,8 +4,8 @@ cd *
 
 cd disklib
 rm -f mntopts.h getmntopts.c
-arm-apple-darwin-gcc -c *.c
-arm-apple-darwin-ar -r libdisk.a *.o
+${PKG_TARG}-gcc -c *.c
+${PKG_TARG}-ar -r libdisk.a *.o
 cd ..
 
 for tproj in !(fstyp|dev_mkdb|dump|fsck_hfs|fuser|mount_hfs|restore|quotacheck|ufs).tproj; do
@@ -21,15 +21,13 @@ for tproj in !(fstyp|dev_mkdb|dump|fsck_hfs|fuser|mount_hfs|restore|quotacheck|u
         extra="${extra} -framework CoreFoundation"
     fi
 
-    arm-apple-darwin-gcc -Idisklib -o "${tproj}" $(find "${tproj}.tproj" -name '*.c') disklib/libdisk.a -lutil ${extra}
-    arm-apple-darwin-strip "${tproj}"
+    ${PKG_TARG}-gcc -Idisklib -o "${tproj}" $(find "${tproj}.tproj" -name '*.c') disklib/libdisk.a -lutil ${extra}
 done
 
 cd fstyp.tproj
 for c in *.c; do
     bin=../$(basename "${c}" .c)
-    arm-apple-darwin-gcc -o "${bin}" "${c}"
-    arm-apple-darwin-strip "${bin}"
+    ${PKG_TARG}-gcc -o "${bin}" "${c}"
 done
 cd ..
 

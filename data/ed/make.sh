@@ -1,5 +1,5 @@
 pkg:extract
 cd *
 ./configure --prefix=/usr
-make CC=arm-apple-darwin-gcc
+make CC="${PKG_TARG}-gcc"
 pkg:install

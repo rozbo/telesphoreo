@@ -5,13 +5,14 @@ PKG_BASE=$(pwd)
 PKG_REPO=/dat/web/apt.saurik.com
 PKG_OVER=${PKG_REPO}/indices/override.tangelo.main.gz
 PKG_PKGS=${PKG_REPO}/dists/tangelo/main/binary-darwin-arm/Packages
+tag=arm-apple-darwin
 rm -rf link
 mkdir link
 for package in data/!(*_); do
     PKG_NAME=$(basename "${package}")
     PKG_DATA="${PKG_BASE}/data/${PKG_NAME}"
     echo "${PKG_NAME}" "$(cat "${PKG_DATA}/_metadata/priority")" "$(cat "${PKG_DATA}/_metadata/section")"
-    ln -s "../debs/${PKG_NAME}_$(cat "${PKG_DATA}/_metadata/version")-$(cat "${PKG_BASE}/stat/${PKG_NAME}/dest-ver")_darwin-arm.deb" link
+    ln -s "../debs/${PKG_NAME}_$(cat "${PKG_DATA}/_metadata/version")-$(cat "${PKG_BASE}/stat/${tag}/${PKG_NAME}/dest-ver")_darwin-arm.deb" link
 done | gzip -9c >"${PKG_OVER}"
 dpkg-scanpackages link <(zcat "${PKG_OVER}") | sed -e 's/: link\//: debs\//' >"${PKG_PKGS}"
 gzip -c "${PKG_PKGS}" >"${PKG_PKGS}.gz"

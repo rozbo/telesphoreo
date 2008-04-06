@@ -1,8 +1,7 @@
 pkg:extract
 cd *
 for tproj in finger fingerd last lsvfs md ps; do
-    arm-apple-darwin-gcc -o "${tproj}" "${tproj}.tproj"/*.c -D'__FBSDID(x)='
-    arm-apple-darwin-strip "${tproj}"
+    "${PKG_TARG}-gcc" -o "${tproj}" "${tproj}.tproj"/*.c -D'__FBSDID(x)='
 done
 pkg: mkdir -p /bin /usr/bin /usr/libexec
 pkg: cp -a ps /bin
