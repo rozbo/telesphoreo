@@ -13,7 +13,7 @@ diff -ru subversion-1.4.6/contrib/client-side/mucc.c subversion-1.4.6+iPhone/con
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -36,7 +36,7 @@ diff -ru subversion-1.4.6/subversion/svn/main.c subversion-1.4.6+iPhone/subversi
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -59,7 +59,7 @@ diff -ru subversion-1.4.6/subversion/svnadmin/main.c subversion-1.4.6+iPhone/sub
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -82,7 +82,7 @@ diff -ru subversion-1.4.6/subversion/svnlook/main.c subversion-1.4.6+iPhone/subv
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -105,7 +105,7 @@ diff -ru subversion-1.4.6/subversion/svnserve/main.c subversion-1.4.6+iPhone/sub
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -128,7 +128,7 @@ diff -ru subversion-1.4.6/subversion/svnsync/main.c subversion-1.4.6+iPhone/subv
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -151,7 +151,7 @@ diff -ru subversion-1.4.6/subversion/svnversion/main.c subversion-1.4.6+iPhone/s
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;

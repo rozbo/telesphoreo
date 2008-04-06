@@ -13,7 +13,7 @@ diff -rui inetutils-1.5/ftp/main.c inetutils-1.5+iPhone/ftp/main.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -36,7 +36,7 @@ diff -rui inetutils-1.5/ftpd/ftpd.c inetutils-1.5+iPhone/ftpd/ftpd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -59,7 +59,7 @@ diff -rui inetutils-1.5/gwhois/whois.c inetutils-1.5+iPhone/gwhois/whois.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -82,7 +82,7 @@ diff -rui inetutils-1.5/ifconfig/ifconfig.c inetutils-1.5+iPhone/ifconfig/ifconf
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -105,7 +105,7 @@ diff -rui inetutils-1.5/inetd/inetd.c inetutils-1.5+iPhone/inetd/inetd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -128,7 +128,7 @@ diff -rui inetutils-1.5/logger/logger.c inetutils-1.5+iPhone/logger/logger.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -151,7 +151,7 @@ diff -rui inetutils-1.5/ping/ping6.c inetutils-1.5+iPhone/ping/ping6.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -174,7 +174,7 @@ diff -rui inetutils-1.5/ping/ping.c inetutils-1.5+iPhone/ping/ping.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -197,7 +197,7 @@ diff -rui inetutils-1.5/rcp/rcp.c inetutils-1.5+iPhone/rcp/rcp.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -220,7 +220,7 @@ diff -rui inetutils-1.5/rexecd/rexecd.c inetutils-1.5+iPhone/rexecd/rexecd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -243,7 +243,7 @@ diff -rui inetutils-1.5/rlogin/rlogin.c inetutils-1.5+iPhone/rlogin/rlogin.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -266,7 +266,7 @@ diff -rui inetutils-1.5/rlogind/rlogind.c inetutils-1.5+iPhone/rlogind/rlogind.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -289,7 +289,7 @@ diff -rui inetutils-1.5/rsh/rsh.c inetutils-1.5+iPhone/rsh/rsh.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -312,7 +312,7 @@ diff -rui inetutils-1.5/rshd/rshd.c inetutils-1.5+iPhone/rshd/rshd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -335,7 +335,7 @@ diff -rui inetutils-1.5/syslogd/syslogd.c inetutils-1.5+iPhone/syslogd/syslogd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -358,7 +358,7 @@ diff -rui inetutils-1.5/talk/talk.c inetutils-1.5+iPhone/talk/talk.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -381,7 +381,7 @@ diff -rui inetutils-1.5/talkd/talkd.c inetutils-1.5+iPhone/talkd/talkd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -404,7 +404,7 @@ diff -rui inetutils-1.5/telnet/main.c inetutils-1.5+iPhone/telnet/main.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -427,7 +427,7 @@ diff -rui inetutils-1.5/telnetd/telnetd.c inetutils-1.5+iPhone/telnetd/telnetd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -450,7 +450,7 @@ diff -rui inetutils-1.5/tftp/main.c inetutils-1.5+iPhone/tftp/main.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -473,7 +473,7 @@ diff -rui inetutils-1.5/tftpd/tftpd.c inetutils-1.5+iPhone/tftpd/tftpd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
@@ -496,7 +496,7 @@ diff -rui inetutils-1.5/uucpd/uucpd.c inetutils-1.5+iPhone/uucpd/uucpd.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;

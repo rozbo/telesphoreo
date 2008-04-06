@@ -13,7 +13,7 @@ diff -ru jamvm-1.5.1/src/jam.c jamvm-1.5.1+iPhone/src/jam.c
  int main(int argc, char *argv[]) {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;

@@ -15,7 +15,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-cache.cc apt-0.6.46.4.1+iPhone/cmdline/apt-c
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -40,7 +40,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-cdrom.cc apt-0.6.46.4.1+iPhone/cmdline/apt-c
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -65,7 +65,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-config.cc apt-0.6.46.4.1+iPhone/cmdline/apt-
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -90,7 +90,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-extracttemplates.cc apt-0.6.46.4.1+iPhone/cm
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -115,7 +115,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-get.cc apt-0.6.46.4.1+iPhone/cmdline/apt-get
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -140,7 +140,7 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-sortpkgs.cc apt-0.6.46.4.1+iPhone/cmdline/ap
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -165,7 +165,7 @@ diff -ru apt-0.6.46.4.1/ftparchive/apt-ftparchive.cc apt-0.6.46.4.1+iPhone/ftpar
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -190,7 +190,7 @@ diff -ru apt-0.6.46.4.1/methods/cdrom.cc apt-0.6.46.4.1+iPhone/methods/cdrom.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -215,7 +215,7 @@ diff -ru apt-0.6.46.4.1/methods/copy.cc apt-0.6.46.4.1+iPhone/methods/copy.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -240,7 +240,7 @@ diff -ru apt-0.6.46.4.1/methods/file.cc apt-0.6.46.4.1+iPhone/methods/file.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -265,7 +265,7 @@ diff -ru apt-0.6.46.4.1/methods/ftp.cc apt-0.6.46.4.1+iPhone/methods/ftp.cc
  { 
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -290,7 +290,7 @@ diff -ru apt-0.6.46.4.1/methods/gpgv.cc apt-0.6.46.4.1+iPhone/methods/gpgv.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -315,7 +315,7 @@ diff -ru apt-0.6.46.4.1/methods/gzip.cc apt-0.6.46.4.1+iPhone/methods/gzip.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -340,7 +340,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -365,7 +365,7 @@ diff -ru apt-0.6.46.4.1/methods/rred.cc apt-0.6.46.4.1+iPhone/methods/rred.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
@@ -390,7 +390,7 @@ diff -ru apt-0.6.46.4.1/methods/rsh.cc apt-0.6.46.4.1+iPhone/methods/rsh.cc
  {
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
-+   nl[0].n_un.n_name = "_useMDNSResponder";
++   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;

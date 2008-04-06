@@ -13,7 +13,7 @@ diff -ru irssi-0.8.12/src/fe-none/irssi.c irssi-0.8.12+iPhone/src/fe-none/irssi.
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    if (nlist("/usr/lib/libc.dylib", nl) != -1 && nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
 +
@@ -35,7 +35,7 @@ diff -ru irssi-0.8.12/src/fe-text/irssi.c irssi-0.8.12+iPhone/src/fe-text/irssi.
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    if (nlist("/usr/lib/libc.dylib", nl) != -1 && nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
 +
