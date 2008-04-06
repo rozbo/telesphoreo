@@ -13,7 +13,7 @@ diff -ru curl-7.17.1/src/main.c curl-7.17.1+iPhone/src/main.c
  {
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
-+    nl[0].n_un.n_name = "_useMDNSResponder";
++    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
