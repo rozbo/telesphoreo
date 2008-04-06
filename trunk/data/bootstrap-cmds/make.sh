@@ -9,7 +9,7 @@ EOF
 cp -a i386 arm
 yacc -d parser.y -o parser.c
 lex lexxer.l
-arm-apple-darwin-gcc -o migcom *.c
+${PKG_TARG}-gcc -o migcom *.c
 pkg: mkdir -p /usr/bin /usr/libexec
 pkg: cp -a migcom /usr/libexec
 pkg: cp -a mig.sh /usr/bin/mig

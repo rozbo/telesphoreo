@@ -21,8 +21,8 @@ diff -ru libdict-0.9/src/Makefile libdict-0.9+iPhone/src/Makefile
  	rm -f libdict.a
 -	ar rc libdict.a *.o
 -	ranlib libdict.a
-+	arm-apple-darwin-ar rc libdict.a *.o
-+	arm-apple-darwin-ranlib libdict.a
++	$${PKG_TARG}-ar rc libdict.a *.o
++	$${PKG_TARG}-ranlib libdict.a
  clean: clean-example
  	rm -f *.o *.core core 
  superclean: clean

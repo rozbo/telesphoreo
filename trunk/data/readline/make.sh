@@ -1,6 +1,6 @@
-tar -zxvf "${PKG_DATA}/readline-5.2.tar.gz"
-cd readline-5.2
+pkg:extract
+cd *
 pkg:patch
-pkg:configure
+pkg:configure ac_cv_func_strcoll_works=yes bash_cv_func_sigsetjmp=present bash_cv_func_ctype_nonascii=no bash_cv_must_reinstall_sighandlers=no bash_cv_func_strcoll_broken=yes
 make
 pkg:install

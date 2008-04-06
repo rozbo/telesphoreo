@@ -73,6 +73,17 @@ for dep in "${PKG_DEPS[@]}"; do
     echo -n " $(basename "${dep}" .dep)"
 done
 
+if [[ -e ${PKG_DATA}/_metadata/depends ]]; then
+    if [[ ${comma+@} == @ ]]; then
+        echo -n ","
+    else
+        echo -n "Depends:"
+        comma=
+    fi
+
+    echo -n " $(cat "${PKG_DATA}/_metadata/depends")"
+fi
+
 if [[ ${comma+@} == @ ]]; then
     echo
 fi

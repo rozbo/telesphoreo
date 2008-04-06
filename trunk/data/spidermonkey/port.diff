@@ -1,22 +1,33 @@
 diff -ru js/src/config/Darwin.mk js+iPhone/src/config/Darwin.mk
 --- js/src/config/Darwin.mk	2007-02-05 16:24:49.000000000 +0000
-+++ js+iPhone/src/config/Darwin.mk	2007-12-31 21:06:50.000000000 +0000
-@@ -43,12 +43,12 @@
++++ js+iPhone/src/config/Darwin.mk	2008-04-05 05:47:23.000000000 +0000
+@@ -43,13 +43,13 @@
  # Just ripped from Linux config
  #
  
 -CC = cc
 -CCC = g++
-+CC = arm-apple-darwin-gcc
-+CCC = arm-apple-darwin-g++
++CC = $${PKG_TARG}-gcc
++CCC = $${PKG_TARG}-g++
  CFLAGS +=  -Wall -Wno-format
  OS_CFLAGS = -DXP_UNIX -DSVR4 -DSYSV -D_BSD_SOURCE -DPOSIX_SOURCE -DDARWIN
  
 -RANLIB = ranlib
-+RANLIB = arm-apple-darwin-ranlib
- MKSHLIB = $(CC) -dynamiclib $(XMKSHLIBOPTS) -framework System
+-MKSHLIB = $(CC) -dynamiclib $(XMKSHLIBOPTS) -framework System
++RANLIB = $${PKG_TARG}-ranlib
++MKSHLIB = $(CC) -dynamiclib $(XMKSHLIBOPTS)
  
  SO_SUFFIX = dylib
+ 
+@@ -63,7 +63,7 @@
+ endif
+ GFX_ARCH = x
+ 
+-OS_LIBS = -lc -framework System
++OS_LIBS = -lc
+ 
+ ASFLAGS += -x assembler-with-cpp
+ 
 @@ -81,3 +81,4 @@
  # Don't allow Makefile.ref to use libmath
  NO_LIBM = 1
@@ -73,15 +84,6 @@ diff -ru js/src/jsnum.c js+iPhone/src/jsnum.c
 diff -ru js/src/Makefile.ref js+iPhone/src/Makefile.ref
 --- js/src/Makefile.ref	2006-07-26 19:16:47.000000000 +0000
 +++ js+iPhone/src/Makefile.ref	2007-12-31 21:07:20.000000000 +0000
-@@ -82,7 +82,7 @@
- #
- # XCFLAGS may be set in the environment or on the gmake command line
- #
--CFLAGS          += $(OPTIMIZER) $(OS_CFLAGS) $(DEFINES) $(INCLUDES) $(XCFLAGS)
-+CFLAGS          += $(OPTIMIZER) $(OS_CFLAGS) $(DEFINES) $(INCLUDES) $(XCFLAGS) -O0
- 
- LDFLAGS		= $(XLDFLAGS)
- 
 @@ -320,10 +320,10 @@
  
  $(OBJDIR)/jskwgen.o: jskwgen.c jskeyword.tbl

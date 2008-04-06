@@ -118,7 +118,7 @@ Index: pyobjc/pyobjc-core/Modules/objc/objc-runtime-compat.h
  #define objc_superGetReceiver(super) ((super).receiver)
  
 -#ifdef __OBJC2__
-+#ifdef __cplusplus
++#if defined(__OBJC2__) || defined(__cplusplus)
  
  #define objc_superSetClass(super, cls) (super).super_class = (cls)
  #define objc_superGetClass(super) ((super).super_class)

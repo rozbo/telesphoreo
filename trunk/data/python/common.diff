@@ -6,7 +6,7 @@ diff -r -u Python-2.5.1/configure.in Python-2.5.1+iPhone/configure.in
  	# is there any other compiler on Darwin besides gcc?
  	Darwin*)
 -	    BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -mno-fused-madd"
-+	    BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -mno-fused-madd -fno-common"
++	    BASECFLAGS="$BASECFLAGS -no-cpp-precomp -fno-common"
  	    if test "${enable_universalsdk}"; then
  		BASECFLAGS="-arch ppc -arch i386 -isysroot ${UNIVERSALSDK} ${BASECFLAGS}"
  	    fi

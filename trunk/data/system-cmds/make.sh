@@ -9,11 +9,8 @@ for gperf in *.gperf; do
 done
 cd ..
 
-arm-apple-darwin-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
-arm-apple-darwin-strip passwd
-
-arm-apple-darwin-gcc -o dmesg dmesg.tproj/*.c -I.
-arm-apple-darwin-strip dmesg
+${PKG_TARG}-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
+${PKG_TARG}-gcc -o dmesg dmesg.tproj/*.c -I.
 
 cp -va "${PKG_DATA}"/kextmanager* .
 # XXX: shutdown
@@ -25,8 +22,7 @@ for tproj in getconf getty hostinfo iostat login nvram reboot sync sysctl vipw z
     ;; esac
 
     echo "${tproj}"
-    arm-apple-darwin-gcc -o "${tproj}" "${tproj}.tproj"/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit kextmanagerUser.c ${cflags}
-    arm-apple-darwin-strip "${tproj}"
+    ${PKG_TARG}-gcc -o "${tproj}" "${tproj}.tproj"/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit kextmanagerUser.c ${cflags}
 done
 
 chmod u+s passwd login

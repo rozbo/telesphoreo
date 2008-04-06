@@ -1,5 +1,5 @@
-tar -zxvf "${PKG_DATA}/top-37.tar.gz"
-cd top-37
+pkg:extract
+cd *
 pkg:patch
-make CC=arm-apple-darwin-gcc AR=arm-apple-darwin-ar RANLIB=arm-apple-darwin-ranlib
-make install STRIP=arm-apple-darwin-strip DSTROOT="${PKG_DEST}"
+make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" RANLIB="${PKG_TARG}-ranlib"
+make install STRIP="${PKG_TARG}-strip" DSTROOT="${PKG_DEST}"

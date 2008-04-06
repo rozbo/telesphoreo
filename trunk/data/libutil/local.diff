@@ -1,0 +1,39 @@
+diff -ru libutil-11/Makefile libutil-11+iPhone/Makefile
+--- libutil-11/Makefile	2007-02-28 03:34:30.000000000 +0000
++++ libutil-11+iPhone/Makefile	2008-03-24 10:13:50.000000000 +0000
+@@ -50,8 +50,8 @@
+ 	done
+ 
+ installhdrs :
+-	$(INSTALL) -d $(DSTROOT)/usr/local/include
+-	$(INSTALL) -m 0644 $(HDRS) $(DSTROOT)/usr/local/include
++	$(INSTALL) -d $(DSTROOT)/usr/include
++	$(INSTALL) -m 0644 $(HDRS) $(DSTROOT)/usr/include
+ 
+ 
+ install : installhdrs installlib strip installman install-plist
+@@ -74,10 +74,10 @@
+ 	$(LN) -fs libutil1.0.dylib $(DSTROOT)/usr/lib/libutil.dylib
+ 
+ installman :
+-	$(INSTALL) -d $(DSTROOT)/usr/local/share/man/man3
++	$(INSTALL) -d $(DSTROOT)/usr/share/man/man3
+ 	@for i in $(MAN3); do\
+-		echo "$(INSTALL) -m 0444 $(SRCROOT)/$$i $(DSTROOT)/usr/local/share/man/man3/"; \
+-		$(INSTALL) -m 0444 $(SRCROOT)/$$i $(DSTROOT)/usr/local/share/man/man3; \
++		echo "$(INSTALL) -m 0444 $(SRCROOT)/$$i $(DSTROOT)/usr/share/man/man3/"; \
++		$(INSTALL) -m 0444 $(SRCROOT)/$$i $(DSTROOT)/usr/share/man/man3; \
+ 	done
+ 
+ $(OBJROOT)/%.o : $(SRCROOT)/%.c \
+@@ -87,8 +87,8 @@
+ $(SYMROOT)/$(LIB) : $(patsubst %.c,$(OBJROOT)/%.o,$(SRCS))
+ 	$(CC) -dynamiclib $(LDFLAGS) -o $@ $?
+ 
+-OSV	= $(DSTROOT)/usr/local/OpenSourceVersions
+-OSL	= $(DSTROOT)/usr/local/OpenSourceLicenses
++OSV	= $(DSTROOT)/usr/OpenSourceVersions
++OSL	= $(DSTROOT)/usr/OpenSourceLicenses
+ 
+ install-plist:
+ 	$(MKDIR) $(OSV)

@@ -1,7 +1,8 @@
-tar -zxvf "${PKG_DATA}/srelay-0.4.6.tar.gz"
-cd srelay-0.4.6
+pkg:extract
+cd *
 pkg:patch
 autoconf
 pkg:configure
 make
-pkg:usrbin srelay
+pkg: mkdir -p /usr/bin
+pkg: cp -a srelay /usr/bin

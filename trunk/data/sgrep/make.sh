@@ -1,5 +1,5 @@
 pkg:extract
 cd *
 pkg:configure
-make
+make CC="${PKG_TARG}"-gcc
 pkg:install

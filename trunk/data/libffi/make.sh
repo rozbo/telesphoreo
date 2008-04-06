@@ -4,9 +4,8 @@ pkg:patch
 cd ../..
 mkdir build
 cd build
-PKG_CONF=../gcc/libffi/configure
-pkg:configure --with-sysroot="${PKG_ROOT}"
+PKG_CONF=../gcc/libffi/configure pkg:configure --with-sysroot="${PKG_ROOT}"
 make
 pkg:install
-pkg: mv /usr/lib/gcc/arm-apple-darwin/include /usr/
+mv "${PKG_DEST}"/usr/lib/gcc/*/include "${PKG_DEST}"/usr
 pkg: rm -rfv /usr/lib/gcc

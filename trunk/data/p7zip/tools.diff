@@ -7,8 +7,8 @@ diff -ru p7zip_4.57/makefile.macosx p7zip_4.57+iPhone/makefile.macosx
  
 -CXX=c++ $(ALLFLAGS)
 -CC=cc $(ALLFLAGS)
-+CXX=arm-apple-darwin-c++ $(ALLFLAGS)
-+CC=arm-apple-darwin-gcc $(ALLFLAGS)
++CXX=$${PKG_TARG}-g++ $(ALLFLAGS)
++CC=$${PKG_TARG}-gcc $(ALLFLAGS)
  LINK_SHARED=-bundle
  
  LOCAL_LIBS=
