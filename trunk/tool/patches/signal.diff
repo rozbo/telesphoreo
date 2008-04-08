@@ -1,5 +1,5 @@
---- /home/saurik/iphone/aspen-dev/SDKs/Aspen1.2.sdk/usr/include/arm/signal.h	2008-02-27 05:37:19.000000000 +0000
-+++ /home/dat/apl/inc/arm/signal.h	2008-03-24 09:51:14.000000000 +0000
+--- /usr/include/arm/signal.h	2008-02-27 05:37:19.000000000 +0000
++++ /usr/include/arm/signal.h	2008-03-24 09:51:14.000000000 +0000
 @@ -13,6 +13,8 @@
  
  #ifndef _ANSI_SOURCE

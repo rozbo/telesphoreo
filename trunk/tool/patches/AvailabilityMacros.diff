@@ -1,5 +1,5 @@
---- /home/saurik/iphone/aspen-dev/SDKs/Aspen1.2.sdk/usr/include/AvailabilityMacros.h	2008-02-27 06:49:24.000000000 +0000
-+++ /apl/inc/AvailabilityMacros.h	2008-03-28 14:10:13.000000000 +0000
+--- /usr/include/AvailabilityMacros.h	2008-02-27 06:49:24.000000000 +0000
++++ /usr/include/AvailabilityMacros.h	2008-03-28 14:10:13.000000000 +0000
 @@ -84,7 +84,13 @@
      #ifdef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
          #define MAC_OS_X_VERSION_MIN_REQUIRED __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
