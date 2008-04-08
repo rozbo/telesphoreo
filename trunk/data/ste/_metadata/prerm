@@ -1,6 +1,6 @@
 #!/bin/sh
 case "$1" in
     (remove|purge)
-        /usr/bin/apt-key del 16BA136C
+        /usr/bin/apt-key del 78A6D152
     ;;
 esac
