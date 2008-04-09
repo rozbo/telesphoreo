@@ -1,7 +1,6 @@
-Only in mobileterminal+iPhone: ColorMap.o
-diff -ru mobileterminal/GestureView.m mobileterminal+iPhone/GestureView.m
---- mobileterminal/GestureView.m	2007-10-08 05:00:47.000000000 +0000
-+++ mobileterminal+iPhone/GestureView.m	2008-02-23 08:58:30.000000000 +0000
+diff -ru mobileterminal-273/GestureView.m mobileterminal-273+iPhone/GestureView.m
+--- mobileterminal-273/GestureView.m	2007-10-08 05:00:47.000000000 +0000
++++ mobileterminal-273+iPhone/GestureView.m	2008-04-09 12:02:22.000000000 +0000
 @@ -19,7 +19,7 @@
  - (void)mouseDown:(GSEvent *)event
  {
@@ -20,15 +19,3 @@ diff -ru mobileterminal/GestureView.m mobileterminal+iPhone/GestureView.m
    CGPoint vector = CGPointMake(end.x - start.x, end.y - start.y);
  
    float absx = (vector.x > 0) ? vector.x : -vector.x;
-Only in mobileterminal+iPhone: GestureView.o
-Only in mobileterminal+iPhone: main.o
-Only in mobileterminal+iPhone: MobileTerminal.o
-Only in mobileterminal+iPhone: PieView.o
-Only in mobileterminal+iPhone: PTYTextView.o
-Only in mobileterminal+iPhone: PTYTile.o
-Only in mobileterminal+iPhone: Settings.o
-Only in mobileterminal+iPhone: ShellKeyboard.o
-Only in mobileterminal+iPhone: SubProcess.o
-Only in mobileterminal+iPhone: Terminal
-Only in mobileterminal+iPhone: VT100Screen.o
-Only in mobileterminal+iPhone: VT100Terminal.o

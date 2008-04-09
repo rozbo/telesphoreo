@@ -1,0 +1,31 @@
+diff -ru mobileterminal-273/ColorMap.m mobileterminal-273+iPhone/ColorMap.m
+--- mobileterminal-273/ColorMap.m	2007-10-01 08:23:11.000000000 +0000
++++ mobileterminal-273+iPhone/ColorMap.m	2008-04-09 11:57:06.000000000 +0000
+@@ -144,7 +144,7 @@
+ 
+ - (CGColorRef)colorForCode:(unsigned int) index
+ {
+-  CGColorRef color;
++  CGColorRef color = NULL;
+ 
+   if (index & DEFAULT_FG_COLOR_CODE) {  // special colors?
+     switch (index) {
+diff -ru mobileterminal-273/ShellKeyboard.m mobileterminal-273+iPhone/ShellKeyboard.m
+--- mobileterminal-273/ShellKeyboard.m	2007-10-01 08:23:11.000000000 +0000
++++ mobileterminal-273+iPhone/ShellKeyboard.m	2008-04-09 11:52:43.000000000 +0000
+@@ -37,6 +37,7 @@
+ - (BOOL)webView:(id)fp8 shouldDeleteDOMRange:(id)fp12
+ {
+   [shellKeyboard handleKeyPress:0x08];
++  return YES;
+ }
+ 
+ - (BOOL)webView:(id)fp8 shouldInsertText:(id)character
+@@ -48,6 +49,7 @@
+     return false;
+   }
+   [shellKeyboard handleKeyPress:[character characterAtIndex:0]];
++  return YES;
+ }
+ 
+ @end
