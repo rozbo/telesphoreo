@@ -1,0 +1,12 @@
+diff -ru mobileterminal-273/GestureView.m mobileterminal-273+iPhone/GestureView.m
+--- mobileterminal-273/GestureView.m	2007-10-08 05:00:47.000000000 +0000
++++ mobileterminal-273+iPhone/GestureView.m	2008-04-09 12:02:22.000000000 +0000
+@@ -95,7 +95,7 @@
+   return NO;
+ }
+ 
+-- (void)drawRect: (CGRect *)rect
++- (void)drawRect: (CGRect)rect
+ {
+ }
+ 

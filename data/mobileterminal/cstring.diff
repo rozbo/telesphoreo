@@ -1,0 +1,52 @@
+diff -ru mobileterminal-273/MobileTerminal.m mobileterminal-273+iPhone/MobileTerminal.m
+--- mobileterminal-273/MobileTerminal.m	2008-03-29 02:42:18.000000000 +0000
++++ mobileterminal-273+iPhone/MobileTerminal.m	2008-04-09 11:50:57.000000000 +0000
+@@ -174,7 +174,7 @@
+ 
+ - (void)handleInputFromMenu:(NSString*)input
+ {
+-  [process write:[input cString] length:[input length]];
++  [process write:[input UTF8String] length:[input length]];
+ }
+ 
+ - (void)toggleKeyboard
+diff -ru mobileterminal-273/PTYTextView.m mobileterminal-273+iPhone/PTYTextView.m
+--- mobileterminal-273/PTYTextView.m	2007-10-01 08:23:11.000000000 +0000
++++ mobileterminal-273+iPhone/PTYTextView.m	2008-04-09 11:59:25.000000000 +0000
+@@ -179,7 +179,7 @@
+ 
+ - (void)setupTextForContext:(CGContextRef)context
+ {
+-  const char* font = [[[Settings sharedInstance] font] cString];
++  const char* font = [[[Settings sharedInstance] font] UTF8String];
+ 
+   if(!fontRef) {
+     // First time through: cache the fontRef. This lookup is expensive.
+diff -ru mobileterminal-273/SubProcess.m mobileterminal-273+iPhone/SubProcess.m
+--- mobileterminal-273/SubProcess.m	2008-02-06 14:40:02.000000000 +0000
++++ mobileterminal-273+iPhone/SubProcess.m	2008-04-09 11:55:42.000000000 +0000
+@@ -134,7 +134,7 @@
+ - (void)failure:(NSString*)message;
+ {
+   // HACK: Just pretend the message came from the child
+-  [delegate handleStreamOutput:[message cString] length:[message length]];
++  [delegate handleStreamOutput:[message UTF8String] length:[message length]];
+ }
+ 
+ - (void)setWidth:(int)width height:(int)height
+diff -ru mobileterminal-273/VT100Terminal.m mobileterminal-273+iPhone/VT100Terminal.m
+--- mobileterminal-273/VT100Terminal.m	2007-10-01 08:23:11.000000000 +0000
++++ mobileterminal-273+iPhone/VT100Terminal.m	2008-04-09 11:55:55.000000000 +0000
+@@ -1226,10 +1226,10 @@
+ 
+   int i;
+   int r;
+-  setupterm((char *)[termtype cString], fileno(stdout), &r);
++  setupterm((char *)[termtype UTF8String], fileno(stdout), &r);
+ 
+   if (r!=1) {
+-    NSLog(@"Terminal type %s is not defined.\n",[termtype cString]);
++    NSLog(@"Terminal type %s is not defined.\n",[termtype UTF8String]);
+     for(i = 0; i < TERMINFO_KEYS; i ++) {
+       if (key_strings[i]) free(key_strings[i]);
+       key_strings[i]=NULL;

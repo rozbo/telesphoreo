@@ -1,0 +1,36 @@
+diff -ru mobileterminal-273/MobileTerminal.h mobileterminal-273+iPhone/MobileTerminal.h
+--- mobileterminal-273/MobileTerminal.h	2007-10-08 05:00:47.000000000 +0000
++++ mobileterminal-273+iPhone/MobileTerminal.h	2008-04-09 11:50:48.000000000 +0000
+@@ -1,5 +1,6 @@
+ // MobileTermina.h
+ #import <UIKit/UIKit.h>
++#import <Foundation/Foundation.h>
+ #import <GraphicsServices/GraphicsServices.h>
+ 
+ @class PTYTextView;
+diff -ru mobileterminal-273/PieView.m mobileterminal-273+iPhone/PieView.m
+--- mobileterminal-273/PieView.m	2007-10-08 05:00:47.000000000 +0000
++++ mobileterminal-273+iPhone/PieView.m	2008-04-09 12:06:49.000000000 +0000
+@@ -1,3 +1,4 @@
++#import <Foundation/Foundation.h>
+ #import "PieView.h"
+ 
+ @implementation PieView
+diff -ru mobileterminal-273/PTYTextView.h mobileterminal-273+iPhone/PTYTextView.h
+--- mobileterminal-273/PTYTextView.h	2007-10-01 08:23:11.000000000 +0000
++++ mobileterminal-273+iPhone/PTYTextView.h	2008-04-09 11:55:17.000000000 +0000
+@@ -1,4 +1,5 @@
+ // PTYTextView.h
++#import <CoreGraphics/CoreGraphics.h>
+ #import <UIKit/UIKit.h>
+ #import <UIKit/UITiledView.h>
+ 
+diff -ru mobileterminal-273/ShellKeyboard.h mobileterminal-273+iPhone/ShellKeyboard.h
+--- mobileterminal-273/ShellKeyboard.h	2007-10-08 05:00:47.000000000 +0000
++++ mobileterminal-273+iPhone/ShellKeyboard.h	2008-04-09 11:51:26.000000000 +0000
+@@ -1,4 +1,5 @@
+ // ShellKeyboard.h
++#import <Foundation/Foundation.h>
+ #import <UIKit/UIKit.h>
+ #import <UIKit/UITextView.h>
+ 
