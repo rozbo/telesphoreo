@@ -17,9 +17,9 @@ if [[ ! -x ${PKG_BASE}/util/ldid || ${PKG_BASE}/util/ldid -ot ${PKG_BASE}/util/l
     g++ -I ~/menes -o "${PKG_BASE}"/util/ldid{,.cpp} -x c "${PKG_BASE}"/util/lookup2.c
 fi
 
-#for DEP_NAME in "${PKG_DEPS[@]}"; do
-#    "${PKG_MAKE}" "${DEP_NAME}"
-#done
+for DEP_NAME in "${PKG_DEPS[@]}"; do
+    "${PKG_MAKE}" "${DEP_NAME}"
+done
 
 export PKG_HASH=$({
     "${PKG_BASE}"/util/catdir.sh -L "${PKG_DATA}" \( -name '.svn' -o -name '_*' \) -prune -o
@@ -89,6 +89,7 @@ function pkg:configure() {
 
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
     "${PKG_CONF}" \
+        --build=x86_64-unknown-linux-gnu \
         --host="${PKG_TARG}" \
         --enable-static=no \
         --enable-shared=yes \
