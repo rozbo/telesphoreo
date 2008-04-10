@@ -26,6 +26,7 @@ static PyObject*  objc_UIApplicationMain(
     _assert(PyObjC_API != NULL);
     _assert(args != NULL);
 
+    /* XXX: correctly parse __OBJC2__ condition */
     if (!PyArg_ParseTuple(args, "OO", &arga, &_class)) {
 	PyErr_SetString(PyExc_TypeError, "Invalid Arguments");
         return NULL;
@@ -62,7 +63,11 @@ static PyObject*  objc_UIApplicationMain(
     }
 
     PyObjC_DURING
+#ifdef __OBJC2__
+        res = UIApplicationMain(argc, argv, nil, [NSString stringWithUTF8String:class_getName(PyObjC_API->cls_get_class(_class))]);
+#else
         res = UIApplicationMain(argc, argv, PyObjC_API->cls_get_class(_class));
+#endif
     PyObjC_HANDLER
         PyObjCErr_FromObjC(localException);
     PyObjC_ENDHANDLER
@@ -81,7 +86,11 @@ static PyMethodDef mod_methods[] = {{
     "UIApplicationMain",
     /*(PyCFunction)*/ objc_UIApplicationMain,
     METH_VARARGS|METH_KEYWORDS,
-    "int UIApplicationMain(int argc, const char *argv[], Class _class);"
+#ifdef __OBJC2__
+    "int UIApplicationMain(int argc, char *argv[], NSString *principalClassName, NSString *delegateClassName);"
+#else
+    "int UIApplicationMain(int argc, char *argv[], Class _class);"
+#endif
 }, {
     NULL, NULL, 0, NULL
 }};
