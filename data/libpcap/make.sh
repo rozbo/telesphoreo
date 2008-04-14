@@ -1,5 +1,4 @@
-tar -zxvf "${PKG_DATA}/libpcap-0.9.8.tar.gz"
-cd libpcap-0.9.8
+pkg:setup
 pkg:configure --with-pcap=bpf
 make
 mkdir -p "${PKG_DEST}/usr/lib"

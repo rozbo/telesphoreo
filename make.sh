@@ -22,7 +22,7 @@ for DEP_NAME in "${PKG_DEPS[@]}"; do
 done
 
 export PKG_HASH=$({
-    "${PKG_BASE}"/util/catdir.sh -L "${PKG_DATA}" \( -name '.svn' -o -name '_*' \) -prune -o
+    "${PKG_BASE}"/util/catdir.sh "${PKG_DATA}" -L \( -name '.svn' -o -name '_*' \) -prune -o
 
     for DEP_NAME in "${PKG_DEPS[@]}"; do
         "${PKG_BASE}"/util/catdir.sh "$(PKG_DEST_ "${DEP_NAME}")"
@@ -46,6 +46,9 @@ rm -rf "${PKG_WORK}"
 mkdir -p "${PKG_WORK}"
 
 function pkg:patch() {
+    pkg:libtool_ libtool
+    pkg:libtool_ ltmain.sh
+
     for diff in "${PKG_DATA}"/*.diff; do
         patch -p1 <"${diff}"
     done
@@ -82,11 +85,23 @@ export -f pkg:autoconf
 
 export PKG_CONF=./configure
 
-function pkg:configure() {
-    for ltmain in $(find -name ltmain.sh); do
+function pkg:libtool_() {
+    for ltmain in $(find -name "$1"); do
         patch -r/dev/null "${ltmain}" "${PKG_BASE}/util/libtool.diff" || true
     done
+}
 
+export -f pkg:libtool_
+
+function pkg:setup() {
+    pkg:extract
+    cd *
+    pkg:patch
+}
+
+export -f pkg:setup
+
+function pkg:configure() {
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
     "${PKG_CONF}" \
         --build=x86_64-unknown-linux-gnu \
@@ -108,7 +123,7 @@ export -f pkg:install
 
 function pkg:extract() {
     for tgz in "${PKG_DATA}"/{*.tar.gz,*.tgz}; do
-        tar -zxvf "${tgz}"
+        tar -zxf "${tgz}"
     done
 
     for zip in "${PKG_DATA}"/*.zip; do
@@ -116,7 +131,7 @@ function pkg:extract() {
     done
 
     for tbz2 in "${PKG_DATA}"/*.tar.bz2; do
-        tar -jxvf "${tbz2}"
+        tar -jxf "${tbz2}"
     done
 }
 

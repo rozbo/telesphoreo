@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 pkg:configure ac_cv_func_strcoll_works=yes bash_cv_func_sigsetjmp=present bash_cv_func_ctype_nonascii=no bash_cv_must_reinstall_sighandlers=no bash_cv_func_strcoll_broken=yes
 make
 pkg:install

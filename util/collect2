@@ -37,10 +37,16 @@ if [[ "${darwin+@}" ]]; then
     flags[${#flags[@]}]=-no_uuid
 
     if [[ "${PKG_PATH+@}" ]]; then
-        flags=("${flags[@]}"$(echo "${PKG_PATH}:" | while read -r -d ':' path; do
+        flags=("${flags[@]}"$({
+            echo "${PKG_PATH}" | tr ':' $'\n'
+
+            for DEP_NAME in libgcc sqlite3; do
+                echo "$(PKG_DEST_ "${DEP_NAME}")"
+            done
+        } | while read -r path; do
             find "${path}" -name '*.dylib' -print0 | while read -r -d $'\0' dylib_file; do
                 dylib_name=${dylib_file#${path}}
-                echo " -dylib_file ${dylib_name}:${dylib_file}"
+                echo -n " -dylib_file ${dylib_name}:${dylib_file}"
             done
         done))
     fi

@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 pkg:configure --with-screen=ncurses --with-ssl
 make
 pkg:install

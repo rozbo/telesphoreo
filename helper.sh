@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PKG_TARG=arm-apple-darwin
+source "${PKG_BASE}/architect.sh"
 
 export PKG_ROOT=$("${PKG_TARG}-gcc" -dumpspecs | grep '%{isysroot' | sed -e 's/.*%{isysroot\*:\([^}]*\)}.*/\1/; s/;:/\n/g' | sed -e 's/^-syslibroot //' | tail -n 1)
 export PKG_PFIX=$("${PKG_TARG}-gcc" -v 2>&1 | grep -- --prefix | sed -e 's/.*--prefix=\([^ ]*\).*/\1/')
@@ -11,7 +11,7 @@ export PKG_DATA=$(PKG_DATA_ "${PKG_NAME}")
 export PKG_WORK=$(PKG_WORK_ "${PKG_NAME}")
 export PKG_DEST=$(PKG_DEST_ "${PKG_NAME}")
 
-export PKG_STAT=${PKG_BASE}/stat/${PKG_TARG}/${PKG_NAME}
+export PKG_STAT=${PKG_BASE}/stat/${PKG_ARCH}/${PKG_NAME}
 export PKG_DATA=$(echo "${PKG_BASE}"/data/"${PKG_NAME}"?(_))
 export PKG_VRSN=$(cat "${PKG_DATA}/_metadata/version")
 export PKG_PRIO=$(cat "${PKG_DATA}/_metadata/priority")

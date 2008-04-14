@@ -7,13 +7,13 @@ function PKG_DATA_() {
 export -f PKG_DATA_
 
 function PKG_WORK_() {
-    echo "${PKG_BASE}/work/${PKG_TARG}/$1"
+    echo "${PKG_BASE}/work/${PKG_ARCH}/$1"
 }
 
 export -f PKG_WORK_
 
 function PKG_DEST_() {
-    echo "${PKG_BASE}/dest/${PKG_TARG}/$1"
+    echo "${PKG_BASE}/dest/${PKG_ARCH}/$1"
 }
 
 export -f PKG_DEST_

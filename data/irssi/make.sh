@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 pkg:autoconf
 pkg:configure --enable-static
 make

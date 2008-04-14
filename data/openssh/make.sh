@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 autoconf
 pkg:configure --disable-strip --sysconfdir=/etc/ssh
 make

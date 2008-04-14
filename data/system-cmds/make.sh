@@ -1,7 +1,5 @@
 shopt -s extglob
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 
 cd getconf.tproj
 for gperf in *.gperf; do

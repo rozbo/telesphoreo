@@ -34,7 +34,7 @@ EOF
 
 if [[ $1 == status || $1 == available ]]; then
     cat <<EOF
-Installed-Size: $(dpkg -f "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_darwin-arm.deb" Installed-Size)
+Installed-Size: $(dpkg -f "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" Installed-Size)
 EOF
 elif [[ $1 == control ]]; then
     cat <<EOF
@@ -44,7 +44,7 @@ fi
 
 cat <<EOF
 Maintainer: $(cat "${PKG_DATA}/_metadata/maintainer")
-Architecture: darwin-arm
+Architecture: ${PKG_ARCH}
 EOF
 
 echo -n "Version: ${PKG_VRSN}"

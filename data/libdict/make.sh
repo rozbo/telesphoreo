@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 cd src
 make CC=${PKG_TARG}-gcc CXX=${PKG_TARG}-g++
 pkg: mkdir -p /usr/lib /usr/include

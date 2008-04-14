@@ -7,16 +7,18 @@ diff -ru curl-7.17.1/src/main.c curl-7.17.1+iPhone/src/main.c
  /***************************************************************************
   *                                  _   _ ____  _
   *  Project                     ___| | | |  _ \| |
-@@ -4712,6 +4714,13 @@
+@@ -4712,6 +4714,15 @@
  
  int main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int res;
    struct Configurable config;

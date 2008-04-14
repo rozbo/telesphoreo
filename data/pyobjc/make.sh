@@ -1,8 +1,6 @@
 shopt -s extglob
 
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 cd pyobjc-core
 
 $("${PKG_TARG}-gcc" -print-prog-name=cc1obj) -print-objc-runtime-info <(echo) >Modules/objc/objc-runtime-info.h

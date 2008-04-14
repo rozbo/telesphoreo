@@ -1,6 +1,5 @@
 shopt -s extglob
-pkg:extract
-cd *
+pkg:setup
 
 cd disklib
 rm -f mntopts.h getmntopts.c

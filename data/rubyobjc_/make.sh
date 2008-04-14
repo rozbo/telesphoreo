@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 pkg: cp -a %/UIKit.xml bridged
 cd objc
 for bridge in foundation uikit; do

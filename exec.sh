@@ -15,7 +15,9 @@ PKG_INCL=
 PKG_LIBS=
 PKG_PKGS=
 
-for dep in $(find -L "${PKG_DATA}"/_metadata -name '*.dep' | cut -d '/' -f - | sort -u); do
+for dep in $({
+    find -L "${PKG_DATA}"/_metadata -name '*.dep' | cut -d '/' -f -
+} | sort -u); do
     DEP_NAME=$(basename "${dep}" .dep)
     DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
     PKG_PATH=${PKG_PATH}:${DEP_DEST}
@@ -47,5 +49,6 @@ CPLUS_INCLUDE_PATH= \
 GCC_EXEC_PREFIX=${PKG_PFIX}/lib/gcc \
 LD_LIBRARY_PATH=${PKG_LIBS} \
 LIBRARY_PATH=${PKG_LIBS} \
+MIGCC=${PKG_TARG}-gcc \
 PKG_CONFIG_PATH=${PKG_PKGS} \
     "$@"

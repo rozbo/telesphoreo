@@ -1,22 +1,23 @@
 diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 --- apt-0.6.46.4.1/methods/http.cc	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-04-06 10:00:37.000000000 +0000
-@@ -44,6 +48,10 @@
++++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-04-13 05:59:17.000000000 +0000
+@@ -43,6 +47,11 @@
+ 
  // Internet stuff
  #include <netdb.h>
- 
++#include <arpa/inet.h>
++
 +#include <CoreFoundation/CoreFoundation.h>
 +#include <CoreServices/CoreServices.h>
 +#include <SystemConfiguration/SystemConfiguration.h>
-+
+ 
  #include "connect.h"
  #include "rfc2553emu.h"
- #include "http.h"
-@@ -51,6 +59,47 @@
+@@ -51,6 +60,47 @@
  									/*}}}*/
  using namespace std;
  
-+void CfrsError(CFReadStreamRef rs) {
++void CfrsError(const char *name, CFReadStreamRef rs) {
 +    CFStreamError se = CFReadStreamGetError(rs);
 +
 +    if (se.domain == kCFStreamErrorDomainCustom) {
@@ -25,7 +26,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +    } else if (se.domain == kCFStreamErrorDomainMacOSStatus) {
 +        _error->Error("MacOSStatus: %ld", se.error);
 +    } else if (se.domain == kCFStreamErrorDomainNetDB) {
-+        _error->Error("NetDB: %s", gai_strerror(se.error));
++        _error->Error("NetDB: %s %s", name, gai_strerror(se.error));
 +    } else if (se.domain == kCFStreamErrorDomainMach) {
 +        _error->Error("Mach: %ld", se.error);
 +    } else if (se.domain == kCFStreamErrorDomainHTTP) {
@@ -60,7 +61,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1111,234 @@
+@@ -1062,159 +1112,251 @@
  
        if (Queue == 0)
  	 continue;
@@ -70,7 +71,20 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -      {
 -	 delete Server;
 -	 Server = new ServerState(Queue->Uri,this);
--      }
++
++      CFStringEncoding se = kCFStringEncodingUTF8;
++
++      char *url = strdup(Queue->Uri.c_str());
++    url:
++      URI uri = Queue->Uri;
++      std::string hs = uri.Host;
++
++      struct hostent *he = gethostbyname(hs.c_str());
++      if (he == NULL || he->h_addr_list[0] == NULL) {
++         _error->Error(hstrerror(h_errno));
++         Fail(true);
++         free(url);
+       }
 -      
 -      /* If the server has explicitly said this is the last connection
 -         then we pre-emptively shut down the pipeline and tear down 
@@ -91,7 +105,31 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -	 delete Server;
 -	 Server = 0;
 -	 continue;
--      }
++
++      uri.Host = inet_ntoa(* (struct in_addr *) he->h_addr_list[0]);
++
++      std::string urs = uri;
++
++      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, urs.c_str(), se);
++      CFURLRef ur = CFURLCreateWithString(kCFAllocatorDefault, sr, NULL);
++      CFRelease(sr);
++      CFHTTPMessageRef hm = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("GET"), ur, kCFHTTPVersion1_1);
++      CFRelease(ur);
++
++      struct stat SBuf;
++      if (stat(Queue->DestFile.c_str(), &SBuf) >= 0 && SBuf.st_size > 0) {
++         sr = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("bytes=%li-"), (long) SBuf.st_size - 1);
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Range"), sr);
++         CFRelease(sr);
++
++         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Range"), sr);
++         CFRelease(sr);
++      } else if (Queue->LastModified != 0) {
++         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Modified-Since"), sr);
++         CFRelease(sr);
+       }
  
 -      // Fill the pipeline.
 -      Fetch(0);
@@ -130,32 +168,12 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 -	    continue;
 -	 }
 -      };
-+      CFStringEncoding se = kCFStringEncodingUTF8;
-+
-+      char *url = strdup(Queue->Uri.c_str());
-+    url:
-+      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, url, se);
-+      CFURLRef ur = CFURLCreateWithString(kCFAllocatorDefault, sr, NULL);
-+      CFRelease(sr);
-+      CFHTTPMessageRef hm = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("GET"), ur, kCFHTTPVersion1_1);
-+      CFRelease(ur);
-+
-+      struct stat SBuf;
-+      if (stat(Queue->DestFile.c_str(), &SBuf) >= 0 && SBuf.st_size > 0) {
-+         sr = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("bytes=%li-"), (long) SBuf.st_size - 1);
-+         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Range"), sr);
-+         CFRelease(sr);
-+
-+         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
-+         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Range"), sr);
-+         CFRelease(sr);
-+      } else if (Queue->LastModified != 0) {
-+         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
-+         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Modified-Since"), sr);
-+         CFRelease(sr);
-+      }
-+
 +      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.98"));
++
++      sr = CFStringCreateWithCString(kCFAllocatorDefault, hs.c_str(), se);
++      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Host"), sr);
++      CFRelease(sr);
++
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);
 +
@@ -165,8 +183,6 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +
 +      //CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPShouldAutoredirect, kCFBooleanTrue);
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPAttemptPersistentConnection, kCFBooleanTrue);
-+
-+      URI uri = Queue->Uri;
  
 -      // Decide what to do.
        FetchResult Res;
@@ -176,10 +192,10 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      uint8_t data[10240];
 +      size_t offset = 0;
 +
-+      Status("Connecting to %s", uri.Host.c_str());
++      Status("Connecting to %s", hs.c_str());
 +
 +      if (!CFReadStreamOpen(rs)) {
-+         CfrsError(rs);
++         CfrsError("Open", rs);
 +         Fail(true);
 +         goto done;
 +      }
@@ -187,7 +203,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      rd = CFReadStreamRead(rs, data, sizeof(data));
 +
 +      if (rd == -1) {
-+         CfrsError(rs);
++         CfrsError(uri.Host.c_str(), rs);
 +         Fail(true);
 +         goto done;
 +      }
@@ -323,7 +339,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +	 URIStart(Res);
 +
 +         read: if (rd == -1) {
-+            CfrsError(rs);
++            CfrsError("rd", rs);
 +            Fail(true);
 +         } else if (rd == 0) {
  	    if (Res.Size == 0)
@@ -436,7 +452,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
     
 diff -ru apt-0.6.46.4.1/methods/makefile apt-0.6.46.4.1+iPhone/methods/makefile
 --- apt-0.6.46.4.1/methods/makefile	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-04-06 09:55:04.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/methods/makefile	2008-04-13 00:47:53.000000000 +0000
 @@ -47,7 +47,7 @@
  
  # The http method

@@ -1,6 +1,4 @@
-tar -jxvf "${PKG_DATA}/ngrep-1.45.tar.bz2"
-cd ngrep-1.45
-pkg:patch
+pkg:setup
 autoconf
 cd regex-0.12
 autoconf

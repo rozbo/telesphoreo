@@ -9,16 +9,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-cache.cc apt-0.6.46.4.1+iPhone/cmdline/apt-c
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-cache.cc,v 1.72 2004/04/30 04:34:03 mdz Exp $
-@@ -1706,6 +1710,13 @@
+@@ -1706,6 +1710,15 @@
  
  int main(int argc,const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -34,16 +36,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-cdrom.cc apt-0.6.46.4.1+iPhone/cmdline/apt-c
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-cdrom.cc,v 1.45 2003/11/19 23:50:51 mdz Exp $
-@@ -167,6 +171,13 @@
+@@ -167,6 +171,15 @@
  
  int main(int argc,const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -59,16 +63,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-config.cc apt-0.6.46.4.1+iPhone/cmdline/apt-
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-config.cc,v 1.11 2003/01/11 07:18:44 jgg Exp $
-@@ -91,6 +95,13 @@
+@@ -91,6 +95,15 @@
  
  int main(int argc,const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -84,16 +90,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-extracttemplates.cc apt-0.6.46.4.1+iPhone/cm
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-extracttemplates.cc,v 1.15 2003/07/26 00:00:11 mdz Exp $
-@@ -351,6 +355,13 @@
+@@ -351,6 +355,15 @@
  
  int main(int argc, const char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
  	CommandLine::Args Args[] = {
  		{'h',"help","help",0},
@@ -109,16 +117,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-get.cc apt-0.6.46.4.1+iPhone/cmdline/apt-get
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-get.cc,v 1.156 2004/08/28 01:05:16 mdz Exp $
-@@ -2504,6 +2508,13 @@
+@@ -2504,6 +2508,15 @@
  
  int main(int argc,const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -134,16 +144,18 @@ diff -ru apt-0.6.46.4.1/cmdline/apt-sortpkgs.cc apt-0.6.46.4.1+iPhone/cmdline/ap
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-sortpkgs.cc,v 1.5 2003/01/11 07:18:44 jgg Exp $
-@@ -164,6 +168,13 @@
+@@ -164,6 +168,15 @@
  
  int main(unsigned int argc,const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -159,16 +171,18 @@ diff -ru apt-0.6.46.4.1/ftparchive/apt-ftparchive.cc apt-0.6.46.4.1+iPhone/ftpar
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: apt-ftparchive.cc,v 1.8.2.3 2004/01/02 22:01:48 mdz Exp $
-@@ -901,6 +905,13 @@
+@@ -901,6 +905,15 @@
  
  int main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     CommandLine::Args Args[] = {
        {'h',"help","help",0},
@@ -184,16 +198,18 @@ diff -ru apt-0.6.46.4.1/methods/cdrom.cc apt-0.6.46.4.1+iPhone/methods/cdrom.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: cdrom.cc,v 1.20.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -193,6 +197,13 @@
+@@ -193,6 +197,15 @@
  
  int main()
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -209,16 +225,18 @@ diff -ru apt-0.6.46.4.1/methods/copy.cc apt-0.6.46.4.1+iPhone/methods/copy.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: copy.cc,v 1.7.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -86,6 +90,13 @@
+@@ -86,6 +90,15 @@
  
  int main()
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -234,16 +252,18 @@ diff -ru apt-0.6.46.4.1/methods/file.cc apt-0.6.46.4.1+iPhone/methods/file.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: file.cc,v 1.9.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -89,6 +93,13 @@
+@@ -89,6 +93,15 @@
  
  int main()
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -259,16 +279,18 @@ diff -ru apt-0.6.46.4.1/methods/ftp.cc apt-0.6.46.4.1+iPhone/methods/ftp.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: ftp.cc,v 1.31.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -1086,6 +1090,13 @@
+@@ -1086,6 +1090,15 @@
  
  int main(int argc,const char *argv[])
  { 
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -284,16 +306,18 @@ diff -ru apt-0.6.46.4.1/methods/gpgv.cc apt-0.6.46.4.1+iPhone/methods/gpgv.cc
  #include <apt-pkg/error.h>
  #include <apt-pkg/acquire-method.h>
  #include <apt-pkg/strutl.h>
-@@ -302,6 +306,13 @@
+@@ -302,6 +306,15 @@
  
  int main()
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
     
@@ -309,16 +333,18 @@ diff -ru apt-0.6.46.4.1/methods/gzip.cc apt-0.6.46.4.1+iPhone/methods/gzip.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: gzip.cc,v 1.17.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -162,6 +166,13 @@
+@@ -162,6 +166,15 @@
  
  int main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -334,16 +360,18 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: http.cc,v 1.59 2004/05/08 19:42:35 mdz Exp $
-@@ -1224,6 +1228,13 @@
+@@ -1224,6 +1228,15 @@
  
  int main()
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  
@@ -359,16 +387,18 @@ diff -ru apt-0.6.46.4.1/methods/rred.cc apt-0.6.46.4.1+iPhone/methods/rred.cc
  #include <apt-pkg/fileutl.h>
  #include <apt-pkg/error.h>
  #include <apt-pkg/acquire-method.h>
-@@ -253,6 +257,13 @@
+@@ -253,6 +257,15 @@
  
  int main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     RredMethod Mth;
  
@@ -384,16 +414,18 @@ diff -ru apt-0.6.46.4.1/methods/rsh.cc apt-0.6.46.4.1+iPhone/methods/rsh.cc
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
  // $Id: rsh.cc,v 1.6.2.1 2004/01/16 18:58:50 mdz Exp $
-@@ -511,6 +515,13 @@
+@@ -511,6 +515,15 @@
  
  int main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +   struct nlist nl[2];
 +   memset(nl, 0, sizeof(nl));
 +   nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +   nlist("/usr/lib/libc.dylib", nl);
 +   if (nl[0].n_type != N_UNDF)
 +       *(int *) nl[0].n_value = 0;
++#endif
 +
     setlocale(LC_ALL, "");
  

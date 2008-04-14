@@ -1,6 +1,4 @@
-tar -zxvf "${PKG_DATA}/gawk-3.1.6.tar.gz"
-cd gawk-3.1.6
-pkg:patch
+pkg:setup
 pkg:configure
 make
 pkg:install

@@ -1,6 +1,4 @@
-pkg:extract
-cd js
-pkg:patch
+pkg:setup
 cd src
 mkdir Darwin_DBG.OBJ
 cp -a "${PKG_DATA}"/jsautocfg.h Darwin_DBG.OBJ

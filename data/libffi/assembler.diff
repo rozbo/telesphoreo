@@ -1,7 +1,7 @@
-Index: src/arm/sysv.S
+Index: libffi/src/arm/sysv.S
 ===================================================================
---- libffi/src/arm/sysv.S	(revision 130618)
-+++ libffi+iPhone/src/arm/sysv.S	(working copy)
+--- gcc/libffi/src/arm/sysv.S	(revision 130618)
++++ gcc+iPhone/libffi/src/arm/sysv.S	(working copy)
 @@ -38,7 +38,7 @@
  #else
  #define CNAME(x) x

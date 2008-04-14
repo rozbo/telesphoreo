@@ -7,16 +7,18 @@ diff -ru bash-3.2/shell.c bash-3.2+iPhone/shell.c
  /* shell.c -- GNU's idea of the POSIX shell specification. */
  
  /* Copyright (C) 1987-2005 Free Software Foundation, Inc.
-@@ -328,6 +330,13 @@
+@@ -328,6 +330,15 @@
       char **argv, **env;
  #endif /* !NO_MAIN_ENV_ARG */
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    register int i;
    int code, old_errexit_flag;

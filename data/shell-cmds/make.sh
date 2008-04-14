@@ -1,5 +1,4 @@
-tar -zxvf "${PKG_DATA}/shell_cmds-116.tar.gz"
-cd shell_cmds-116
+pkg:setup
 mkdir -p "${PKG_DEST}/usr/bin"
 for bin in killall mktemp renice script time which; do
     ${PKG_TARG}-gcc -o "${bin}/${bin}" "${bin}"/*.c -D'__FBSDID(x)='

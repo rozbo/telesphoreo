@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 autoconf
 pkg:configure --with-pth-prefix="$(PKG_DEST_ gnupth)/usr"
 make

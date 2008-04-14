@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 #PKG_CONF=./autogen.sh
 pkg:configure --with-classpath-install-dir=/usr --enable-ffi=no
 make with_classpath_install_dir="$(PKG_DEST_ classpath)/usr"

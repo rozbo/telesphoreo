@@ -1,5 +1,4 @@
-pkg:extract
-cd *
+pkg:setup
 pkg:configure --enable-all
 make
 pkg:install

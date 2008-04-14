@@ -1,6 +1,4 @@
-pkg:extract
-cd BitchX
-pkg:patch
+pkg:setup
 pkg:configure
 make
 make install prefix="${PKG_DEST}/usr"

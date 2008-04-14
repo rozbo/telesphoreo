@@ -1,6 +1,4 @@
-tar -zxvf "${PKG_DATA}/bootstrap_cmds-60.tar.gz"
-cd bootstrap_cmds-60
-pkg:patch
+pkg:setup
 cd migcom.tproj
 cat >ident.c <<EOF
 char *MigGenerationDate = "`date`";
