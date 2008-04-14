@@ -1,7 +1,5 @@
 shopt -s extglob
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 ./configure --prefix=/usr --without-icu --without-libraries=python
 echo 'using darwin ;' >user-config.jam
 make

@@ -11,7 +11,7 @@ export PKG_MAKE=$0
 export PKG_NAME=${1%_}
 
 export PKG_BASE=$(realpath "$(dirname "$0")")
-. "${PKG_BASE}/helper.sh"
+source "${PKG_BASE}/helper.sh"
 
 ./make.sh "${PKG_NAME}"
 
@@ -30,6 +30,10 @@ if [[ -e "${PKG_DATA}"/_metadata/prerm ]]; then
     cp -a "${PKG_DATA}"/_metadata/prerm "$(pkg_ /DEBIAN)"
 fi
 
+if [[ -e "${PKG_DATA}"/_metadata/conffiles ]]; then
+    cp -a "${PKG_DATA}"/_metadata/conffiles "$(pkg_ /DEBIAN)"
+fi
+
 export PKG_HASH=$(util/catdir.sh "${PKG_DEST}" | md5sum | cut -d ' ' -f 1)
 echo "hashed dest ${PKG_NAME} to: ${PKG_HASH}"
 
@@ -42,7 +46,7 @@ else
         PKG_RVSN=$((${PKG_RVSN} + 1))
     fi
 
-    export PKG_PACK=${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_darwin-arm.deb
+    export PKG_PACK=${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb
     if [[ -e ${PKG_PACK} ]]; then
         echo "package ${PKG_PACK} already exists..."
     else

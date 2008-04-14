@@ -7,16 +7,18 @@ diff -rui inetutils-1.5/ftp/main.c inetutils-1.5+iPhone/ftp/main.c
  /*
   * Copyright (c) 1985, 1989, 1993, 1994, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -115,6 +117,13 @@
+@@ -115,6 +117,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int ch, top;
    struct passwd *pw = NULL;
@@ -30,16 +32,18 @@ diff -rui inetutils-1.5/ftpd/ftpd.c inetutils-1.5+iPhone/ftpd/ftpd.c
  /* - Ftp Server
   * Copyright (c) 1985, 1988, 1990, 1992, 1993, 1994, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -328,6 +330,13 @@
+@@ -328,6 +330,15 @@
  int
  main(int argc, char *argv[], char **envp)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int option;
  
@@ -53,16 +57,18 @@ diff -rui inetutils-1.5/gwhois/whois.c inetutils-1.5+iPhone/gwhois/whois.c
  /* Copyright 1999 by Marco d'Itri <md@linux.it>.
   *
   * This program is free software; you can redistribute it and/or modify
-@@ -47,6 +49,13 @@
+@@ -47,6 +49,15 @@
  
  int main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
      int ch, nopar = 0;
      const char *server = NULL, *port = NULL;
@@ -76,16 +82,18 @@ diff -rui inetutils-1.5/ifconfig/ifconfig.c inetutils-1.5+iPhone/ifconfig/ifconf
  /* ifconfig.c -- network interface configuration utility
  
     Copyright (C) 2001, 2002, 2007 Free Software Foundation, Inc.
-@@ -56,6 +58,13 @@
+@@ -56,6 +58,15 @@
  int
  main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int err = 0;
    int sfd;
@@ -99,16 +107,18 @@ diff -rui inetutils-1.5/inetd/inetd.c inetutils-1.5+iPhone/inetd/inetd.c
  /* Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007
     Free Software Foundation, Inc.
  
-@@ -386,6 +388,13 @@
+@@ -386,6 +388,15 @@
  int
  main (int argc, char *argv[], char *envp[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int option;
    struct servtab *sep;
@@ -122,16 +132,18 @@ diff -rui inetutils-1.5/logger/logger.c inetutils-1.5+iPhone/logger/logger.c
  /*
   * Copyright (c) 1983, 1993, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -101,6 +103,13 @@
+@@ -101,6 +103,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int option, logflags, pri;
    char *tag, buf[1024];
@@ -145,16 +157,18 @@ diff -rui inetutils-1.5/ping/ping6.c inetutils-1.5+iPhone/ping/ping6.c
  /* Copyright (C) 1998, 2001, 2002, 2004, 2005, 2007 Free Software Foundation, Inc.
  
     This file is part of GNU Inetutils.
-@@ -81,6 +83,13 @@
+@@ -81,6 +83,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int c;
    char *p;
@@ -168,16 +182,18 @@ diff -rui inetutils-1.5/ping/ping.c inetutils-1.5+iPhone/ping/ping.c
  /* Copyright (C) 1998,2001, 2002, 2005, 2007 Free Software Foundation, Inc.
  
     This file is part of GNU Inetutils.
-@@ -106,6 +108,13 @@
+@@ -106,6 +108,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int c;
    char *p;
@@ -191,16 +207,18 @@ diff -rui inetutils-1.5/rcp/rcp.c inetutils-1.5+iPhone/rcp/rcp.c
  /*
   * Copyright (c) 1983, 1990, 1992, 1993, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -156,6 +158,13 @@
+@@ -156,6 +158,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    struct servent *sp;
    int ch, fflag, tflag;
@@ -214,16 +232,18 @@ diff -rui inetutils-1.5/rexecd/rexecd.c inetutils-1.5+iPhone/rexecd/rexecd.c
  /*
   * Copyright (c) 1983, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -105,6 +107,13 @@
+@@ -105,6 +107,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    struct sockaddr_in from;
    int fromlen, sockfd = STDIN_FILENO;
@@ -237,16 +257,18 @@ diff -rui inetutils-1.5/rlogin/rlogin.c inetutils-1.5+iPhone/rlogin/rlogin.c
  /*
   * Copyright (c) 1983, 1990, 1993, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -236,6 +238,13 @@
+@@ -236,6 +238,15 @@
  int
  main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    struct passwd *pw;
    struct servent *sp;
@@ -260,16 +282,18 @@ diff -rui inetutils-1.5/rlogind/rlogind.c inetutils-1.5+iPhone/rlogind/rlogind.c
  /* Copyright (C) 1998,2001, 2002, 2007 Free Software Foundation, Inc.
  
     This file is part of GNU Inetutils.
-@@ -267,6 +269,13 @@
+@@ -267,6 +269,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int             port = 0;
    int             maxchildren = DEFMAXCHILDREN;
@@ -283,16 +307,18 @@ diff -rui inetutils-1.5/rsh/rsh.c inetutils-1.5+iPhone/rsh/rsh.c
  /*-
   * Copyright (c) 1983, 1990, 1993, 1994, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -220,6 +222,13 @@
+@@ -220,6 +222,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    struct passwd *pw;
    struct servent *sp;
@@ -306,16 +332,18 @@ diff -rui inetutils-1.5/rshd/rshd.c inetutils-1.5+iPhone/rshd/rshd.c
  /*-
   * Copyright (c) 1988, 1989, 1992, 1993, 1994, 2002
   *	The Regents of the University of California.  All rights reserved.
-@@ -158,6 +160,13 @@
+@@ -158,6 +160,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    extern int __check_rhosts_file; /* hook in rcmd(3) */
    struct linger linger;
@@ -329,16 +357,18 @@ diff -rui inetutils-1.5/syslogd/syslogd.c inetutils-1.5+iPhone/syslogd/syslogd.c
  /* syslogd - log system messages
   *
   * Copyright (c) 1983, 1988, 1993, 1994, 2002
-@@ -353,6 +355,13 @@
+@@ -353,6 +355,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int option;
    size_t i;
@@ -352,16 +382,18 @@ diff -rui inetutils-1.5/talk/talk.c inetutils-1.5+iPhone/talk/talk.c
  /*
   * Copyright (c) 1983, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -71,6 +73,13 @@
+@@ -71,6 +73,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int c;
  
@@ -375,16 +407,18 @@ diff -rui inetutils-1.5/talkd/talkd.c inetutils-1.5+iPhone/talkd/talkd.c
  /* Copyright (C) 1998,2001, 2002, 2007 Free Software Foundation, Inc.
  
     This file is part of GNU Inetutils.
-@@ -59,6 +61,13 @@
+@@ -59,6 +61,15 @@
  int
  main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int c;
    char *acl_file = NULL;
@@ -398,16 +432,18 @@ diff -rui inetutils-1.5/telnet/main.c inetutils-1.5+iPhone/telnet/main.c
  /*
   * Copyright (c) 1988, 1990, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -180,6 +182,13 @@
+@@ -180,6 +182,15 @@
  int
  main(int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
  	extern char *optarg;
  	extern int optind;
@@ -421,16 +457,18 @@ diff -rui inetutils-1.5/telnetd/telnetd.c inetutils-1.5+iPhone/telnetd/telnetd.c
  /* Copyright (C) 1998, 2001, 2002, 2004, 2007x Free Software Foundation, Inc.
  
     This file is part of GNU Inetutils.
-@@ -112,6 +114,13 @@
+@@ -112,6 +114,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    int c;
    program_name = argv[0];
@@ -444,16 +482,18 @@ diff -rui inetutils-1.5/tftp/main.c inetutils-1.5+iPhone/tftp/main.c
  /*
   * Copyright (c) 1983, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -154,6 +156,13 @@
+@@ -154,6 +156,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    struct sockaddr_in sin;
  
@@ -467,16 +507,18 @@ diff -rui inetutils-1.5/tftpd/tftpd.c inetutils-1.5+iPhone/tftpd/tftpd.c
  /*
   * Copyright (c) 1983, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -124,6 +126,13 @@
+@@ -124,6 +126,15 @@
  int
  main (int argc, char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    register struct tftphdr *tp;
    register int n;
@@ -490,16 +532,18 @@ diff -rui inetutils-1.5/uucpd/uucpd.c inetutils-1.5+iPhone/uucpd/uucpd.c
  /*
   * Copyright (c) 1985, 1993
   *	The Regents of the University of California.  All rights reserved.
-@@ -111,6 +113,13 @@
+@@ -111,6 +113,15 @@
  int
  main (int argc, char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
  #ifndef BSDINETD
    register int s, tcp_socket;

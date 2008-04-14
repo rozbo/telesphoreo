@@ -1,5 +1,4 @@
-tar -zxvf "${PKG_DATA}/kext_tools-117.tar.gz"
-cd kext_tools-117
+pkg:setup
 cp -a "${PKG_DATA}/getiopolicy_np.c" .
 #${PKG_TARG}-gcc -o kextload kextload_main.c  -framework CoreFoundation utility.c -framework IOKit getiopolicy_np.c -DPRIVATE
 ${PKG_TARG}-gcc -o kextstat kextstat_main.c

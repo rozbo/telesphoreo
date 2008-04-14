@@ -7,16 +7,18 @@ diff -ru subversion-1.4.6/contrib/client-side/mucc.c subversion-1.4.6+iPhone/con
  /*  Multiple URL Command Client
  
      Combine a list of mv, cp and rm commands on URLs into a single commit.
-@@ -445,6 +447,13 @@
+@@ -445,6 +447,15 @@
  int
  main(int argc, const char **argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    apr_pool_t *pool = init("mucc");
    apr_array_header_t *actions = apr_array_make(pool, 1, sizeof(struct action*));
@@ -30,16 +32,18 @@ diff -ru subversion-1.4.6/subversion/svn/main.c subversion-1.4.6+iPhone/subversi
  /*
   * main.c:  Subversion command line client.
   *
-@@ -815,6 +817,13 @@
+@@ -815,6 +817,15 @@
  int
  main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    svn_error_t *err;
    apr_allocator_t *allocator;
@@ -53,16 +57,18 @@ diff -ru subversion-1.4.6/subversion/svnadmin/main.c subversion-1.4.6+iPhone/sub
  /*
   * main.c: Subversion server administration tool.
   *
-@@ -1148,6 +1150,13 @@
+@@ -1148,6 +1150,15 @@
  int
  main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    svn_error_t *err;
    apr_status_t apr_err;
@@ -76,16 +82,18 @@ diff -ru subversion-1.4.6/subversion/svnlook/main.c subversion-1.4.6+iPhone/subv
  /*
   * main.c: Subversion server inspection tool.
   *
-@@ -1858,6 +1860,13 @@
+@@ -1858,6 +1860,15 @@
  int
  main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    svn_error_t *err;
    apr_status_t apr_err;
@@ -99,16 +107,18 @@ diff -ru subversion-1.4.6/subversion/svnserve/main.c subversion-1.4.6+iPhone/sub
  /*
   * main.c :  Main control function for svnserve
   *
-@@ -297,6 +299,13 @@
+@@ -297,6 +299,15 @@
  
  int main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    enum run_mode run_mode = run_mode_unspecified;
    svn_boolean_t foreground = FALSE;
@@ -122,16 +132,18 @@ diff -ru subversion-1.4.6/subversion/svnsync/main.c subversion-1.4.6+iPhone/subv
  /*
   * ====================================================================
   * Copyright (c) 2005-2006 CollabNet.  All rights reserved.
-@@ -1295,6 +1297,13 @@
+@@ -1295,6 +1297,15 @@
  int
  main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    const svn_opt_subcommand_desc_t *subcommand = NULL;
    apr_array_header_t *received_opts;
@@ -145,16 +157,18 @@ diff -ru subversion-1.4.6/subversion/svnversion/main.c subversion-1.4.6+iPhone/s
  /*
   * ====================================================================
   * Copyright (c) 2003-2004 CollabNet.  All rights reserved.
-@@ -108,6 +110,13 @@
+@@ -108,6 +110,15 @@
  int
  main(int argc, const char *argv[])
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
    const char *wc_path, *trail_url;
    apr_allocator_t *allocator;

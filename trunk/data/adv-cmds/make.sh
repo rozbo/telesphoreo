@@ -1,5 +1,4 @@
-pkg:extract
-cd *
+pkg:setup
 for tproj in finger fingerd last lsvfs md ps; do
     "${PKG_TARG}-gcc" -o "${tproj}" "${tproj}.tproj"/*.c -D'__FBSDID(x)='
 done

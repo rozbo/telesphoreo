@@ -7,16 +7,18 @@ diff -ru ncftp-3.2.1/ncftp/main.c ncftp-3.2.1+iPhone/ncftp/main.c
  /* main.c
   *
   * Copyright (c) 1992-2005 by Mike Gleason.
-@@ -401,6 +403,13 @@
+@@ -401,6 +403,15 @@
  main_void_return_t
  main(int argc, char **const argv)
  {
++#if !defined(__ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__) || __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ < 10200
 +    struct nlist nl[2];
 +    memset(nl, 0, sizeof(nl));
 +    nl[0].n_un.n_name = (char *) "_useMDNSResponder";
 +    nlist("/usr/lib/libc.dylib", nl);
 +    if (nl[0].n_type != N_UNDF)
 +        *(int *) nl[0].n_value = 0;
++#endif
 +
  	int c;
  	int n;

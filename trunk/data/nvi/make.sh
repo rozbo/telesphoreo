@@ -1,5 +1,5 @@
-pkg:extract
-cd */build.unix
+pkg:setup
+cd build.unix
 PKG_CONF=../dist/configure pkg:configure vi_cv_sprintf_count=yes vi_cv_sys5_pty=no "--with-db-prefix=$(PKG_DEST_ berkeleydb)/usr"
 make
 pkg:install

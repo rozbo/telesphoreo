@@ -1,5 +1,4 @@
-pkg:extract
-cd *
+pkg:setup
 autoconf
 pkg:configure
 make

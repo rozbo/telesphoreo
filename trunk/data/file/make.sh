@@ -1,10 +1,13 @@
+shopt -s extglob
+pkg:setup
+cd ..
+mv * target
 pkg:extract
-mv * native
-pkg:extract
-cd native
+mv !(target) host
+cd host
 ./configure
 make
-cd ../!(native)
+cd ../target
 pkg:configure
-make FILE_COMPILE="$(pwd)/../native/src/file"
+make FILE_COMPILE="$(pwd)"/../host/src/file
 pkg:install

@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 ./Configure -D__DARWIN_UNIX03 "$(echo "${PKG_TARG}" | sed -e 's/\(.*\)-\(.*\)-\(.*\)/\3-\1/')-gcc" --prefix=/usr --openssldir=/usr/lib/ssl shared
 make AR="${PKG_TARG}-ar -r"
 make install INSTALL_PREFIX="${PKG_DEST}"

@@ -1,5 +1,4 @@
-pkg:extract
-cd *
+pkg:setup
 pkg: mkdir -p /usr/bin
 
 ${PKG_TARG}-gcc -o hexdump/hexdump hexdump/{conv,display,hexdump,hexsyntax,odsyntax,parse}.c -D'__FBSDID(x)='

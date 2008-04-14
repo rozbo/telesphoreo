@@ -1,10 +1,11 @@
 diff -ru apt-0.6.46.4.1/buildlib/ostable apt-0.6.46.4.1+iPhone/buildlib/ostable
 --- apt-0.6.46.4.1/buildlib/ostable	2006-12-04 14:37:35.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/buildlib/ostable	2008-01-01 07:25:25.000000000 +0000
-@@ -11,6 +11,7 @@
++++ apt-0.6.46.4.1+iPhone/buildlib/ostable	2008-04-13 06:09:10.000000000 +0000
+@@ -11,6 +11,8 @@
  [^-]*-kfreebsd.*-gnu   kfreebsd
  [^-]*-knetbsd.*-gnu   knetbsd
  [^-]*-gnu[^-]*   hurd
++[^-]*-darwin9 iphoneos
 +[^-]*-darwin darwin
  
  # These are samples. 

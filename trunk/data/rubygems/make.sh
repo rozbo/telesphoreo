@@ -1,6 +1,5 @@
 shopt -s extglob
-pkg:extract
-cd *
+pkg:setup
 ruby setup.rb --prefix="${PKG_DEST}/usr"
 pkg: sed -i -e 's/^#!.*/#!\/usr\/bin\/ruby/' /usr/bin/gem /usr/bin/update_rubygems
 pkg: mkdir -p /usr/lib/ruby/site_ruby/1.8

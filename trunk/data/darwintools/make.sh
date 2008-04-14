@@ -1,5 +1,4 @@
-pkg:extract
-cd *
+pkg:setup
 pkg: mkdir -p /usr/bin
 
 for tool in startupfiletool sw_vers; do

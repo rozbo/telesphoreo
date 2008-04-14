@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 make
 
 pkg: mkdir -p /usr/libexec /var/lib/cydia

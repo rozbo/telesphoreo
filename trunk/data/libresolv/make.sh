@@ -1,6 +1,4 @@
-pkg:extract
-cd *
-pkg:patch
+pkg:setup
 cp -a "${PKG_DATA}"/*.[ch] .
 declare -a flags
 # XXX: don't use this on darwin8
