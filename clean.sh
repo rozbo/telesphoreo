@@ -1,4 +1,5 @@
 for file in \
+    /System/Library/LaunchDaemons/com.devteam.openssh.sshd.plist \
     /bin/[ \
     /bin/csh \
     /bin/domainname \
@@ -128,5 +129,5 @@ for file in \
     /usr/sbin/zdump \
     /usr/sbin/zic
 do
-    ls dest/iphoneos-arm/*/${file#/} 2>/dev/null
+    rm -f "${file#/}"
 done
