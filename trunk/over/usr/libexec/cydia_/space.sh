@@ -8,7 +8,7 @@ for dir in \
     /System/Library/Fonts \
     /usr/share
 do
-    . /usr/libexec/cydia/move.sh "${dir}" /var/"$(basename "${src}")"
+    . /usr/libexec/cydia_/move.sh "${dir}"
 done
 
 [[ $(df_ /) -gt 35651584 && $(df_ /var) -gt 35651584 ]]
