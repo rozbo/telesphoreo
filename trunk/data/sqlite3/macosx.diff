@@ -1,0 +1,21 @@
+diff -ru sqlite-3.5.4/aclocal.m4 sqlite-3.5.4+iPhone/aclocal.m4
+--- sqlite-3.5.4/aclocal.m4	2007-06-12 12:17:59.000000000 +0000
++++ sqlite-3.5.4+iPhone/aclocal.m4	2008-04-18 19:20:01.000000000 +0000
+@@ -3116,7 +3116,7 @@
+          ;;
+        *) # Darwin 1.3 on
+          if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
+-           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
++           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+          else
+            case ${MACOSX_DEPLOYMENT_TARGET} in
+              10.[[012]])
+@@ -5891,7 +5891,7 @@
+          ;;
+        *) # Darwin 1.3 on
+          if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
+-           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
++           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+          else
+            case ${MACOSX_DEPLOYMENT_TARGET} in
+              10.[[012]])
