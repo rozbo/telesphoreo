@@ -1,0 +1,12 @@
+diff -ru class-dump-3.1.2/src/CDClassDump.m class-dump-3.1.2+iPhone/src/CDClassDump.m
+--- class-dump-3.1.2/src/CDClassDump.m	2008-04-20 13:16:43.000000000 +0000
++++ class-dump-3.1.2+iPhone/src/CDClassDump.m	2007-11-05 18:14:56.000000000 +0000
+@@ -366,7 +366,7 @@
+         if (preferredArchName == nil) {
+             [self setPreferredArchName:[aMachOFile archName]];
+         } else if ([[aMachOFile archName] isEqual:preferredArchName] == NO) {
+-            fprintf(stderr, "class-dump: Mach-O file (%s) does not contain required cpu type: %@.\n",
++            fprintf(stderr, "class-dump: Mach-O file (%s) does not contain required cpu type: %s.\n",
+                     [aFilename fileSystemRepresentation], [preferredArchName UTF8String]);
+             [aMachOFile release];
+             return NO;
