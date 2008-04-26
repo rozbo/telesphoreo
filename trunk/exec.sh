@@ -8,6 +8,7 @@ export PATH=${PKG_BASE}/util:$PATH
 shift
 
 source "${PKG_BASE}/helper.sh"
+export PKG_TAPF=$(cat "${PKG_BASE}/arch/${PKG_ARCH}/prefix")
 
 PKG_PATH=
 
@@ -22,16 +23,16 @@ for dep in $({
     DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
     PKG_PATH=${PKG_PATH}:${DEP_DEST}
 
-    if [[ -d ${DEP_DEST}/usr/include ]]; then
-        PKG_INCL=${DEP_DEST}/usr/include:${PKG_INCL}
+    if [[ -d ${DEP_DEST}${PKG_TAPF}/include ]]; then
+        PKG_INCL=${DEP_DEST}${PKG_TAPF}/include:${PKG_INCL}
     fi
 
-    if [[ -d ${DEP_DEST}/usr/lib ]]; then
-        PKG_LIBS=${DEP_DEST}/usr/lib:${PKG_LIBS}
+    if [[ -d ${DEP_DEST}${PKG_TAPF}/lib ]]; then
+        PKG_LIBS=${DEP_DEST}${PKG_TAPF}/lib:${PKG_LIBS}
     fi
 
-    if [[ -d ${DEP_DEST}/usr/lib/pkgconfig ]]; then
-        PKG_PKGS=${DEP_DEST}/usr/lib/pkgconfig:${PKG_PKGS}
+    if [[ -d ${DEP_DEST}${PKG_TAPF}/lib/pkgconfig ]]; then
+        PKG_PKGS=${DEP_DEST}${PKG_TAPF}/lib/pkgconfig:${PKG_PKGS}
     fi
 done
 
@@ -46,9 +47,10 @@ C_INCLUDE_PATH= \
 COMPILER_PATH=${PKG_BASE}/util \
 CPATH=${PKG_INCL} \
 CPLUS_INCLUDE_PATH= \
-GCC_EXEC_PREFIX=${PKG_PFIX}/lib/gcc \
+GCC_EXEC_PREFIX=${PKG_CCPF}/lib/gcc \
 LD_LIBRARY_PATH=${PKG_LIBS} \
 LIBRARY_PATH=${PKG_LIBS} \
 MIGCC=${PKG_TARG}-gcc \
 PKG_CONFIG_PATH=${PKG_PKGS} \
+LD_TWOLEVEL_NAMESPACE= \
     "$@"

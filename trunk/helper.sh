@@ -3,7 +3,7 @@
 source "${PKG_BASE}/architect.sh"
 
 export PKG_ROOT=$("${PKG_TARG}-gcc" -dumpspecs | grep '%{isysroot' | sed -e 's/.*%{isysroot\*:\([^}]*\)}.*/\1/; s/;:/\n/g' | sed -e 's/^-syslibroot //' | tail -n 1)
-export PKG_PFIX=$("${PKG_TARG}-gcc" -v 2>&1 | grep -- --prefix | sed -e 's/.*--prefix=\([^ ]*\).*/\1/')
+export PKG_CCPF=$("${PKG_TARG}-gcc" -v 2>&1 | grep -- --prefix | sed -e 's/.*--prefix=\([^ ]*\).*/\1/')
 
 source "${PKG_BASE}/folders.sh"
 
