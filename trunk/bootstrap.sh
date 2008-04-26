@@ -16,7 +16,7 @@ chmod +s "${PKG_BOOT}/usr/libexec/cydia_"/{godmode,symlink}
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(adv-cmds apt base bash bigboss coreutils cydia gawk grep inetutils iphonesurge less libarmfp libgcc modmyifone nano network-cmds nvi rsync saurik sed shell-cmds ste system-cmds tar unzip zip)
+PKG_REQS=(adv-cmds apt base bash coreutils cydia cydia-sources gawk grep inetutils less libarmfp libgcc nano network-cmds nvi rsync sed shell-cmds system-cmds tar unzip zip)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($({
@@ -33,7 +33,11 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     dpkg -x "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" "${PKG_BASE}/temp"
 
     echo "merging ${PKG_NAME}..."
-    cp -a "${PKG_BASE}/temp"/* "${PKG_BOOT}"
+    files=("${PKG_BASE}/temp"/*)
+    if [[ ${#files[@]} -ne 0 ]]; then
+        echo "  copying files..."
+        cp -a "${PKG_BASE}/temp"/* "${PKG_BOOT}"
+    fi
 
     "${PKG_BASE}/control.sh" "${PKG_NAME}" available >>"${PKG_BOOT}/var/lib/dpkg/available"
     "${PKG_BASE}/control.sh" "${PKG_NAME}" status >>"${PKG_BOOT}/var/lib/dpkg/status"
@@ -48,6 +52,9 @@ cd "${PKG_BOOT}"
 
 rm -f "../Packager_${PKG_ARCH}.tgz"
 tar -zcvf "../Packager_${PKG_ARCH}.tgz" *
+
+rm -f "../Packager_${PKG_ARCH}_.zip"
+zip -ry "../Packager_${PKG_ARCH}_.zip" *
 
 cp -a bin/bash usr/libexec/cydia_
 cp -a bin/chmod usr/libexec/cydia_
@@ -67,6 +74,7 @@ cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_
 cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia_
 cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
 cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
+cp -a usr/libexec/cydia/move.sh usr/libexec/cydia_
 
 rm -f "../Packager_${PKG_ARCH}.xml"
 find * -type l -print -o -name "terminfo" -prune | while read -r link; do
