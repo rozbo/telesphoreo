@@ -1,6 +1,6 @@
 diff -ru Python-2.5.1/Misc/setuid-prog.c Python-2.5.1+iPhone/Misc/setuid-prog.c
 --- Python-2.5.1/Misc/setuid-prog.c	1998-09-10 20:18:09.000000000 +0000
-+++ Python-2.5.1+iPhone/Misc/setuid-prog.c	2008-01-09 14:04:57.000000000 +0000
++++ Python-2.5.1+iPhone/Misc/setuid-prog.c	2008-04-13 02:50:37.000000000 +0000
 @@ -102,9 +102,8 @@
  clean_environ(void)
  {
@@ -14,7 +14,7 @@ diff -ru Python-2.5.1/Misc/setuid-prog.c Python-2.5.1+iPhone/Misc/setuid-prog.c
  		else if (strncmp(*p, "_RLD", 4) == 0)
 diff -ru Python-2.5.1/Modules/posixmodule.c Python-2.5.1+iPhone/Modules/posixmodule.c
 --- Python-2.5.1/Modules/posixmodule.c	2007-04-04 18:30:56.000000000 +0000
-+++ Python-2.5.1+iPhone/Modules/posixmodule.c	2008-01-09 14:07:59.000000000 +0000
++++ Python-2.5.1+iPhone/Modules/posixmodule.c	2008-04-29 10:50:27.000000000 +0000
 @@ -339,7 +339,7 @@
  #endif
  
@@ -24,3 +24,12 @@ diff -ru Python-2.5.1/Modules/posixmodule.c Python-2.5.1+iPhone/Modules/posixmod
  /* On Darwin/MacOSX a shared library or framework has no access to
  ** environ directly, we must obtain it with _NSGetEnviron().
  */
+@@ -357,7 +357,7 @@
+ 	d = PyDict_New();
+ 	if (d == NULL)
+ 		return NULL;
+-#ifdef WITH_NEXT_FRAMEWORK
++#if 1
+ 	if (environ == NULL)
+ 		environ = *_NSGetEnviron();
+ #endif
