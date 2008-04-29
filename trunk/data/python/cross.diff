@@ -1,6 +1,6 @@
-diff -r -u BuildPython-2.5.1/configure.in Python-2.5.1/configure.in
---- BuildPython-2.5.1/configure.in	2007-03-12 10:50:51.000000000 +0000
-+++ Python-2.5.1/configure.in	2008-01-09 06:54:17.000000000 +0000
+diff -ru Python-2.5.1/configure.in Python-2.5.1+iPhone/configure.in
+--- Python-2.5.1/configure.in	2007-03-12 10:50:51.000000000 +0000
++++ Python-2.5.1+iPhone/configure.in	2008-04-29 10:53:21.000000000 +0000
 @@ -165,7 +165,7 @@
  AC_MSG_CHECKING(MACHDEP)
  if test -z "$MACHDEP"
@@ -78,9 +78,9 @@ diff -r -u BuildPython-2.5.1/configure.in Python-2.5.1/configure.in
  AC_CHECK_TYPE(socklen_t,,
    AC_DEFINE(socklen_t,int,
              Define to `int' if <sys/socket.h> does not define.),[
-diff -r -u BuildPython-2.5.1/Include/pyport.h Python-2.5.1/Include/pyport.h
---- BuildPython-2.5.1/Include/pyport.h	2006-10-02 15:24:01.000000000 +0000
-+++ Python-2.5.1/Include/pyport.h	2008-01-09 00:19:23.000000000 +0000
+diff -ru Python-2.5.1/Include/pyport.h Python-2.5.1+iPhone/Include/pyport.h
+--- Python-2.5.1/Include/pyport.h	2006-10-02 15:24:01.000000000 +0000
++++ Python-2.5.1+iPhone/Include/pyport.h	2008-04-29 10:53:21.000000000 +0000
 @@ -731,7 +731,7 @@
   * rather than waiting for integer multiplication to trigger bogus
   * overflows.
@@ -90,9 +90,9 @@ diff -r -u BuildPython-2.5.1/Include/pyport.h Python-2.5.1/Include/pyport.h
  #endif
  
  #ifdef __cplusplus
-diff -r -u BuildPython-2.5.1/Modules/_ctypes/cfield.c Python-2.5.1/Modules/_ctypes/cfield.c
---- BuildPython-2.5.1/Modules/_ctypes/cfield.c	2007-03-22 19:43:37.000000000 +0000
-+++ Python-2.5.1/Modules/_ctypes/cfield.c	2008-01-09 06:52:12.000000000 +0000
+diff -ru Python-2.5.1/Modules/_ctypes/cfield.c Python-2.5.1+iPhone/Modules/_ctypes/cfield.c
+--- Python-2.5.1/Modules/_ctypes/cfield.c	2007-03-22 19:43:37.000000000 +0000
++++ Python-2.5.1+iPhone/Modules/_ctypes/cfield.c	2008-04-29 10:53:21.000000000 +0000
 @@ -1642,7 +1642,7 @@
  	struct _ffi_type **elements;
  } ffi_type;
@@ -109,9 +109,9 @@ diff -r -u BuildPython-2.5.1/Modules/_ctypes/cfield.c Python-2.5.1/Modules/_ctyp
 -
 +#endif
  /*---------------- EOF ----------------*/
-diff -r -u BuildPython-2.5.1/Modules/getaddrinfo.c Python-2.5.1/Modules/getaddrinfo.c
---- BuildPython-2.5.1/Modules/getaddrinfo.c	2003-08-17 21:28:39.000000000 +0000
-+++ Python-2.5.1/Modules/getaddrinfo.c	2008-01-09 06:40:37.000000000 +0000
+diff -ru Python-2.5.1/Modules/getaddrinfo.c Python-2.5.1+iPhone/Modules/getaddrinfo.c
+--- Python-2.5.1/Modules/getaddrinfo.c	2003-08-17 21:28:39.000000000 +0000
++++ Python-2.5.1+iPhone/Modules/getaddrinfo.c	2008-04-29 10:53:21.000000000 +0000
 @@ -38,7 +38,7 @@
   * - PF_UNSPEC case would be handled in getipnodebyname() with the AI_ALL flag.
   */
@@ -121,9 +121,9 @@ diff -r -u BuildPython-2.5.1/Modules/getaddrinfo.c Python-2.5.1/Modules/getaddri
  #include <sys/types.h>
  #include <sys/param.h>
  #include <sys/sysctl.h>
-diff -r -u BuildPython-2.5.1/Modules/mmapmodule.c Python-2.5.1/Modules/mmapmodule.c
---- BuildPython-2.5.1/Modules/mmapmodule.c	2006-08-22 13:57:07.000000000 +0000
-+++ Python-2.5.1/Modules/mmapmodule.c	2008-01-09 06:40:01.000000000 +0000
+diff -ru Python-2.5.1/Modules/mmapmodule.c Python-2.5.1+iPhone/Modules/mmapmodule.c
+--- Python-2.5.1/Modules/mmapmodule.c	2006-08-22 13:57:07.000000000 +0000
++++ Python-2.5.1+iPhone/Modules/mmapmodule.c	2008-04-29 10:53:21.000000000 +0000
 @@ -36,6 +36,7 @@
  #ifdef UNIX
  #include <sys/mman.h>
@@ -132,9 +132,9 @@ diff -r -u BuildPython-2.5.1/Modules/mmapmodule.c Python-2.5.1/Modules/mmapmodul
  
  #if defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
  static int
-diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
---- BuildPython-2.5.1/setup.py	2007-02-14 12:53:41.000000000 +0000
-+++ Python-2.5.1/setup.py	2008-01-09 06:48:07.000000000 +0000
+diff -ru Python-2.5.1/setup.py Python-2.5.1+iPhone/setup.py
+--- Python-2.5.1/setup.py	2007-02-14 12:53:41.000000000 +0000
++++ Python-2.5.1+iPhone/setup.py	2008-04-29 11:05:35.000000000 +0000
 @@ -206,46 +206,16 @@
          ext_filename = os.path.join(
              self.build_lib,
@@ -201,7 +201,21 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
          exts = []
  
          config_h = sysconfig.get_config_h_filename()
-@@ -476,7 +446,7 @@
+@@ -309,9 +279,11 @@
+         # Check for AtheOS which has libraries in non-standard locations
+         if platform == 'atheos':
+             lib_dirs += ['/system/libs', '/atheos/autolnk/lib']
+-            lib_dirs += os.getenv('LIBRARY_PATH', '').split(os.pathsep)
+             inc_dirs += ['/system/include', '/atheos/autolnk/include']
+-            inc_dirs += os.getenv('C_INCLUDE_PATH', '').split(os.pathsep)
++
++        lib_dirs += os.getenv('LIBRARY_PATH', '').split(os.pathsep)
++        inc_dirs += os.getenv('C_INCLUDE_PATH', '').split(os.pathsep)
++        inc_dirs += os.getenv('CPATH', '').split(os.pathsep)
+ 
+         # OSF/1 and Unixware have some stuff in /usr/ccs/lib (like -ldb)
+         if platform in ['osf1', 'unixware7', 'openunix8']:
+@@ -476,7 +447,7 @@
              if find_file('readline/rlconf.h', inc_dirs, []) is None:
                  do_readline = False
          if do_readline:
@@ -210,7 +224,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                  # In every directory on the search path search for a dynamic
                  # library and then a static library, instead of first looking
                  # for dynamic libraries on the entiry path.
-@@ -496,11 +466,11 @@
+@@ -496,11 +467,11 @@
              elif self.compiler.find_library_file(lib_dirs, 'curses'):
                  readline_libs.append('curses')
              elif self.compiler.find_library_file(lib_dirs +
@@ -224,7 +238,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                                     extra_link_args=readline_extra_link_args,
                                     libraries=readline_libs) )
          if platform not in ['mac']:
-@@ -520,20 +490,20 @@
+@@ -520,20 +491,20 @@
                                 depends = ['socketmodule.h']) )
          # Detect SSL support for the socket module (via _ssl)
          search_for_ssl_incs_in = [
@@ -250,10 +264,11 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                                       ] )
  
          if (ssl_incs is not None and
-@@ -613,30 +583,30 @@
+@@ -612,31 +583,25 @@
+ 
          # construct a list of paths to look for the header file in on
          # top of the normal inc_dirs.
-         db_inc_paths = [
+-        db_inc_paths = [
 -            '/usr/include/db4',
 -            '/usr/local/include/db4',
 -            '/opt/sfw/include/db4',
@@ -262,15 +277,11 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
 -            '/usr/local/include/db3',
 -            '/opt/sfw/include/db3',
 -            '/sw/include/db3',
-+            sysroot + '/usr/include/db4',
-+            sysroot + '/usr/local/include/db4',
-+            sysroot + '/opt/sfw/include/db4',
-+            sysroot + '/sw/include/db4',
-+            sysroot + '/usr/include/db3',
-+            sysroot + '/usr/local/include/db3',
-+            sysroot + '/opt/sfw/include/db3',
-+            sysroot + '/sw/include/db3',
-         ]
+-        ]
++        db_inc_paths = []
++        # major number specific paths
++        for x in (3,4):
++            db_inc_paths += map(lambda i: i + '/db%d' % x, inc_dirs)
          # 4.x minor number specific paths
          for x in (0,1,2,3,4,5):
 -            db_inc_paths.append('/usr/include/db4%d' % x)
@@ -279,8 +290,8 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
 -            db_inc_paths.append('/usr/local/include/db4%d' % x)
 -            db_inc_paths.append('/pkg/db-4.%d/include' % x)
 -            db_inc_paths.append('/opt/db-4.%d/include' % x)
-+            db_inc_paths.append(sysroot + '/usr/include/db4%d' % x)
-+            db_inc_paths.append(sysroot + '/usr/include/db4.%d' % x)
++            db_inc_paths += map(lambda i: i + '/db%d' % x, inc_dirs)
++            db_inc_paths += map(lambda i: i + '/db.%d' % x, inc_dirs)
 +            db_inc_paths.append(sysroot + '/usr/local/BerkeleyDB.4.%d/include' % x)
 +            db_inc_paths.append(sysroot + '/usr/local/include/db4%d' % x)
 +            db_inc_paths.append(sysroot + '/pkg/db-4.%d/include' % x)
@@ -292,7 +303,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
 -            db_inc_paths.append('/usr/local/include/db3%d' % x)
 -            db_inc_paths.append('/pkg/db-3.%d/include' % x)
 -            db_inc_paths.append('/opt/db-3.%d/include' % x)
-+            db_inc_paths.append(sysroot + '/usr/include/db3%d' % x)
++            db_inc_paths += map(lambda i: i + '/db3%d' % x, inc_dirs)
 +            db_inc_paths.append(sysroot + '/usr/local/BerkeleyDB.3.%d/include' % x)
 +            db_inc_paths.append(sysroot + '/usr/local/include/db3%d' % x)
 +            db_inc_paths.append(sysroot + '/pkg/db-3.%d/include' % x)
@@ -300,7 +311,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
  
          # Add some common subdirectories for Sleepycat DB to the list,
          # based on the standard include directories. This way DB3/4 gets
-@@ -746,12 +716,12 @@
+@@ -746,13 +711,9 @@
          # We hunt for #define SQLITE_VERSION "n.n.n"
          # We need to find >= sqlite version 3.0.8
          sqlite_incdir = sqlite_libdir = None
@@ -310,16 +321,14 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
 -                             '/usr/local/include',
 -                             '/usr/local/include/sqlite',
 -                             '/usr/local/include/sqlite3',
-+        sqlite_inc_paths = [ sysroot + '/usr/include',
-+                             sysroot + '/usr/include/sqlite',
-+                             sysroot + '/usr/include/sqlite3',
-+                             sysroot + '/usr/local/include',
-+                             sysroot + '/usr/local/include/sqlite',
-+                             sysroot + '/usr/local/include/sqlite3',
-                            ]
+-                           ]
++        sqlite_inc_paths = inc_dirs
++        sqlite_inc_paths += map(lambda i: i + '/sqlite', inc_dirs)
++        sqlite_inc_paths += map(lambda i: i + '/sqlite3', inc_dirs)
          MIN_SQLITE_VERSION_NUMBER = (3, 0, 8)
          MIN_SQLITE_VERSION = ".".join([str(x)
-@@ -806,13 +776,13 @@
+                                     for x in MIN_SQLITE_VERSION_NUMBER])
+@@ -806,13 +767,13 @@
                  '_sqlite/util.c', ]
  
              sqlite_defines = []
@@ -335,7 +344,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                  # In every directory on the search path search for a dynamic
                  # library and then a static library, instead of first looking
                  # for dynamic libraries on the entiry path.
-@@ -837,7 +807,7 @@
+@@ -837,7 +798,7 @@
          # accidentally building this module with a later version of the
          # underlying db library.  May BSD-ish Unixes incorporate db 1.85
          # symbols into libc and place the include file in /usr/include.
@@ -344,7 +353,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
          if os.path.exists(f):
              data = open(f).read()
              m = re.search(r"#s*define\s+HASHVERSION\s+2\s*", data)
-@@ -962,7 +932,7 @@
+@@ -962,7 +923,7 @@
                      break
              if version >= version_req:
                  if (self.compiler.find_library_file(lib_dirs, 'z')):
@@ -353,7 +362,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                          zlib_extra_link_args = ('-Wl,-search_paths_first',)
                      else:
                          zlib_extra_link_args = ()
-@@ -972,7 +942,7 @@
+@@ -972,7 +933,7 @@
  
          # Gustavo Niemeyer's bz2 module.
          if (self.compiler.find_library_file(lib_dirs, 'bz2')):
@@ -362,7 +371,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                  bz2_extra_link_args = ('-Wl,-search_paths_first',)
              else:
                  bz2_extra_link_args = ()
-@@ -1175,7 +1145,7 @@
+@@ -1175,7 +1136,7 @@
          # For 8.4a2, the X11 headers are not included. Rather than include a
          # complicated search, this is a hard-coded path. It could bail out
          # if X11 libs are not found...
@@ -371,7 +380,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
          frameworks = ['-framework', 'Tcl', '-framework', 'Tk']
  
          ext = Extension('_tkinter', ['_tkinter.c', 'tkappinit.c'],
-@@ -1217,7 +1187,7 @@
+@@ -1217,7 +1178,7 @@
              # Check for the include files on Debian and {Free,Open}BSD, where
              # they're put in /usr/include/{tcl,tk}X.Y
              dotversion = version
@@ -380,7 +389,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
                  # OpenBSD and FreeBSD use Tcl/Tk library names like libtcl83.a,
                  # but the include subdirs are named like .../include/tcl8.3.
                  dotversion = dotversion[:-1] + '.' + dotversion[-1]
-@@ -1244,19 +1214,19 @@
+@@ -1244,19 +1205,19 @@
  
          # Check for various platform-specific directories
          if platform == 'sunos5':
@@ -411,7 +420,7 @@ diff -r -u BuildPython-2.5.1/setup.py Python-2.5.1/setup.py
  
          # If Cygwin, then verify that X is installed before proceeding
          if platform == 'cygwin':
-@@ -1363,13 +1333,13 @@
+@@ -1363,13 +1324,13 @@
                     '_ctypes/malloc_closure.c']
          depends = ['_ctypes/ctypes.h']
  
