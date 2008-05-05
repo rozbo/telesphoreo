@@ -133,6 +133,32 @@
  /* 
      Note:   An ExceptionHandler is NOT a UniversalProcPtr, except in Carbon.
              It must be a PowerPC function pointer with NO routine descriptor, 
+diff -ru /apl/inc/Foundation/NSAffineTransform.h /apl/32/Foundation/NSAffineTransform.h
+--- /apl/inc/Foundation/NSAffineTransform.h	2008-02-19 13:11:39.000000000 +0000
++++ /apl/32/Foundation/NSAffineTransform.h	2008-04-20 02:53:18.000000000 +0000
+@@ -4,7 +4,7 @@
+ 
+ #import <Foundation/NSObject.h>
+ #import <Foundation/NSGeometry.h>
+-#import <ApplicationServices/../Frameworks/CoreGraphics.framework/Headers/CGAffineTransform.h>
++#import <CoreGraphics/CGAffineTransform.h>
+ 
+ typedef struct {
+     CGFloat m11, m12, m21, m22;
+diff -ru /apl/inc/Foundation/NSGeometry.h /apl/32/Foundation/NSGeometry.h
+--- /apl/inc/Foundation/NSGeometry.h	2008-02-19 13:11:41.000000000 +0000
++++ /apl/32/Foundation/NSGeometry.h	2008-04-20 02:52:14.000000000 +0000
+@@ -6,8 +6,8 @@
+ #import <Foundation/NSValue.h>
+ #import <Foundation/NSCoder.h>
+ 
+-#import <ApplicationServices/../Frameworks/CoreGraphics.framework/Headers/CGBase.h>
+-#import <ApplicationServices/../Frameworks/CoreGraphics.framework/Headers/CGGeometry.h>
++#import <CoreGraphics/CGBase.h>
++#import <CoreGraphics/CGGeometry.h>
+ 
+ #if __LP64__ || NS_BUILD_32_LIKE_64
+ 
 --- /usr/include/arm/signal.h	2008-02-27 05:37:19.000000000 +0000
 +++ /usr/include/arm/signal.h	2008-03-24 09:51:14.000000000 +0000
 @@ -13,6 +13,8 @@
