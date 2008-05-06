@@ -48,6 +48,8 @@ if [[ "${darwin+@}" ]]; then
                 dylib_name=${dylib_file#${path}}
                 echo -n " -dylib_file ${dylib_name}:${dylib_file}"
             done
+
+            echo -n " -dylib_file /usr/lib/libcrypto.0.9.7.dylib:$(PKG_DEST_ openssl)/usr/lib/libcrypto.0.9.8.dylib"
         done))
     fi
 fi
