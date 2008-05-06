@@ -50,6 +50,7 @@ function pkg:patch() {
     pkg:libtool_ ltmain.sh
 
     for diff in "${PKG_DATA}"/*.diff; do
+        echo "patching with ${diff}..."
         patch -p1 <"${diff}"
     done
 }
@@ -108,7 +109,7 @@ function pkg:configure() {
         --host="${PKG_TARG}" \
         --enable-static=no \
         --enable-shared=yes \
-        --prefix=/usr \
+        --prefix=$(cat "${PKG_BASE}/arch/${PKG_ARCH}/prefix") \
         --localstatedir="/var/cache/${PKG_NAME}" \
         "$@"
 }
