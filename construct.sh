@@ -4,7 +4,7 @@ shopt -s extglob nullglob
 
 PKG_BASE=$(dirname "$(realpath "$0")")
 cd "${PKG_BASE}"
-PKG_RVSN=219
+PKG_RVSN=266
 
 PKG_REPO=/dat/web/apt.saurik.com
 PKG_OVER=${PKG_REPO}/indices/override.tangelo.main.gz
