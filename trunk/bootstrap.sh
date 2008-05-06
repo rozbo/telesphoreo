@@ -35,7 +35,6 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     echo "merging ${PKG_NAME}..."
     files=("${PKG_BASE}/temp"/*)
     if [[ ${#files[@]} -ne 0 ]]; then
-        echo "  copying files..."
         cp -a "${PKG_BASE}/temp"/* "${PKG_BOOT}"
     fi
 
