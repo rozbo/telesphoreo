@@ -1,4 +1,5 @@
 pkg:setup
+cd cydia
 make
 
 pkg: mkdir -p /usr/libexec /var/lib/cydia
