@@ -31,21 +31,12 @@ for PKG_ARCH in "${PKG_BASE}/arch"/*; do
                 echo "${PKG_FILE}"
             fi
         fi
-    done | gzip -9c >"${PKG_OVER}"
+    done >"${PKG_BASE}/overrides.txt"
 
-    dpkg-scanpackages "link" <(zcat "${PKG_OVER}") | sed -e 's/: link\//: debs\//' >"${PKG_PKGS}"
+    dpkg-scanpackages link "${PKG_BASE}/overrides.txt" | sed -e 's/: link\//: debs\//' >"${PKG_PKGS}"
+    rm -f "${PKG_BASE}/overrides.txt"
+
     gzip -c "${PKG_PKGS}" >"${PKG_PKGS}.gz"
-    #rm -rf "${PKG_REPO}/debs"
-    #cp -a debs "${PKG_REPO}"
-
-    cat >"${PKG_REPO}/dists/tangelo/main/binary-${PKG_ARCH}/Release" <<EOF
-Archive: stable
-Version: 1.0r${PKG_RVSN}
-Component: main
-Origin: Jay Freeman (saurik)
-Label: Telesphoreo
-Architecture: ${PKG_ARCH}
-EOF
 done
 
 cd "${PKG_REPO}/dists/tangelo"
