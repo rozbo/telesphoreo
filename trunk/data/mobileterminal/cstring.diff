@@ -1,52 +1,108 @@
-diff -ru mobileterminal-273/MobileTerminal.m mobileterminal-273+iPhone/MobileTerminal.m
---- mobileterminal-273/MobileTerminal.m	2008-03-29 02:42:18.000000000 +0000
-+++ mobileterminal-273+iPhone/MobileTerminal.m	2008-04-09 11:50:57.000000000 +0000
-@@ -174,7 +174,7 @@
- 
- - (void)handleInputFromMenu:(NSString*)input
- {
--  [process write:[input cString] length:[input length]];
-+  [process write:[input UTF8String] length:[input length]];
+diff -r -ru mobileterminal-286/Log.m mobileterminal-286+iPhone/Log.m
+--- mobileterminal-286/Log.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Log.m	2008-05-07 08:16:51.000000000 +0000
+@@ -21,7 +21,7 @@
+ 	aFileHandle = [NSFileHandle fileHandleForWritingAtPath:aFile];
+ 	[aFileHandle truncateFileAtOffset:[aFileHandle seekToEndOfFile]];
+ 	
+-	[aFileHandle writeData:[[NSString stringWithFormat: @"%@\n", str] dataUsingEncoding:nil]];
++	[aFileHandle writeData:[[NSString stringWithFormat: @"%@\n", str] dataUsingEncoding:kCFStringEncodingUTF8]];
  }
  
- - (void)toggleKeyboard
-diff -ru mobileterminal-273/PTYTextView.m mobileterminal-273+iPhone/PTYTextView.m
---- mobileterminal-273/PTYTextView.m	2007-10-01 08:23:11.000000000 +0000
-+++ mobileterminal-273+iPhone/PTYTextView.m	2008-04-09 11:59:25.000000000 +0000
-@@ -179,7 +179,7 @@
+ //_______________________________________________________________________________
+diff -r -ru mobileterminal-286/MobileTerminal.m mobileterminal-286+iPhone/MobileTerminal.m
+--- mobileterminal-286/MobileTerminal.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/MobileTerminal.m	2008-05-07 08:13:49.000000000 +0000
+@@ -356,7 +356,7 @@
+   }
+   else
+   {
+-    [[self activeProcess] write:[input cString] length:[input length]];
++    [[self activeProcess] write:[input UTF8String] length:[input length]];
+   }    
+ }
  
- - (void)setupTextForContext:(CGContextRef)context
- {
--  const char* font = [[[Settings sharedInstance] font] cString];
-+  const char* font = [[[Settings sharedInstance] font] UTF8String];
+diff -r -ru mobileterminal-286/PieView.m mobileterminal-286+iPhone/PieView.m
+--- mobileterminal-286/PieView.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/PieView.m	2008-05-07 08:13:35.000000000 +0000
+@@ -71,7 +71,7 @@
+   float height = 14.0f;
  
-   if(!fontRef) {
+   NSString *fontName = @"HelveticaBold";
+-  CGContextSelectFont(context, [fontName cString], height, kCGEncodingMacRoman);
++  CGContextSelectFont(context, [fontName UTF8String], height, kCGEncodingMacRoman);
+   CGFontRef font = CGContextGetFont(context);
+ 
+   NSString * text = [self title];
+diff -r -ru mobileterminal-286/PTYTextView.m mobileterminal-286+iPhone/PTYTextView.m
+--- mobileterminal-286/PTYTextView.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/PTYTextView.m	2008-05-07 08:13:35.000000000 +0000
+@@ -238,7 +238,7 @@
+ 	if (!fontRef) 
+ 	{		
+ 		TerminalConfig * config = [[[Settings sharedInstance] terminalConfigs] objectAtIndex:termid];
+-		const char * font = [config.font cString];
++		const char * font = [config.font UTF8String];
      // First time through: cache the fontRef. This lookup is expensive.
-diff -ru mobileterminal-273/SubProcess.m mobileterminal-273+iPhone/SubProcess.m
---- mobileterminal-273/SubProcess.m	2008-02-06 14:40:02.000000000 +0000
-+++ mobileterminal-273+iPhone/SubProcess.m	2008-04-09 11:55:42.000000000 +0000
-@@ -134,7 +134,7 @@
- - (void)failure:(NSString*)message;
+ 		fontSize = config.fontSize;
+     CGContextSelectFont(context, font, floor(lineHeight), kCGEncodingMacRoman);
+diff -r -ru mobileterminal-286/SubProcess.m mobileterminal-286+iPhone/SubProcess.m
+--- mobileterminal-286/SubProcess.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/SubProcess.m	2008-05-07 08:13:35.000000000 +0000
+@@ -140,7 +140,7 @@
+   if (arg != nil && [arg length] > 0) 
+   {    
+     // A command line argument was passed to the program
+-    const char* path = [arg cString];
++    const char* path = [arg UTF8String];
+     struct stat st;
+     if ((stat(path, &st) == 0) && ((st.st_mode & S_IFDIR) != 0)) // it's a path, issue a cd command
+     {
+@@ -150,7 +150,7 @@
+     } 
+     else // just print the command 
+     {
+-      write(fd, [arg cString], [arg length]);
++      write(fd, [arg UTF8String], [arg length]);
+       write(fd, "\n", 1);
+     }
+   }
+@@ -186,7 +186,7 @@
  {
    // HACK: Just pretend the message came from the child
--  [delegate handleStreamOutput:[message cString] length:[message length]];
-+  [delegate handleStreamOutput:[message UTF8String] length:[message length]];
+   NSLog(message);
+-  [delegate handleStreamOutput:[message cString] length:[message length] identifier:termid];
++  [delegate handleStreamOutput:[message UTF8String] length:[message length] identifier:termid];
  }
  
  - (void)setWidth:(int)width height:(int)height
-diff -ru mobileterminal-273/VT100Terminal.m mobileterminal-273+iPhone/VT100Terminal.m
---- mobileterminal-273/VT100Terminal.m	2007-10-01 08:23:11.000000000 +0000
-+++ mobileterminal-273+iPhone/VT100Terminal.m	2008-04-09 11:55:55.000000000 +0000
-@@ -1226,10 +1226,10 @@
+diff -r -ru mobileterminal-286/Tools.m mobileterminal-286+iPhone/Tools.m
+--- mobileterminal-286/Tools.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Tools.m	2008-05-07 08:21:40.000000000 +0000
+@@ -28,7 +29,7 @@
+ BOOL writeImageToPNG (CGImageRef image, NSString * filePath) 
+ {
+   if (image == nil) { log(@"[ERROR] no image"); return NO; }
+-  CFURLRef cfurl = CFURLCreateFromFileSystemRepresentation (NULL, (const UInt8 *)[filePath cString], [filePath length], 0);
++  CFURLRef cfurl = CFURLCreateFromFileSystemRepresentation (NULL, (const UInt8 *)[filePath UTF8String], [filePath length], 0);
+   CGImageDestinationRef imageDest = CGImageDestinationCreateWithURL(cfurl, (CFStringRef)@"public.png", 1, nil);
+   if (imageDest==nil) { log(@"[ERROR] no image destination"); return NO; }  
+   CGImageDestinationAddImage(imageDest, image, nil);
+diff -r -ru mobileterminal-286/VT100Terminal.m mobileterminal-286+iPhone/VT100Terminal.m
+--- mobileterminal-286/VT100Terminal.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/VT100Terminal.m	2008-05-07 08:13:35.000000000 +0000
+@@ -1226,12 +1226,12 @@
+   static int issetup = 0;
+   if (!issetup) { issetup = 1;
+   // this crashes on non-Cydia systems when called multiple times  
+-  setupterm((char *)[termType cString], fileno(stdout), &r);
++  setupterm((char *)[termType UTF8String], fileno(stdout), &r);
+   }
  
-   int i;
-   int r;
--  setupterm((char *)[termtype cString], fileno(stdout), &r);
-+  setupterm((char *)[termtype UTF8String], fileno(stdout), &r);
- 
-   if (r!=1) {
--    NSLog(@"Terminal type %s is not defined.\n",[termtype cString]);
-+    NSLog(@"Terminal type %s is not defined.\n",[termtype UTF8String]);
-     for(i = 0; i < TERMINFO_KEYS; i ++) {
+   if (r!=1) 
+   {
+-    log(@"Terminal type %s is not defined (%d)", [termType cString], r);
++    log(@"Terminal type %s is not defined (%d)", [termType UTF8String], r);
+     for(i = 0; i < TERMINFO_KEYS; i ++) 
+     {
        if (key_strings[i]) free(key_strings[i]);
-       key_strings[i]=NULL;

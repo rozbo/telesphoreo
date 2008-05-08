@@ -1,31 +1,31 @@
-diff -ru mobileterminal-273/ColorMap.m mobileterminal-273+iPhone/ColorMap.m
---- mobileterminal-273/ColorMap.m	2007-10-01 08:23:11.000000000 +0000
-+++ mobileterminal-273+iPhone/ColorMap.m	2008-04-09 11:57:06.000000000 +0000
-@@ -144,7 +144,7 @@
- 
- - (CGColorRef)colorForCode:(unsigned int) index
- {
--  CGColorRef color;
-+  CGColorRef color = NULL;
- 
-   if (index & DEFAULT_FG_COLOR_CODE) {  // special colors?
-     switch (index) {
-diff -ru mobileterminal-273/ShellKeyboard.m mobileterminal-273+iPhone/ShellKeyboard.m
---- mobileterminal-273/ShellKeyboard.m	2007-10-01 08:23:11.000000000 +0000
-+++ mobileterminal-273+iPhone/ShellKeyboard.m	2008-04-09 11:52:43.000000000 +0000
-@@ -37,6 +37,7 @@
- - (BOOL)webView:(id)fp8 shouldDeleteDOMRange:(id)fp12
- {
-   [shellKeyboard handleKeyPress:0x08];
-+  return YES;
+diff -r -ru mobileterminal-286/Settings.h mobileterminal-286+iPhone/Settings.h
+--- mobileterminal-286/Settings.h	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Settings.h	2008-05-07 08:30:30.000000000 +0000
+@@ -18,12 +18,13 @@
+   NSString * font;
+   NSString * args;
+   
+-  RGBAColor colors[NUM_TERMINAL_COLORS];
++  RGBAColor _colors[NUM_TERMINAL_COLORS];
  }
  
- - (BOOL)webView:(id)fp8 shouldInsertText:(id)character
-@@ -48,6 +49,7 @@
-     return false;
-   }
-   [shellKeyboard handleKeyPress:[character characterAtIndex:0]];
-+  return YES;
+ - (NSString*) fontDescription;
++- (RGBAColor *) colors;
+ 
+-@property RGBAColor * colors;
++@property (getter = colors) RGBAColor *colors;
+ @property BOOL autosize;
+ @property int width;
+ @property int fontSize;
+diff -r -ru mobileterminal-286/Settings.m mobileterminal-286+iPhone/Settings.m
+--- mobileterminal-286/Settings.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Settings.m	2008-05-07 08:30:20.000000000 +0000
+@@ -62,7 +62,7 @@
  }
  
- @end
+ - (RGBAColor*) colors {
+-  return colors;
++  return _colors;
+ }
+ 
+ //_______________________________________________________________________________
