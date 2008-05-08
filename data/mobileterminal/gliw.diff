@@ -1,21 +1,42 @@
-diff -ru mobileterminal-273/GestureView.m mobileterminal-273+iPhone/GestureView.m
---- mobileterminal-273/GestureView.m	2007-10-08 05:00:47.000000000 +0000
-+++ mobileterminal-273+iPhone/GestureView.m	2008-04-09 12:02:22.000000000 +0000
-@@ -19,7 +19,7 @@
- - (void)mouseDown:(GSEvent *)event
+diff -r -ru mobileterminal-286/GestureView.m mobileterminal-286+iPhone/GestureView.m
+--- mobileterminal-286/GestureView.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/GestureView.m	2008-05-07 08:22:32.000000000 +0000
+@@ -79,7 +79,7 @@
+ 
+ - (void) mouseDown:(GSEvent*)event
  {
-   gesture = NO;
--  start = GSEventGetLocationInWindow(event);
-+  start = GSEventGetLocationInWindow(event).origin;
-   [delegate showMenu:start];
- }
+-	mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event)];
++	mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event).origin];
+   [delegate showMenu:mouseDownPos];
+ 	
+ 	[super mouseDown:event];
+@@ -132,7 +132,7 @@
+ 	
+ 	if (![[MenuView sharedInstance] visible])
+ 	{
+-		CGPoint end = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event)];
++		CGPoint end = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event).origin];
+ 		CGPoint vector = CGPointMake(end.x - mouseDownPos.x, end.y - mouseDownPos.y);
  
-@@ -29,7 +29,7 @@
-     return;
-   }
- 
--  CGPoint end = GSEventGetLocationInWindow(event);
-+  CGPoint end = GSEventGetLocationInWindow(event).origin;
-   CGPoint vector = CGPointMake(end.x - start.x, end.y - start.y);
- 
-   float absx = (vector.x > 0) ? vector.x : -vector.x;
+ 		float r = sqrtf(vector.x*vector.x + vector.y*vector.y);
+@@ -168,7 +168,7 @@
+ 		}
+     else if (r < 10.0f)
+     {
+-      mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event)];
++      mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event).origin];
+       if ([[MenuView sharedInstance] visible])
+       {
+         [[MenuView sharedInstance] hide];
+diff -r -ru mobileterminal-286/MobileTerminal.m mobileterminal-286+iPhone/MobileTerminal.m
+--- mobileterminal-286/MobileTerminal.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/MobileTerminal.m	2008-05-07 08:13:49.000000000 +0000
+@@ -404,7 +404,7 @@
+ {
+ 	if (numTerminals > 1)
+ 	{
+-		CGPoint pos = GSEventGetLocationInWindow(event);
++		CGPoint pos = GSEventGetLocationInWindow(event).origin;
+ 		float width = landscape ? window.frame.size.height : window.frame.size.width;
+ 		if (pos.x > width/2 && pos.x < width*3/4)
+ 		{

@@ -1,36 +1,45 @@
-diff -ru mobileterminal-273/MobileTerminal.h mobileterminal-273+iPhone/MobileTerminal.h
---- mobileterminal-273/MobileTerminal.h	2007-10-08 05:00:47.000000000 +0000
-+++ mobileterminal-273+iPhone/MobileTerminal.h	2008-04-09 11:50:48.000000000 +0000
-@@ -1,5 +1,6 @@
- // MobileTermina.h
- #import <UIKit/UIKit.h>
-+#import <Foundation/Foundation.h>
- #import <GraphicsServices/GraphicsServices.h>
+diff -r -ru mobileterminal-286/Log.h mobileterminal-286+iPhone/Log.h
+--- mobileterminal-286/Log.h	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Log.h	2008-05-07 08:15:04.000000000 +0000
+@@ -1,6 +1,7 @@
  
- @class PTYTextView;
-diff -ru mobileterminal-273/PieView.m mobileterminal-273+iPhone/PieView.m
---- mobileterminal-273/PieView.m	2007-10-08 05:00:47.000000000 +0000
-+++ mobileterminal-273+iPhone/PieView.m	2008-04-09 12:06:49.000000000 +0000
-@@ -1,3 +1,4 @@
-+#import <Foundation/Foundation.h>
- #import "PieView.h"
+ #include <Foundation/Foundation.h>
+ #include <CoreFoundation/CoreFoundation.h>
++#import <CoreGraphics/CGGeometry.h>
  
- @implementation PieView
-diff -ru mobileterminal-273/PTYTextView.h mobileterminal-273+iPhone/PTYTextView.h
---- mobileterminal-273/PTYTextView.h	2007-10-01 08:23:11.000000000 +0000
-+++ mobileterminal-273+iPhone/PTYTextView.h	2008-04-09 11:55:17.000000000 +0000
-@@ -1,4 +1,5 @@
- // PTYTextView.h
-+#import <CoreGraphics/CoreGraphics.h>
- #import <UIKit/UIKit.h>
- #import <UIKit/UITiledView.h>
+ #define logf(s,...)    [FileLog logFile:__FILE__ lineNumber:__LINE__ format:(s),##__VA_ARGS__]
+ #define logfRect(s, r) [FileLog logFile:__FILE__ lineNumber:__LINE__ string:(s) rect:(r)] 
+diff -r -ru mobileterminal-286/Preferences.m mobileterminal-286+iPhone/Preferences.m
+--- mobileterminal-286/Preferences.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Preferences.m	2008-05-07 08:22:11.000000000 +0000
+@@ -13,7 +13,7 @@
+ #import "Log.h"
  
-diff -ru mobileterminal-273/ShellKeyboard.h mobileterminal-273+iPhone/ShellKeyboard.h
---- mobileterminal-273/ShellKeyboard.h	2007-10-08 05:00:47.000000000 +0000
-+++ mobileterminal-273+iPhone/ShellKeyboard.h	2008-04-09 11:51:26.000000000 +0000
-@@ -1,4 +1,5 @@
- // ShellKeyboard.h
-+#import <Foundation/Foundation.h>
- #import <UIKit/UIKit.h>
- #import <UIKit/UITextView.h>
+ #import <UIKit/UISimpleTableCell.h> 
+-#import "UIFieldEditor.h"
++#import <UIKit/UIFieldEditor.h>
  
+ //_______________________________________________________________________________
+ //_______________________________________________________________________________
+diff -r -ru mobileterminal-286/Tools.h mobileterminal-286+iPhone/Tools.h
+--- mobileterminal-286/Tools.h	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Tools.h	2008-05-07 08:19:04.000000000 +0000
+@@ -3,6 +3,7 @@
+ //  Terminal
+ 
+ #import <Foundation/Foundation.h>
++#import <CoreGraphics/CGImage.h>
+ 
+ //_______________________________________________________________________________
+ 
+diff -r -ru mobileterminal-286/Tools.m mobileterminal-286+iPhone/Tools.m
+--- mobileterminal-286/Tools.m	2008-05-07 08:33:09.000000000 +0000
++++ mobileterminal-286+iPhone/Tools.m	2008-05-07 08:21:40.000000000 +0000
+@@ -4,6 +4,7 @@
+ 
+ #import "Tools.h"
+ #import "Log.h"
++#import <ImageIO/CGImageDestination.h>
+ 
+ //_______________________________________________________________________________
+ //_______________________________________________________________________________

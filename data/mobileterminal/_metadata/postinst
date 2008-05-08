@@ -1,0 +1,13 @@
+#!/bin/bash
+shopt -s extglob
+
+if [[ $# -gt 1 && $1 == configure ]]; then
+    ver=${2%%?(u)-*([0-9])}
+    rev=${2##*-}
+
+    if [[ ${ver} -lt 286 || ${ver} -eq 286 && ${rev} -lt 6 ]]; then
+        rm -f ~mobile/Library/Preferences/com.googlecode.mobileterminal.plist
+    fi
+fi
+
+exit 0
