@@ -88,6 +88,12 @@ if [[ ${comma+@} == @ ]]; then
     echo
 fi
 
+if [[ -e ${PKG_DATA}/_metadata/conflicts ]]; then
+    cat <<EOF
+Conflicts: $(cat "${PKG_DATA}/_metadata/conflicts")
+EOF
+fi
+
 cat <<EOF
 Description: $(head -n 1 "${PKG_DATA}/_metadata/description")
 EOF
