@@ -71,6 +71,11 @@ for dep in "${PKG_DEPS[@]}"; do
     fi
 
     echo -n " $(basename "${dep}" .dep)"
+    
+    ver=${PKG_DATA}/_metadata/${dep%.dep}.ver
+    if [[ -e "${ver}" ]]; then
+        echo -n " (>= $(cat "${ver}"))"
+    fi
 done
 
 if [[ -e ${PKG_DATA}/_metadata/depends ]]; then
@@ -86,6 +91,12 @@ fi
 
 if [[ ${comma+@} == @ ]]; then
     echo
+fi
+
+if [[ -e ${PKG_DATA}/_metadata/replaces ]]; then
+    cat <<EOF
+Replaces: $(cat "${PKG_DATA}/_metadata/replaces")
+EOF
 fi
 
 if [[ -e ${PKG_DATA}/_metadata/conflicts ]]; then
