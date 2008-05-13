@@ -131,3 +131,5 @@ for file in \
 do
     rm -f "${file#/}"
 done
+
+apt-get install openssh
