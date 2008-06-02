@@ -1,0 +1,30 @@
+diff -ru aptitude-0.4.4.orig/src/vscreen/transcode.cc aptitude-0.4.4.orig+iPhone/src/vscreen/transcode.cc
+--- aptitude-0.4.4.orig/src/vscreen/transcode.cc	2006-10-27 04:26:08.000000000 +0000
++++ aptitude-0.4.4.orig+iPhone/src/vscreen/transcode.cc	2008-05-13 09:30:43.000000000 +0000
+@@ -105,7 +106,7 @@
+   while(inremaining>0)
+     {
+       if(iconv(state,
+-	       const_cast<char **>(&inbuf), &inremaining,
++	       &inbuf, &inremaining,
+ 	       &outbufcur, &outremaining) == ((size_t)-1))
+ 	{
+ 	  // Some error conditions can be corrected.  There are three
+@@ -154,7 +155,7 @@
+ 	      const char *errbuf = "?";
+ 	      size_t errbufsize = strlen(errbuf);
+ 
+-	      result = iconv(state2, const_cast<char **>(&errbuf),
++	      result = iconv(state2, &errbuf,
+ 			     &errbufsize, &outbufcur, &outremaining);
+ 
+ 
+@@ -173,7 +174,7 @@
+ 		  outbuf = (char *) realloc(outbuf, outbufsize);
+ 		  outbufcur = outbuf+idx;
+ 
+-		  result = iconv(state2, const_cast<char **>(&errbuf),
++		  result = iconv(state2, &errbuf,
+ 				 &errbufsize, &outbufcur, &outremaining);
+ 		}
+ 
