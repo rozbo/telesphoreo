@@ -1,0 +1,21 @@
+diff -ru git-1.5.6.rc0/Makefile git-1.5.6.rc0+iPhone/Makefile
+--- git-1.5.6.rc0/Makefile	2008-05-26 00:47:42.000000000 +0000
++++ git-1.5.6.rc0+iPhone/Makefile	2008-05-31 18:51:02.000000000 +0000
+@@ -999,7 +999,7 @@
+ 		'-DGIT_INFO_PATH="$(infodir_SQ)"' $<
+ 
+ $(BUILT_INS): git$X
+-	$(QUIET_BUILT_IN)$(RM) $@ && ln git$X $@
++	$(QUIET_BUILT_IN)$(RM) $@ && ln -s git$X $@
+ 
+ common-cmds.h: ./generate-cmdlist.sh command-list.txt
+ 
+@@ -1241,7 +1241,7 @@
+ 		cp '$(DESTDIR_SQ)$(bindir_SQ)/git$X' \
+ 			'$(DESTDIR_SQ)$(gitexecdir_SQ)/git$X'; \
+ 	fi
+-	$(foreach p,$(BUILT_INS), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' && ln '$(DESTDIR_SQ)$(gitexecdir_SQ)/git$X' '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' ;)
++	$(foreach p,$(BUILT_INS), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' && ln -s 'git$X' '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' ;)
+ ifneq (,$X)
+ 	$(foreach p,$(patsubst %$X,%,$(filter %$X,$(ALL_PROGRAMS) $(BUILT_INS) git$X)), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p';)
+ endif
