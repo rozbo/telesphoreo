@@ -1,0 +1,25 @@
+diff -ru aptitude-0.4.4.orig/src/vscreen/config/style.h aptitude-0.4.4.orig+iPhone/src/vscreen/config/style.h
+--- aptitude-0.4.4.orig/src/vscreen/config/style.h	2006-10-27 04:26:08.000000000 +0000
++++ aptitude-0.4.4.orig+iPhone/src/vscreen/config/style.h	2008-05-13 09:17:57.000000000 +0000
+@@ -20,8 +20,6 @@
+ #ifndef STYLE_H
+ #define STYLE_H
+ 
+-#include <ncursesw/curses.h>
+-
+ #include <vscreen/curses++.h>
+ 
+ #include <string>
+diff -ru aptitude-0.4.4.orig/src/vscreen/curses++.h aptitude-0.4.4.orig+iPhone/src/vscreen/curses++.h
+--- aptitude-0.4.4.orig/src/vscreen/curses++.h	2006-10-27 04:26:08.000000000 +0000
++++ aptitude-0.4.4.orig+iPhone/src/vscreen/curses++.h	2008-05-13 09:17:43.000000000 +0000
+@@ -22,6 +22,9 @@
+ #ifndef CURSES_PLUSPLUS_H
+ #define CURSES_PLUSPLUS_H
+ 
++#define _XOPEN_SOURCE
++#define _XOPEN_SOURCE_EXTENDED 1
++
+ #include <string>
+ #include <ncursesw/curses.h>
+ 

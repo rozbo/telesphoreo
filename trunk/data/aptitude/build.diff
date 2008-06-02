@@ -1,0 +1,12 @@
+diff -ru aptitude-0.4.4.orig/Makefile.in aptitude-0.4.4.orig+iPhone/Makefile.in
+--- aptitude-0.4.4.orig/Makefile.in	2006-10-27 04:28:52.000000000 +0000
++++ aptitude-0.4.4.orig+iPhone/Makefile.in	2008-05-13 09:41:03.000000000 +0000
+@@ -209,7 +209,7 @@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 config.h.in
+-SUBDIRS = $(SRCDIRS) $(DOCDIRS) m4 po tests
++SUBDIRS = $(SRCDIRS) m4
+ MANPAGE_LOCALES = gl it pl
+ TLMANPAGES = $(wildcard aptitude.??.8)
+ TLHELPTXTS = help.txt $(wildcard help-??.txt) $(wildcard help-??_??.txt)
