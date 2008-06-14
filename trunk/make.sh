@@ -14,7 +14,7 @@ export PKG_BASE=$(realpath "$(dirname "$0")")
 . "${PKG_BASE}/helper.sh"
 
 if [[ ! -x ${PKG_BASE}/util/ldid || ${PKG_BASE}/util/ldid -ot ${PKG_BASE}/util/ldid.cpp ]]; then
-    g++ -I ~/menes -o "${PKG_BASE}"/util/ldid{,.cpp} -x c "${PKG_BASE}"/util/lookup2.c
+    g++ -I ~/menes -o "${PKG_BASE}"/util/ldid{,.cpp} -x c "${PKG_BASE}"/util/{lookup2,sha1}.c
 fi
 
 for DEP_NAME in "${PKG_DEPS[@]}"; do
@@ -104,6 +104,7 @@ export -f pkg:setup
 
 function pkg:configure() {
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
+    ac_cv_prog_cc_g=no \
     "${PKG_CONF}" \
         --build=x86_64-unknown-linux-gnu \
         --host="${PKG_TARG}" \
@@ -174,14 +175,9 @@ rmdir_ "${PKG_DEST}/usr/local"
 rmdir_ "${PKG_DEST}/usr/lib"
 rmdir_ "${PKG_DEST}/usr"
 
-find "${PKG_DEST}" -type f -perm -0500 -print0 | while read -r -d $'\0' bin; do
-    case "$(file "${bin}")" in (\
-        *': Mach-O executable acorn' |\
-        *': Mach-O dynamically linked shared library acorn'\
-    );; (*) continue;; esac
-
-    "${PKG_TARG}-strip" -x -no_uuid "${bin}"
-done
+if [[ -e "${PKG_BASE}/arch/${PKG_ARCH}/strip" ]]; then
+    . "${PKG_BASE}/arch/${PKG_ARCH}/strip"
+fi
 
 cp -a "${PKG_DATA}/_metadata/version" "${PKG_STAT}/data-ver"
 echo "${PKG_HASH}" >"${PKG_STAT}/data-md5"

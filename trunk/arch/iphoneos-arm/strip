@@ -1,0 +1,10 @@
+find "${PKG_DEST}" -type f \( -perm -0500 -o -name '*.dylib' \) -print0 | while read -r -d $'\0' bin; do
+    case "$(file "${bin}")" in (\
+        *': setuid Mach-O executable acorn' |\
+        *': Mach-O executable acorn' |\
+        *': Mach-O dynamically linked shared library acorn'\
+    );; (*) continue;; esac
+
+    CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate) \
+        "${PKG_BASE}/util/ldid" -S "${bin}"
+done
