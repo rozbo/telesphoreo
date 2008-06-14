@@ -49,6 +49,7 @@ if [[ "${darwin+@}" ]]; then
                 echo -n " -dylib_file ${dylib_name}:${dylib_file}"
             done
 
+            echo -n " -dylib_file /usr/lib/libxml2.2.dylib:$(PKG_DEST_ libxml2)/usr/lib/libxml2.2.dylib"
             echo -n " -dylib_file /usr/lib/libssl.0.9.7.dylib:$(PKG_DEST_ openssl)/usr/lib/libssl.0.9.8.dylib"
             echo -n " -dylib_file /usr/lib/libcrypto.0.9.7.dylib:$(PKG_DEST_ openssl)/usr/lib/libcrypto.0.9.8.dylib"
             echo -n " -dylib_file /usr/lib/libsqlite3.0.dylib:$(PKG_DEST_ sqlite3)/usr/lib/libsqlite3.0.dylib"
