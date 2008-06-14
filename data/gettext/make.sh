@@ -1,4 +1,4 @@
 pkg:setup
-pkg:configure --without-libintl-prefix
+pkg:configure --disable-java --without-libintl-prefix
 make
 pkg:install
