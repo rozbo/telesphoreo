@@ -1,0 +1,9 @@
+find "${PKG_DEST}" -type f \( -perm -0500 -o -name '*.dylib' \) -print0 | while read -r -d $'\0' bin; do
+    case "$(file "${bin}")" in (\
+        *': setuid Mach-O executable acorn' |\
+        *': Mach-O executable acorn' |\
+        *': Mach-O dynamically linked shared library acorn'\
+    );; (*) continue;; esac
+
+    "${PKG_TARG}-strip" -x -no_uuid "${bin}"
+done
