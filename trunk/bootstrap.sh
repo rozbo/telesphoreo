@@ -29,6 +29,9 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     PKG_NAME=${PKG_NAME##*/}
     source "${PKG_BASE}/helper.sh"
 
+    cd "${PKG_BASE}"
+    ./package.sh "${PKG_NAME}"
+
     rm -rf "${PKG_BASE}/temp"
     dpkg -x "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" "${PKG_BASE}/temp"
 
@@ -47,13 +50,91 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     ') >"${PKG_BOOT}/var/lib/dpkg/info/${PKG_NAME}.list"
 done
 
+rm -rf "${PKG_BASE}/temp"
 cd "${PKG_BOOT}"
 
-rm -f "../Packager_${PKG_ARCH}.tgz"
-tar -zcvf "../Packager_${PKG_ARCH}.tgz" *
+PKG_RSLT="${PKG_BASE}/rslt"
+mkdir -p "${PKG_RSLT}"
 
-rm -f "../Packager_${PKG_ARCH}_.zip"
-zip -ry "../Packager_${PKG_ARCH}_.zip" *
+rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz"
+tar -zcf "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz" *
+
+rm -rf "${PKG_RSLT}/CydiaInstaller.bundle"
+mkdir "${PKG_RSLT}/CydiaInstaller.bundle"
+
+mkdir "${PKG_RSLT}/CydiaInstaller.bundle/files"
+cp -a * "${PKG_RSLT}/CydiaInstaller.bundle/files"
+
+{
+    cat <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Name</key>
+    <string>Cydia Installer</string>
+    <key>Identifier</key>
+    <string>org.saurik.cydia</string>
+    <key>Description</key>
+    <string>/Working/ set of Unix tools and frameworks.</string>
+    <key>SupportedFirmware</key>
+    <array>
+        <string>iPod1,1_2.0_5A240d</string>
+        <string>iPod1,1_2.0_5A225c</string>
+        <string>iPhone1,1_1.2.0_5A147p</string>
+        <string>iPhone1,1_1.2.0_5A225c</string>
+        <string>iPhone1,1_2.0_5A240d</string>
+        <string>iPhone1,1_2.0_5A274d</string>
+        <string>iPhone1,1_2.0_5A308</string>
+        <string>iPhone1,1_2.0_5A311</string>
+    </array>
+    <key>Commands</key>
+    <array>
+EOF
+
+    find \( -not -uid 0 -o -not -gid 0 \) -printf '%U %G %p\n' | while IFS= read -r line; do
+        set ${line}
+
+        cat <<EOF
+        <dict>
+            <key>Action</key>
+            <string>SetOwner</string>
+            <key>File</key>
+            <string>${3#./}</string>
+            <key>Owner</key>
+            <string>$1:$2</string>
+        </dict>
+EOF
+    done
+
+    find -perm /6000 -printf '%m %p\n' | while IFS= read -r line; do
+        set ${line}
+
+        cat <<EOF
+        <dict>
+            <key>Action</key>
+            <string>SetPermission</string>
+            <key>File</key>
+            <string>${2#./}</string>
+            <key>Permission</key>
+            <string>$1</string>
+        </dict>
+EOF
+    done
+
+    cat <<EOF
+    </array>
+    <key>Size</key>
+    <integer>$(du -bs "${PKG_RSLT}/CydiaInstaller.bundle/files" | cut -d $'\t' -f 1)</integer>
+</dict>
+</plist>
+EOF
+} >"${PKG_RSLT}/CydiaInstaller.bundle/Info.plist"
+
+tar -zcf "${PKG_RSLT}/Pwnage_${PKG_ARCH}.tgz" -C "${PKG_RSLT}" CydiaInstaller.bundle
+
+rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.zip"
+zip -qry "${PKG_RSLT}/Manual_${PKG_ARCH}.zip" *
 
 cp -a bin/bash usr/libexec/cydia_
 cp -a bin/chmod usr/libexec/cydia_
@@ -75,12 +156,13 @@ cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
 cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
 cp -a usr/libexec/cydia/move.sh usr/libexec/cydia_
 
-rm -f "../Packager_${PKG_ARCH}.xml"
+rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
 find * -type l -print -o -name "terminfo" -prune | while read -r link; do
     echo "<array><string>Exec</string><string>/usr/libexec/cydia_/symlink $(readlink "${link}") /${link}</string></array>"
     rm -f "${link}"
-done >>"../Packager_${PKG_ARCH}.xml"
+done >"${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
 
-rm -f "../Packager_${PKG_ARCH}.zip"
-zip -qry "../Packager_${PKG_ARCH}.zip" *
+rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip"
+zip -qry "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip" *
+
 rm -rf "${PKG_BOOT}"
