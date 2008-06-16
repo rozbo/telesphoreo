@@ -13,6 +13,10 @@ export PKG_BASE=$(realpath "$(dirname "$0")")
 
 . "${PKG_BASE}/helper.sh"
 
+if [[ ! -x ${PKG_BASE}/util/arid || ${PKG_BASE}/util/arid -ot ${PKG_BASE}/util/arid.cpp ]]; then
+    g++ -I ~/menes -o "${PKG_BASE}"/util/arid{,.cpp}
+fi
+
 if [[ ! -x ${PKG_BASE}/util/ldid || ${PKG_BASE}/util/ldid -ot ${PKG_BASE}/util/ldid.cpp ]]; then
     g++ -I ~/menes -o "${PKG_BASE}"/util/ldid{,.cpp} -x c "${PKG_BASE}"/util/{lookup2,sha1}.c
 fi
@@ -105,6 +109,7 @@ export -f pkg:setup
 function pkg:configure() {
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
     ac_cv_prog_cc_g=no \
+    ac_cv_prog_cxx_g=no \
     "${PKG_CONF}" \
         --build=x86_64-unknown-linux-gnu \
         --host="${PKG_TARG}" \
@@ -178,6 +183,19 @@ rmdir_ "${PKG_DEST}/usr"
 if [[ -e "${PKG_BASE}/arch/${PKG_ARCH}/strip" ]]; then
     . "${PKG_BASE}/arch/${PKG_ARCH}/strip"
 fi
+
+find "${PKG_DEST}" -type f -name '*.elc' -print0 | while read -r -d $'\0' bin; do
+    sed -i -e '
+        s/^;;; Compiled by .*$//
+        s/^;;; from file .*$//
+        s/^;;; in Emacs version .*$//
+        s/^;;; with .*$//
+    ' "${bin}"
+done
+
+find "${PKG_DEST}" -type f -name '*.a' -print0 | while read -r -d $'\0' bin; do
+    "${PKG_BASE}/util/arid" "${bin}"
+done
 
 cp -a "${PKG_DATA}/_metadata/version" "${PKG_STAT}/data-ver"
 echo "${PKG_HASH}" >"${PKG_STAT}/data-md5"
