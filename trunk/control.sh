@@ -105,6 +105,12 @@ Conflicts: $(cat "${PKG_DATA}/_metadata/conflicts")
 EOF
 fi
 
+if [[ -e ${PKG_DATA}/_metadata/provides ]]; then
+    cat <<EOF
+Provides: $(cat "${PKG_DATA}/_metadata/provides")
+EOF
+fi
+
 cat <<EOF
 Description: $(head -n 1 "${PKG_DATA}/_metadata/description")
 EOF
