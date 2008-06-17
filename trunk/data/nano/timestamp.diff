@@ -1,0 +1,13 @@
+diff -ru nano-2.0.7/src/nano.c nano-2.0.7+iPhone/src/nano.c
+--- nano-2.0.7/src/nano.c	2007-12-18 22:00:17.000000000 +0000
++++ nano-2.0.7+iPhone/src/nano.c	2008-06-16 20:43:20.000000000 +0000
+@@ -884,8 +884,7 @@
+  * it was compiled with. */
+ void version(void)
+ {
+-    printf(_(" GNU nano version %s (compiled %s, %s)\n"), VERSION,
+-	__TIME__, __DATE__);
++    printf(_(" GNU nano version %s\n"), VERSION);
+     printf(" (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007\n");
+     printf(" Free Software Foundation, Inc.\n");
+     printf(
