@@ -354,11 +354,9 @@ index c70c6fb..1effc37 100644
  void	logwtmp(const char *, const char *, const char *) __OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_5,__IPHONE_2_0,__IPHONE_2_0);
  int	opendev(char *, int, int, char **);
  int	openpty(int *, int *, char *, struct termios *,
-diff --git /usr/include/utmp.h /usr/include/utmp.h
-index a361c50..24d6f50 100644
---- /usr/include/utmp.h
-+++ /usr/include/utmp.h
-@@ -92,7 +92,7 @@ struct lastlog {
+--- /usr/include/utmp.h	2008-05-25 06:24:18.000000000 +0000
++++ /usr/include/utmp.h	2008-06-17 19:26:23.000000000 +0000
+@@ -92,13 +92,13 @@
  	time_t	ll_time;
  	char	ll_line[UT_LINESIZE];
  	char	ll_host[UT_HOSTSIZE];
@@ -367,6 +365,13 @@ index a361c50..24d6f50 100644
  
  struct utmp {
  	char	ut_line[UT_LINESIZE];
+ 	char	ut_name[UT_NAMESIZE];
+ 	char	ut_host[UT_HOSTSIZE];
+ 	long	ut_time;
+-}					__OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_5,__IPHONE_NA,__IPHONE_NA);
++}					__OSX_AVAILABLE_BUT_DEPRECATED(__MAC_10_0,__MAC_10_5,__IPHONE_1_2,__IPHONE_2_0);
+ 
+ #endif /* !_UTMP_H_ */
 diff --git /usr/include/c++/4.0.0/arm-apple-darwin8/bits/c++config.h /usr/include/c++/4.0.0/arm-apple-darwin8/bits/c++config.h
 index b570daa..3309946 100644
 --- /usr/include/c++/4.0.0/arm-apple-darwin8/bits/c++config.h
