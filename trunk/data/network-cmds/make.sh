@@ -1,6 +1,6 @@
 shopt -s extglob
 pkg:setup
-for tproj in !(natd|ping|spray).tproj; do
+for tproj in !(natd|ping|rarpd|spray).tproj; do
     tproj=$(basename "${tproj}" .tproj)
     "${PKG_TARG}-gcc" -o "${tproj}" "${tproj}.tproj"/*.c -DPRIVATE -Dether_ntohost=_old_ether_ntohost
     pkg:usrbin "${tproj}"

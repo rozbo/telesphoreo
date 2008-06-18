@@ -1049,7 +1049,7 @@ diff -ru minicom-2.2/src/minicom.c minicom-2.2+iPhone/src/minicom.c
          wredraw(b_st, 1);
          if (citemode)
            wlocate(b_us, 0, cite_y);
-@@ -1338,13 +1338,13 @@
+@@ -1335,6 +1335,6 @@
    if (doinit)
      modeminit();
  
@@ -1057,10 +1057,9 @@ diff -ru minicom-2.2/src/minicom.c minicom-2.2+iPhone/src/minicom.c
 -  wprintf(us, "\n%s: %s\r\n", _("OPTIONS"), option_string);
 +  wprintf_(us, "\n%s %s\r\n", _("Welcome to minicom"), VERSION);
 +  wprintf_(us, "\n%s: %s\r\n", _("OPTIONS"), option_string);
- #if defined (__DATE__) && defined (__TIME__)
--  wprintf(us, "%s %s, %s.\r\n",_("Compiled on"), __DATE__,__TIME__);
-+  wprintf_(us, "%s %s, %s.\r\n",_("Compiled on"), __DATE__,__TIME__);
- #endif
+
+@@ -1340,6 +1340,6 @@
+
 -  wprintf(us, "Port %s\n", P_PORT);
 -  wprintf(us, _("\nPress %sZ for help on special keys%c\n\n"),esc_key(),'\r');
 +  wprintf_(us, "Port %s\n", P_PORT);
