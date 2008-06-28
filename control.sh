@@ -127,9 +127,15 @@ Name: $(cat "${PKG_DATA}/_metadata/name")
 EOF
 fi
 
-if [[ -e ${PKG_DATA}/_metadata/website ]]; then
+if [[ -e ${PKG_DATA}/_metadata/author ]]; then
     cat <<EOF
-Website: $(cat "${PKG_DATA}/_metadata/website")
+Author: $(cat "${PKG_DATA}/_metadata/author")
+EOF
+fi
+
+if [[ -e ${PKG_DATA}/_metadata/homepage ]]; then
+    cat <<EOF
+Homepage: $(cat "${PKG_DATA}/_metadata/homepage")
 EOF
 fi
 
