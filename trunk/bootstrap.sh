@@ -10,10 +10,6 @@ export PKG_BOOT=${PKG_BASE}/Packager
 rm -rf "${PKG_BOOT}"
 svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
-"${PKG_TARG}-gcc" -o "${PKG_BOOT}/usr/libexec/cydia_/godmode" "${PKG_BASE}/util/godmode.c"
-"${PKG_TARG}-gcc" -o "${PKG_BOOT}/usr/libexec/cydia_/symlink" "${PKG_BASE}/util/symlink.c"
-chmod +s "${PKG_BOOT}/usr/libexec/cydia_"/{godmode,symlink}
-
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
 PKG_REQS=(adv-cmds apt base bash coreutils cydia cydia-sources gawk grep inetutils less libarmfp libgcc nano network-cmds nvi rsync sed shell-cmds system-cmds tar unzip zip)
@@ -27,10 +23,10 @@ PKG_REQS=($({
 for PKG_NAME in "${PKG_REQS[@]}"; do
     PKG_NAME=${PKG_NAME%/_metadata/priority}
     PKG_NAME=${PKG_NAME##*/}
-    source "${PKG_BASE}/helper.sh"
 
     cd "${PKG_BASE}"
-    ./package.sh "${PKG_NAME}"
+    #./package.sh "${PKG_NAME}"
+    source "${PKG_BASE}/helper.sh"
 
     rm -rf "${PKG_BASE}/temp"
     dpkg -x "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" "${PKG_BASE}/temp"
@@ -87,6 +83,8 @@ cp -a * "${PKG_RSLT}/CydiaInstaller.bundle/files"
         <string>iPhone1,1_2.0_5A274d</string>
         <string>iPhone1,1_2.0_5A308</string>
         <string>iPhone1,1_2.0_5A311</string>
+        <string>iPhone1,1_2.0_5A331</string>
+        <string>iPhone1,1_2.0_5A345</string>
     </array>
     <key>Commands</key>
     <array>
@@ -136,33 +134,39 @@ tar -zcf "${PKG_RSLT}/Pwnage_${PKG_ARCH}.tgz" -C "${PKG_RSLT}" CydiaInstaller.bu
 rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.zip"
 zip -qry "${PKG_RSLT}/Manual_${PKG_ARCH}.zip" *
 
-cp -a bin/bash usr/libexec/cydia_
-cp -a bin/chmod usr/libexec/cydia_
-cp -a bin/chown usr/libexec/cydia_
-cp -a bin/cp usr/libexec/cydia_
-cp -a bin/df usr/libexec/cydia_
-cp -a bin/grep usr/libexec/cydia_
-cp -a bin/ln usr/libexec/cydia_
-cp -a bin/mkdir usr/libexec/cydia_
-cp -a bin/mktemp usr/libexec/cydia_
-cp -a bin/rm usr/libexec/cydia_
-cp -a bin/sed usr/libexec/cydia_
-cp -a sbin/reboot usr/libexec/cydia_
-cp -a usr/bin/basename usr/libexec/cydia_
-cp -a usr/bin/du usr/libexec/cydia_
-cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_
-cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia_
-cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
-cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
-cp -a usr/libexec/cydia/move.sh usr/libexec/cydia_
+if [[ ${PKG_ARCH} == darwin-arm ]]; then
+    "${PKG_TARG}-gcc" -o "${PKG_BOOT}/usr/libexec/cydia_/godmode" "${PKG_BASE}/util/godmode.c"
+    "${PKG_TARG}-gcc" -o "${PKG_BOOT}/usr/libexec/cydia_/symlink" "${PKG_BASE}/util/symlink.c"
+    chmod +s "${PKG_BOOT}/usr/libexec/cydia_"/{godmode,symlink}
 
-rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
-find * -type l -print -o -name "terminfo" -prune | while read -r link; do
-    echo "<array><string>Exec</string><string>/usr/libexec/cydia_/symlink $(readlink "${link}") /${link}</string></array>"
-    rm -f "${link}"
-done >"${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
+    cp -a bin/bash usr/libexec/cydia_
+    cp -a bin/chmod usr/libexec/cydia_
+    cp -a bin/chown usr/libexec/cydia_
+    cp -a bin/cp usr/libexec/cydia_
+    cp -a bin/df usr/libexec/cydia_
+    cp -a bin/grep usr/libexec/cydia_
+    cp -a bin/ln usr/libexec/cydia_
+    cp -a bin/mkdir usr/libexec/cydia_
+    cp -a bin/mktemp usr/libexec/cydia_
+    cp -a bin/rm usr/libexec/cydia_
+    cp -a bin/sed usr/libexec/cydia_
+    cp -a sbin/reboot usr/libexec/cydia_
+    cp -a usr/bin/basename usr/libexec/cydia_
+    cp -a usr/bin/du usr/libexec/cydia_
+    cp -a usr/lib/libhistory.5.2.dylib usr/libexec/cydia_
+    cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia_
+    cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
+    cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
+    cp -a usr/libexec/cydia/move.sh usr/libexec/cydia_
 
-rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip"
-zip -qry "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip" *
+    rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
+    find * -type l -print -o -name "terminfo" -prune | while read -r link; do
+        echo "<array><string>Exec</string><string>/usr/libexec/cydia_/symlink $(readlink "${link}") /${link}</string></array>"
+        rm -f "${link}"
+    done >"${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
+
+    rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip"
+    zip -qry "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip" *
+fi
 
 rm -rf "${PKG_BOOT}"
