@@ -35,8 +35,8 @@ diff -ru stunnel-3.26/Makefile.in stunnel-3.26+iPhone/Makefile.in
 -stunnel.so: Makefile env.c
 -	$(CC) -fPIC -shared $(LDFLAGS) -o stunnel.so env.c $(LIBS) || \
 -	touch stunnel.so
-+libstunnel.dylib: Makefile env.c
-+	$(CC) -fPIC -shared $(LDFLAGS) -dynamiclib -o libstunnel.dylib env.c $(LIBS)
++libstunnel.dylib: Makefile env.o
++	$(CC) -fPIC -shared $(LDFLAGS) -dynamiclib -o libstunnel.dylib env.o $(LIBS)
  
  Makefile: configure Makefile.in
  	./configure
