@@ -5,7 +5,7 @@
  	  continue
  	  ;;
 -	*.la) lib="$deplib" ;;
-+	*.la) lib="$("${PKG_BASE}/util/find.sh" "$deplib")" ;;
++	*.la) lib="$("${PKG_BASE}/util/find.sh" "$deplib")"; lib="${lib%%:*}" ;;
  	*.$libext)
  	  if test "$pass" = conv; then
  	    deplibs="$deplib $deplibs"

@@ -7,7 +7,7 @@ while [[ $# -ne 0 ]]; do
     if [[ $1 == /* ]]; then
         unset found
 
-        found=$(echo "${PKG_PATH}:" | while read -r -d ':' path; do
+        found=$(echo "${PKG_PATH}:" | while IFS= read -r -d : path; do
             if [[ -e ${path}$1 ]]; then
                 if [[ ${found+@} ]]; then
                     echo -n ':'
