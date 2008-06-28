@@ -1,0 +1,14 @@
+diff -ru LibVNCServer-0.9.1/Makefile.in LibVNCServer-0.9.1+iPhone/Makefile.in
+--- LibVNCServer-0.9.1/Makefile.in	2007-05-27 15:15:53.000000000 +0000
++++ LibVNCServer-0.9.1+iPhone/Makefile.in	2008-06-26 00:11:01.000000000 +0000
+@@ -225,8 +225,8 @@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+ with_ffmpeg = @with_ffmpeg@
+-SUBDIRS = libvncserver examples contrib libvncclient vncterm classes client_examples test
+-DIST_SUBDIRS = libvncserver examples contrib libvncclient vncterm classes client_examples test
++SUBDIRS = libvncserver contrib libvncclient classes test
++DIST_SUBDIRS = libvncserver contrib libvncclient classes test
+ bin_SCRIPTS = libvncserver-config
+ #include_HEADERS=rfb.h rfbconfig.h rfbint.h rfbproto.h keysym.h rfbregion.h
+ include_HEADERS = rfb/rfb.h rfb/rfbconfig.h rfb/rfbint.h rfb/rfbproto.h \
