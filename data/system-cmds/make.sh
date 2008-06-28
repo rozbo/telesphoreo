@@ -29,5 +29,6 @@ pkg: mkdir -p /bin /sbin /usr/bin /usr/sbin
 
 pkg: cp -a sync /bin
 pkg: cp -a reboot dmesg /sbin
+pkg: ln -s reboot /sbin/halt
 pkg: cp -a passwd zprint getty getconf hostinfo login /usr/bin
 pkg: cp -a sysctl nvram vipw iostat /usr/sbin
