@@ -63,6 +63,20 @@ index bf8ba70..10caed4 100644
              #define MAC_OS_X_VERSION_MIN_REQUIRED MAC_OS_X_VERSION_10_4
  		#elif __arm__
  			#define MAC_OS_X_VERSION_MIN_REQUIRED MAC_OS_X_VERSION_10_5
+diff --git /usr/include/sys/cdefs.h /usr/include/sys/cdefs.h
+index 64e4e8b..0f43f4c 100644
+--- /usr/include/sys/cdefs.h
++++ /usr/include/sys/cdefs.h
+@@ -253,7 +253,9 @@
+ 
+ /* These settings are particular to each product. */
+ /* Product: iPhone */
++#if __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__-0 >= 20000
+ #define __DARWIN_ONLY_64_BIT_INO_T	1
++#endif
+ #define __DARWIN_ONLY_UNIX_CONFORMANCE	1
+ #define __DARWIN_ONLY_VERS_1050		1
+ 
 --- /usr/include/CoreFoundation/CoreFoundation.h	2008-02-27 06:36:09.000000000 +0000
 +++ /usr/include/CoreFoundation/CoreFoundation.h	2008-03-29 18:47:27.000000000 +0000
 @@ -78,7 +78,7 @@
