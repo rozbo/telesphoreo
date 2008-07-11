@@ -1,7 +1,7 @@
-diff --git a/mach/arm/_structs.h b/mach/arm/_structs.h
+diff --git /usr/include/mach/arm/_structs.h /usr/include/mach/arm/_structs.h
 index e130afa..1f98c98 100644
---- a/mach/arm/_structs.h
-+++ b/mach/arm/_structs.h
+--- /usr/include/mach/arm/_structs.h
++++ /usr/include/mach/arm/_structs.h
 @@ -25,7 +25,7 @@ _STRUCT_ARM_EXCEPTION_STATE
  };
  #endif /* __DARWIN_UNIX03 */
