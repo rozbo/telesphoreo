@@ -8,6 +8,6 @@ index e130afa..1f98c98 100644
 
 -#if __DARWIN_UNIX03
 +#if __DARWIN_UNIX03 || 1
- #define _STRUCT_ARM_THREAD_STATE       struct __darwin_arm_thread_state
+ #define _STRUCT_ARM_THREAD_STATE	struct __darwin_arm_thread_state
  _STRUCT_ARM_THREAD_STATE
  {
