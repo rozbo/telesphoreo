@@ -1,7 +1,7 @@
-diff --git a/mach/arm/thread_status.h b/mach/arm/thread_status.h
+diff --git /usr/include/mach/arm/thread_status.h /usr/include/mach/arm/thread_status.h
 index 69f9f4f..cc66a92 100755
---- a/mach/arm/thread_status.h
-+++ b/mach/arm/thread_status.h
+--- /usr/include/mach/arm/thread_status.h
++++ /usr/include/mach/arm/thread_status.h
 @@ -2,6 +2,7 @@
  #define _MACH_ARM_THREAD_STATUS_H_
 

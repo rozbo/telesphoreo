@@ -386,10 +386,10 @@ index 0be1f62..c9ec079 100644
  #endif /* (_POSIX_C_SOURCE && !_DARWIN_C_SOURCE) */
  
  #endif /* __APPLE_API_OBSOLETE */
-diff --git a/mach/arm/_structs.h b/mach/arm/_structs.h
+diff --git /usr/include/mach/arm/_structs.h /usr/include/mach/arm/_structs.h
 index e130afa..1f98c98 100644
---- a/mach/arm/_structs.h
-+++ b/mach/arm/_structs.h
+--- /usr/include/mach/arm/_structs.h
++++ /usr/include/mach/arm/_structs.h
 @@ -25,7 +25,7 @@ _STRUCT_ARM_EXCEPTION_STATE
  };
  #endif /* __DARWIN_UNIX03 */
@@ -399,10 +399,10 @@ index e130afa..1f98c98 100644
  #define _STRUCT_ARM_THREAD_STATE       struct __darwin_arm_thread_state
  _STRUCT_ARM_THREAD_STATE
  {
-diff --git a/mach/arm/thread_status.h b/mach/arm/thread_status.h
+diff --git /usr/include/mach/arm/thread_status.h /usr/include/mach/arm/thread_status.h
 index 69f9f4f..cc66a92 100755
---- a/mach/arm/thread_status.h
-+++ b/mach/arm/thread_status.h
+--- /usr/include/mach/arm/thread_status.h
++++ /usr/include/mach/arm/thread_status.h
 @@ -2,6 +2,7 @@
  #define _MACH_ARM_THREAD_STATUS_H_
 
