@@ -7,8 +7,8 @@ pkg: cp -a Library /usr/libexec/cydia
 pkg: cp -a exec /usr/libexec/cydia
 pkg: cp -a %/alert /usr/libexec/cydia
 
-pkg: mkdir -p /System/Library/LaunchDaemons
-pkg: mv /usr/libexec/cydia/com.saurik.Cydia.Firmware /System/Library/LaunchDaemons
+pkg: mkdir -p /System/Library
+pkg: cp -a LaunchDaemons /System/Library
 
 pkg: mkdir /Applications
 pkg: cp -a Cydia.app /Applications
