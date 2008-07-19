@@ -1,0 +1,17 @@
+Index: Cydia.mm
+===================================================================
+--- cydia-1.0/cydia/Cydia.mm	(revision 2474)
++++ cydia-1.0+iPhone/cydia/Cydia.mm	(working copy)
+@@ -4408,6 +4408,12 @@
+     return @"Packages";
+ }
+ 
++- (void) setDelegate:(id)delegate {
++    [super setDelegate:delegate];
++    [packages_ setDelegate:delegate];
++    [sources_ setDelegate:delegate];
++}
++
+ @end
+ /* }}} */
+ /* Search View {{{ */
