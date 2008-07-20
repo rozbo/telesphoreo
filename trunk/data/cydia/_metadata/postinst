@@ -1,2 +1,6 @@
 #!/bin/bash
-/usr/libexec/cydia/space.sh
+if [[ ${CYDIA+@} ]]; then
+    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
+    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
+    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
+fi
