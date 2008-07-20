@@ -1,3 +1,0 @@
-#!/bin/bash
-/usr/libexec/cydia/alert -t 'Please Restart Cydia' -b '(But wait until your current installation procedure is complete.)' -o &
-exit 0
