@@ -1,5 +1,5 @@
-pkg:extract
-cd uicaboodle.java-*
+pkg:setup
+cd uicaboodle.java
 mv ../minimal source/com/saurik/uicaboodle
 ./ant.sh
 pkg: mkdir -p /usr/lib /usr/share/java
