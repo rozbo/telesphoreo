@@ -81,6 +81,7 @@ private ArrayList<Section> sections_;
 @Message public void applicationDidFinishLaunching$(Object unused)
     throws Exception
 {
+    System.out.println("work");
     contacts_ = new ArrayList<Contact>();
     sections_ = new ArrayList<Section>();
 
@@ -95,7 +96,7 @@ private ArrayList<Section> sections_;
         } finally { st.close(); }
     } finally { ab.close(); }
 
-    CGRect outer = UIHardware.fullScreenApplicationContentRect();
+    CGRect outer = UIHardware.$fullScreenApplicationContentRect();
     window = new UIWindow().initWithContentRect$(outer);
 
     window.orderFront$(this);
@@ -103,7 +104,7 @@ private ArrayList<Section> sections_;
     window._setHidden$(NO);
 
     CGRect inner = window.bounds();
-    CGSize navsize = UINavigationBar.defaultSize();
+    CGSize navsize = UINavigationBar.$defaultSize();
     CGRect navrect = new CGRect(0, 0, inner.size.width, navsize.height);
 
     UIView view = new UIView().initWithFrame$(inner);
@@ -144,13 +145,14 @@ private ArrayList<Section> sections_;
     list.setDataSource$(this);
     list.reloadData();
 
+    /* // XXX: this doesn't work the same on 2.0 and I don't want to think about porting it right now
     AVController controller = new AVController().init();
     CharSequence wavfile = (CharSequence) ((NSBundle) NSBundle.mainBundle()).pathForResource$ofType$("start", "wav");
     AVItem wavitem = new AVItem().initWithPath$error$(wavfile, null);
     wavitem.setVolume$(100);
     controller.setCurrentItem$(wavitem);
     controller.setCurrentTime$(0);
-    controller.play$(null);
+    controller.play$(null);*/
 }
 
 }
