@@ -16,7 +16,9 @@ function parse() {
         elif [[ $1 = -mmacosx-version-min=* ]]; then
             mmacosx_version_min=${1#-mmacosx-version-min=}
         elif [[ $1 == -o ]]; then
-            o=$2
+            if [[ $2 != *.o ]]; then
+                o=$2
+            fi
             shift
         fi; shift
     done
