@@ -1,7 +1,19 @@
-diff -ru odcctools-236/libstuff/swap_headers.c odcctools-236+iPhone/libstuff/swap_headers.c
---- odcctools-236/libstuff/swap_headers.c	2008-03-20 16:32:08.000000000 +0000
-+++ odcctools-236+iPhone/libstuff/swap_headers.c	2008-03-30 20:18:22.000000000 +0000
-@@ -634,13 +634,13 @@
+diff -ru odcctools-253/libstuff/bytesex.c odcctools-253+iPhone/libstuff/bytesex.c
+--- odcctools-253/libstuff/bytesex.c	2008-07-21 18:58:48.000000000 +0000
++++ odcctools-253+iPhone/libstuff/bytesex.c	2008-07-21 19:15:06.000000000 +0000
+@@ -1408,7 +1408,7 @@
+ #endif /* x86_THREAD_STATE64 */
+ 
+ /* current i386 thread states */
+-#if i386_THREAD_STATE == 1
++#if i386_THREAD_STATE == 1 && 0
+ __private_extern__
+ void
+ swap_i386_float_state(
+diff -ru odcctools-253/libstuff/swap_headers.c odcctools-253+iPhone/libstuff/swap_headers.c
+--- odcctools-253/libstuff/swap_headers.c	2008-07-21 18:58:48.000000000 +0000
++++ odcctools-253+iPhone/libstuff/swap_headers.c	2008-07-21 19:07:38.000000000 +0000
+@@ -635,13 +635,13 @@
  		   || cputype == CPU_TYPE_X86_64
  #endif /* x86_THREAD_STATE64 */
  		   ){
@@ -17,7 +29,7 @@ diff -ru odcctools-236/libstuff/swap_headers.c odcctools-236+iPhone/libstuff/swa
  		    i386_exception_state_t *exc;
  #endif /* i386_THREAD_STATE == 1 */
  
-@@ -678,8 +678,8 @@
+@@ -679,8 +679,8 @@
  				    "LC_THREAD", i);
  				return(FALSE);
  			    }
@@ -28,7 +40,7 @@ diff -ru odcctools-236/libstuff/swap_headers.c odcctools-236+iPhone/libstuff/swa
  			    break;
  /* current i386 thread states */
  #if i386_THREAD_STATE == 1
-@@ -694,8 +694,8 @@
+@@ -695,8 +695,8 @@
  				    "LC_THREAD", i);
  				return(FALSE);
  			    }
@@ -39,7 +51,7 @@ diff -ru odcctools-236/libstuff/swap_headers.c odcctools-236+iPhone/libstuff/swa
  			    break;
  			case i386_EXCEPTION_STATE:
  			    if(count != I386_EXCEPTION_STATE_COUNT){
-@@ -1313,9 +1313,9 @@
+@@ -1350,9 +1350,9 @@
  /* current i386 thread states */
  #if i386_THREAD_STATE == 1
  			case i386_FLOAT_STATE:
