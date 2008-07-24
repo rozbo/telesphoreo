@@ -21,19 +21,32 @@ static PyObject*  objc_UIApplicationMain(
     int res = -1;
 
     PyObject *arga;
-    PyObject *_class;
+    PyObject *_class = NULL;
+
+#ifdef __OBJC2__
+    PyObject *principal;
+    PyObject *delegate;
+#endif
 
     _assert(PyObjC_API != NULL);
     _assert(args != NULL);
 
-    /* XXX: correctly parse __OBJC2__ condition */
-    if (!PyArg_ParseTuple(args, "OO", &arga, &_class)) {
-	PyErr_SetString(PyExc_TypeError, "Invalid Arguments");
+    if (PyArg_ParseTuple(args, "OO", &arga, &_class)) {
+        if (_class == NULL) {
+            PyErr_SetString(PyExc_TypeError, "UIApplicationMain: null class");
+            return NULL;
+        }
+    }
+#ifdef __OBJC2__
+    else if (!PyArg_ParseTuple(args, "OOO", &arga, &principal, &delegate)) {
+    }
+#endif
+    else {
+        PyErr_SetString(PyExc_TypeError, "Invalid Arguments");
         return NULL;
     }
 
     _assert(arga != NULL);
-    _assert(_class != NULL);
 
     argc = PySequence_Size(arga);
     argv = calloc(argc + 1, sizeof(char *));
@@ -64,9 +77,18 @@ static PyObject*  objc_UIApplicationMain(
 
     PyObjC_DURING
 #ifdef __OBJC2__
-        res = UIApplicationMain(argc, argv, nil, [NSString stringWithUTF8String:class_getName(PyObjC_API->cls_get_class(_class))]);
+        if (_class == NULL)
+            res = UIApplicationMain(argc, argv,
+                /* XXX: do I have to do these null checks? */
+                principal == NULL ? nil : PyObjCObject_GetObject(principal),
+                delegate == NULL ? nil : PyObjCObject_GetObject(delegate)
+            );
+        else {
+            NSString *name = [NSString stringWithUTF8String:class_getName(PyObjCClass_GetClass(_class))];
+            res = UIApplicationMain(argc, argv, name, name);
+        }
 #else
-        res = UIApplicationMain(argc, argv, PyObjC_API->cls_get_class(_class));
+        res = UIApplicationMain(argc, argv, PyObjCClass_GetClass(_class));
 #endif
     PyObjC_HANDLER
         PyObjCErr_FromObjC(localException);
