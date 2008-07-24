@@ -4,12 +4,13 @@
 # While I managed to get PyObjC working, I didn't actually
 # know any Python to go with it ;P. - Jay Freeman (saurik)
 
+import sys
+
 import objc
 from _uicaboodle import UIApplicationMain
 from objc import YES, NO, NULL
 from sqlite3 import dbapi2 as sqlite 
 
-objc.loadBundle("Celestial", globals(), "/System/Library/Frameworks/Celestial.framework")
 objc.loadBundle("UIKit", globals(), "/System/Library/Frameworks/UIKit.framework")
 
 class PYApplication(UIApplication):
@@ -108,13 +109,4 @@ class PYApplication(UIApplication):
         self.list.setDataSource_(self)
         self.list.reloadData()
 
-        # XXX: this isn't working... it does from Java...
-        controller = AVController.alloc().init()
-        wavfile = NSBundle.mainBundle().pathForResource_ofType_("start", "wav")
-        wavitem = AVItem.alloc().initWithPath_error_(wavfile, NULL)
-        wavitem.setVolume_(100)
-        controller.setCurrentItem_(wavitem)
-        controller.setCurrentTime_(0)
-        controller.play_(NULL)
-
-UIApplicationMain(["HelloPython"], PYApplication)
+UIApplicationMain(sys.argv, PYApplication)
