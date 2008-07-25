@@ -1,4 +1,7 @@
 pkg:extract
+pkg:cd */data/templates/
+pkg:rm template_armle_darwin.bin
+pkg:${PKG_TARG}-gcc -o template_armle_darwin.bin template.c
 pkg: mkdir -p /usr/share /usr/bin
 pkg: cp -a * /usr/share/msf3
 pkg: find / -name '.svn' -prune -exec rm -rfv {} \;
