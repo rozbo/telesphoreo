@@ -1,36 +1,29 @@
+diff -ru mobileterminal-286/main.m mobileterminal-286+iPhone/main.m
+--- mobileterminal-286/main.m	2008-05-07 08:07:55.000000000 +0000
++++ mobileterminal-286+iPhone/main.m	2008-07-25 09:22:12.000000000 +0000
+@@ -3,6 +3,8 @@
+ #import "MobileTerminal.h"
+ #import "Settings.h"
+ 
++void UIApplicationUseLegacyEvents(BOOL use);
++
+ int main(int argc, char **argv)
+ {
+   [[NSAutoreleasePool alloc] init];
+@@ -27,5 +29,6 @@
+     [[Settings sharedInstance] setArguments:args];
+   }
+ 
++  UIApplicationUseLegacyEvents(1);
+   return UIApplicationMain(argc, argv, [MobileTerminal class]);
+ }
 diff -r -u mobileterminal-286/GestureView.m mobileterminal-286+iPhone/GestureView.m
 --- mobileterminal-286/GestureView.m	2008-05-07 08:33:09.000000000 +0000
 +++ mobileterminal-286+iPhone/GestureView.m	2008-07-06 19:51:22.000000000 +0000
-@@ -13,6 +13,11 @@
- #import "Tools.h"
- #include <math.h>
- 
-+@protocol UITouchCompatibility
-+- (CGPoint)locationInView:(UIView *)view;
-+- (CGPoint)previousLocationInView:(UIView *)view;
-+@end
-+
- @implementation GestureView
- 
- //_______________________________________________________________________________
-@@ -77,9 +82,23 @@
+@@ -77,9 +82,9 @@
  
  //_______________________________________________________________________________
  
-+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event {
-+    return [self beginTrackingAt:[touch locationInView:self] withEvent:event];
-+}
-+
-+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event {
-+    return [self continueTrackingAt:[touch locationInView:self] previous:[touch previousLocationInView:self] withEvent:event];
-+}
-+
-+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event {
-+    return [self endTrackingAt:[touch locationInView:self] previous:[touch previousLocationInView:self] withEvent:event];
-+}
-+
-+//_______________________________________________________________________________
-+
  - (void) mouseDown:(GSEvent*)event
  {
 -	mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event)];
