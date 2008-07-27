@@ -1,0 +1,64 @@
+diff -ru gdb-961/Makefile gdb-961+iPhone/Makefile
+--- gdb-961/Makefile	2008-05-29 23:58:29.000000000 +0000
++++ gdb-961+iPhone/Makefile	2008-07-04 10:47:06.000000000 +0000
+@@ -287,8 +287,8 @@
+ 		fi;\
+ 	done;
+ 	(cd $(SYMROOT)/$(LIBEXEC_GDB_DIR)/ ; dsymutil gdb-arm-apple-darwin)
+-	strip -S -o $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin \
+-		$(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin
++	cp $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin \
++		$(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin
+ 	chown root:wheel $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin
+ 	chmod 755 $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-arm-apple-darwin
+ 	mkdir -p ${DSTROOT}/usr/bin
+@@ -339,8 +339,8 @@
+ 			fi; \
+ 		done; \
+                 (cd $(SYMROOT)/$(LIBEXEC_GDB_DIR)/ ; dsymutil gdb-$${cross_arch}-apple-darwin); \
+-		strip -S -o $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${cross_arch}-apple-darwin \
+-			$(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${cross_arch}-apple-darwin; \
++		cp $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${cross_arch}-apple-darwin \
++			$(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${cross_arch}-apple-darwin; \
+ 	done; \
+ 	mkdir -p ${DSTROOT}/usr/bin; \
+ 	sed -e 's/version=.*/version=$(GDB_VERSION)-$(GDB_RC_VERSION)/' \
+@@ -552,8 +552,8 @@
+ 			-output $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+ 		dsymutil -o $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}.dSYM \
+                          $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+-	 	strip -S -o $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
+-			$(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
++	 	cp $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
++			$(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+ 		cp $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+ 	done
+ 
+@@ -567,8 +567,8 @@
+ 	set -e; for target in $(CANONICAL_ARCHS); do \
+ 		dsymutil -o $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}.dSYM \
+                          $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+-	 	strip -S -o $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
+-			$(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
++	 	cp $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
++			$(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+ 		cp $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
+                    $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
+ 		if echo $${target} | egrep '^[^-]*-apple-darwin' > /dev/null; then \
+@@ -584,7 +584,6 @@
+ 	set -e; for dstroot in $(SYMROOT) $(DSTROOT); do \
+ 		$(INSTALL) -c -m 755 $(OBJROOT)/$(ARM_TARGET)--$(ARM_TARGET)/gdb/gdbserver/gdbserver $${dstroot}/usr/bin/gdbserver; \
+ 	done
+-	strip -S $(DSTROOT)/usr/bin/gdbserver
+ 
+ install-binutils-macosx:
+ 
+@@ -592,7 +591,7 @@
+ 		instname=`echo $${i} | sed -e 's/\\-new//'`; \
+ 		lipo -create $(patsubst %,$(OBJROOT)/%/binutils/$${i},$(NATIVE_TARGETS)) \
+ 			-output $(SYMROOT)/$(LIBEXEC_BINUTILS_DIR)/$${instname}; \
+-		strip -S -o $(DSTROOT)/$(LIBEXEC_BINUTILS_DIR)/$${instname} $(SYMROOT)/$(LIBEXEC_BINUTILS_DIR)/$${instname}; \
++		cp $(SYMROOT)/$(LIBEXEC_BINUTILS_DIR)/$${instname} $(DSTROOT)/$(LIBEXEC_BINUTILS_DIR)/$${instname}; \
+ 	done
+ 
+ install-chmod-macosx:
