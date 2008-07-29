@@ -73,7 +73,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1117,266 @@
+@@ -1062,159 +1117,249 @@
  
        if (Queue == 0)
  	 continue;
@@ -150,17 +150,6 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      URI uri = std::string(url);
 +      std::string hs = uri.Host;
 +
-+#if __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ >= 10200
-+      struct hostent *he = gethostbyname(hs.c_str());
-+      if (he == NULL || he->h_addr_list[0] == NULL) {
-+         _error->Error(hstrerror(h_errno));
-+         Fail(true);
-+         free(url);
-+      }
-+
-+      uri.Host = inet_ntoa(* (struct in_addr *) he->h_addr_list[0]);
-+#endif
-+
 +      std::string urs = uri;
 +
 +      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, urs.c_str(), se);
@@ -196,12 +185,6 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      CFRelease(sr);
 +
 +      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.98"));
-+
-+#if __ENVIRONMENT_ASPEN_VERSION_MIN_REQUIRED__ >= 10200
-+      sr = CFStringCreateWithCString(kCFAllocatorDefault, hs.c_str(), se);
-+      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Host"), sr);
-+      CFRelease(sr);
-+#endif
 +
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);
