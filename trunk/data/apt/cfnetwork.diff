@@ -168,7 +168,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Range"), sr);
 +         CFRelease(sr);
 +      } else if (Queue->LastModified != 0) {
-+         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
++         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(Queue->LastModified).c_str(), se);
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Modified-Since"), sr);
 +         CFRelease(sr);
 +      }
