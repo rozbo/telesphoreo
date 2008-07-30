@@ -27,7 +27,7 @@ diff -ru Python-2.5.1/configure.in Python-2.5.1+iPhone/configure.in
  fi
  AC_MSG_RESULT($SO)
  AC_DEFINE_UNQUOTED(SHLIB_EXT, "$SO", [Define this to be extension of shared libraries (including the dot!).])
-@@ -1473,7 +1474,7 @@
+@@ -1473,12 +1474,11 @@
  	Darwin/*)
  		# Use -undefined dynamic_lookup whenever possible (10.3 and later).
  		# This allows an extension to be used in any Python
@@ -36,6 +36,11 @@ diff -ru Python-2.5.1/configure.in Python-2.5.1+iPhone/configure.in
  		if test ${cur_target} '>' 10.2; then
  			cur_target=10.3
  		fi
+		CONFIGURE_MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET-${cur_target}}
+-		EXPORT_MACOSX_DEPLOYMENT_TARGET=''
+		if test ${MACOSX_DEPLOYMENT_TARGET-${cur_target}} '>' 10.2
+		then
+			if test "${enable_universalsdk}"; then
 @@ -3367,41 +3368,6 @@
    AC_MSG_RESULT(no)
  fi
