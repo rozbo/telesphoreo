@@ -72,7 +72,7 @@ for dep in "${PKG_DEPS[@]}"; do
 
     echo -n " $(basename "${dep}" .dep)"
     
-    ver=${PKG_DATA}/_metadata/${dep%.dep}.ver
+    ver=${PKG_DATA}/_metadata/${dep%.dep}.ver.${PKG_ARCH}
     if [[ -e "${ver}" ]]; then
         echo -n " (>= $(cat "${ver}"))"
     fi
