@@ -48,17 +48,19 @@ diff -ru sqlite-3.5.9/src/os_unix.c sqlite-3.5.9+iPhone/src/os_unix.c
  
    /* It's odd to simulate an io-error here, but really this is just
    ** using the io-error infrastructure to test that SQLite handles this
-@@ -2516,6 +2526,16 @@
+@@ -2516,6 +2526,18 @@
    */
    SimulateIOError( return SQLITE_ERROR );
  
 +#ifdef __APPLE__
 +  if (azDirs[1] == NULL) {
++    NSPushAutoreleasePool();
 +    cfstr = (CFStringRef) NSTemporaryDirectory();
 +    maxsize = CFStringGetMaximumSizeForEncoding(CFStringGetLength(cfstr), kCFStringEncodingUTF8) + 1;
 +    cstr = malloc(maxsize);
 +    CFStringGetCString(cfstr, cstr, maxsize, kCFStringEncodingUTF8);
 +    azDirs[1] = cstr;
++    NSPopAutoreleasePool();
 +  }
 +#endif
 +
