@@ -73,7 +73,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1117,249 @@
+@@ -1062,159 +1117,257 @@
  
        if (Queue == 0)
  	 continue;
@@ -151,6 +151,14 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      std::string hs = uri.Host;
 +
 +      std::string urs = uri;
++
++      for (;;) {
++         size_t bad = urs.find_first_of("+");
++         if (bad == std::string::npos)
++            break;
++         // XXX: generalize
++         urs = urs.substr(0, bad) + "%2b" + urs.substr(bad + 1);
++      }
 +
 +      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, urs.c_str(), se);
 +      CFURLRef ur = CFURLCreateWithString(kCFAllocatorDefault, sr, NULL);
