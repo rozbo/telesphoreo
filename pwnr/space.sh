@@ -5,7 +5,7 @@ function stash() {
     src=$1
     dst=var/stash/${src##*/}
     mv "${src}" "${dst}"
-    dst=${src//+([a-z])/..}/${dst}
+    dst=${src//+([A-Za-z])/..}/${dst}
     ln -s "${dst#../}" "${src}"
 }
 
