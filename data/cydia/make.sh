@@ -15,5 +15,7 @@ pkg: cp -a Cydia.app /Applications
 pkg: cp -a Cydia /Applications/Cydia.app/Cydia_
 pkg: chmod +s /Applications/Cydia.app/Cydia_
 
+pkg: mv /Applications/Cydia.app/Sources/iphonehe.{,com.png}
+
 pkg: mkdir -p /System/Library/PreferenceBundles
 pkg: cp -a CydiaSettings.bundle /System/Library/PreferenceBundles
