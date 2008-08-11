@@ -1,6 +1,0 @@
-#!/bin/bash
-if [[ ${CYDIA+@} ]]; then
-    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
-    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
-    echo 'PLEASE RESTART CYDIA AFTER INSTALL!'
-fi
