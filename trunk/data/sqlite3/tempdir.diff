@@ -36,11 +36,12 @@ diff -ru sqlite-3.5.9/src/os_unix.c sqlite-3.5.9+iPhone/src/os_unix.c
       "/var/tmp",
       "/usr/tmp",
       "/tmp",
-@@ -2509,6 +2514,11 @@
+@@ -2509,6 +2514,12 @@
    int i, j;
    struct stat buf;
    const char *zDir = ".";
 +#ifdef __APPLE__
++  void *pool;
 +  CFStringRef cfstr;
 +  CFIndex maxsize;
 +  char *cstr;
@@ -54,13 +55,13 @@ diff -ru sqlite-3.5.9/src/os_unix.c sqlite-3.5.9+iPhone/src/os_unix.c
  
 +#ifdef __APPLE__
 +  if (azDirs[1] == NULL) {
-+    NSPushAutoreleasePool();
++    pool = NSPushAutoreleasePool(0);
 +    cfstr = (CFStringRef) NSTemporaryDirectory();
 +    maxsize = CFStringGetMaximumSizeForEncoding(CFStringGetLength(cfstr), kCFStringEncodingUTF8) + 1;
 +    cstr = malloc(maxsize);
 +    CFStringGetCString(cfstr, cstr, maxsize, kCFStringEncodingUTF8);
 +    azDirs[1] = cstr;
-+    NSPopAutoreleasePool();
++    NSPopAutoreleasePool(pool);
 +  }
 +#endif
 +
