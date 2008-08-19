@@ -1,0 +1,11 @@
+diff -ru class-dump-3.1.2-x/src/CDMultiFileVisitor.m class-dump-3.1.2-x+iPhone/src/CDMultiFileVisitor.m
+--- class-dump-3.1.2-x/src/CDMultiFileVisitor.m	2007-11-02 09:46:37.000000000 +0000
++++ class-dump-3.1.2-x+iPhone/src/CDMultiFileVisitor.m	2008-08-19 01:32:55.000000000 +0000
+@@ -10,6 +10,7 @@
+ #import "CDOCClass.h"
+ #import "CDOCProtocol.h"
+ #import "CDOCIvar.h"
++#import "CDOCCategory.h"
+ 
+ @implementation CDMultiFileVisitor
+ 
