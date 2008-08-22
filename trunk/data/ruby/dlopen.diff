@@ -1,0 +1,39 @@
+diff -ru ruby-1.8.6-p111/dln.c ruby-1.8.6-p111+iPhone/dln.c
+--- ruby-1.8.6-p111/dln.c	2007-08-22 02:46:14.000000000 +0000
++++ ruby-1.8.6-p111+iPhone/dln.c	2008-07-22 09:22:48.000000000 +0000
+@@ -87,13 +87,13 @@
+ 
+ #ifndef NO_DLN_LOAD
+ 
+-#if defined(HAVE_DLOPEN) && !defined(USE_DLN_A_OUT) && !defined(_AIX) && !defined(__APPLE__) && !defined(_UNICOSMP)
++#if defined(HAVE_DLOPEN) && !defined(USE_DLN_A_OUT) && !defined(_AIX) && !defined(_UNICOSMP)
+ /* dynamic load with dlopen() */
+ # define USE_DLN_DLOPEN
+ #endif
+ 
+ #ifndef FUNCNAME_PATTERN
+-# if defined(__hp9000s300) ||  (defined(__NetBSD__) && !defined(__ELF__)) || defined(__BORLANDC__) || (defined(__FreeBSD__) && !defined(__ELF__)) || (defined(__OpenBSD__) && !defined(__ELF__)) || defined(NeXT) || defined(__WATCOMC__) || defined(__APPLE__)
++# if defined(__hp9000s300) ||  (defined(__NetBSD__) && !defined(__ELF__)) || defined(__BORLANDC__) || (defined(__FreeBSD__) && !defined(__ELF__)) || (defined(__OpenBSD__) && !defined(__ELF__)) || defined(NeXT) || defined(__WATCOMC__)
+ #  define FUNCNAME_PATTERN "_Init_%s"
+ # else
+ #  define FUNCNAME_PATTERN "Init_%s"
+@@ -1140,10 +1140,6 @@
+ #define NSLINKMODULE_OPTION_BINDNOW 1
+ #endif
+ #endif
+-#else
+-#ifdef __APPLE__
+-#include <mach-o/dyld.h>
+-#endif
+ #endif
+ 
+ #if defined _WIN32 && !defined __CYGWIN__
+@@ -1403,7 +1399,7 @@
+     }
+ #endif /* _AIX */
+ 
+-#if defined(NeXT) || defined(__APPLE__)
++#if defined(NeXT)
+ #define DLN_DEFINED
+ /*----------------------------------------------------
+    By SHIROYAMA Takayuki Psi@fortune.nest.or.jp
