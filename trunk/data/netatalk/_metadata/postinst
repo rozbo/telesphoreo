@@ -1,0 +1,4 @@
+#!/bin/sh
+/bin/launchctl list net.sourceforge.netatalk.afpd &>/dev/null ||
+    /bin/launchctl load /System/Library/LaunchDaemons/net.sourceforge.netatalk.afpd.plist
+exit 0

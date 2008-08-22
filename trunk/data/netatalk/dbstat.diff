@@ -1,0 +1,24 @@
+diff -ru netatalk-2.0.3/bin/cnid/cnid_index.c netatalk-2.0.3+iPhone/bin/cnid/cnid_index.c
+--- netatalk-2.0.3/bin/cnid/cnid_index.c	2005-04-10 12:49:18.000000000 +0000
++++ netatalk-2.0.3+iPhone/bin/cnid/cnid_index.c	2008-07-11 01:15:39.000000000 +0000
+@@ -274,7 +274,7 @@
+     DB_BTREE_STAT *sp;
+     DB *db = db_table[dbi].db;
+ 
+-    ret = db->stat(db, &sp, 0);
++    ret = db->stat(db, NULL, &sp, 0);
+ 
+     if (ret) {
+         LOG(log_error, logtype_cnid, "error getting stat infotmation on database: %s", db_strerror(errno));
+diff -ru netatalk-2.0.3/etc/cnid_dbd/dbif.c netatalk-2.0.3+iPhone/etc/cnid_dbd/dbif.c
+--- netatalk-2.0.3/etc/cnid_dbd/dbif.c	2004-12-21 13:36:12.000000000 +0000
++++ netatalk-2.0.3+iPhone/etc/cnid_dbd/dbif.c	2008-07-11 01:16:01.000000000 +0000
+@@ -514,7 +514,7 @@
+     DB_BTREE_STAT *sp;
+     DB *db = db_table[dbi].db;
+ 
+-    ret = db->stat(db, &sp, 0);
++    ret = db->stat(db, NULL, &sp, 0);
+ 
+     if (ret) {
+         LOG(log_error, logtype_cnid, "error getting stat infotmation on database: %s", db_strerror(errno));
