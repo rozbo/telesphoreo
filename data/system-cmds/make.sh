@@ -8,6 +8,7 @@ done
 cd ..
 
 ${PKG_TARG}-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
+${PKG_TARG}-gcc -o chpass chpass.tproj/*.c -I. -Ipwd_mkdb.tproj -Ivipw.tproj
 ${PKG_TARG}-gcc -o dmesg dmesg.tproj/*.c -I.
 
 cp -va "${PKG_DATA}"/kextmanager* .
@@ -30,5 +31,7 @@ pkg: mkdir -p /bin /sbin /usr/bin /usr/sbin
 pkg: cp -a sync /bin
 pkg: cp -a reboot dmesg /sbin
 pkg: ln -s reboot /sbin/halt
-pkg: cp -a passwd zprint getty getconf hostinfo login /usr/bin
+pkg: cp -a chpass passwd zprint getty getconf hostinfo login /usr/bin
+pkg: ln -s chpass /usr/bin/chfn
+pkg: ln -s chpass /usr/bin/chsh
 pkg: cp -a sysctl nvram vipw iostat /usr/sbin
