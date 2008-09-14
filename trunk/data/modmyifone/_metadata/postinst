@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/apt-key add /usr/share/keyrings/modmyifone-keyring.gpg
+/usr/bin/apt-key add /usr/share/keyrings/modmyi.com-keyring.gpg
