@@ -9,12 +9,13 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  #include <sys/stat.h>
  #include <sys/time.h>
  #include <utime.h>
-@@ -43,6 +48,11 @@
+@@ -43,6 +48,12 @@
  
  // Internet stuff
  #include <netdb.h>
 +#include <arpa/inet.h>
 +
++#include <lockdown.h>
 +#include <CoreFoundation/CoreFoundation.h>
 +#include <CoreServices/CoreServices.h>
 +#include <SystemConfiguration/SystemConfiguration.h>
@@ -27,7 +28,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  
 +CFStringRef Firmware_;
 +const char *Machine_;
-+const char *SerialNumber_;
++CFStringRef UniqueID_;
 +
 +void CfrsError(const char *name, CFReadStreamRef rs) {
 +    CFStreamError se = CFReadStreamGetError(rs);
@@ -73,7 +74,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1117,257 @@
+@@ -1062,159 +1117,256 @@
  
        if (Queue == 0)
  	 continue;
@@ -188,9 +189,8 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Machine"), sr);
 +      CFRelease(sr);
 +
-+      sr = CFStringCreateWithCString(kCFAllocatorDefault, SerialNumber_, se);
-+      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Serial-Number"), sr);
-+      CFRelease(sr);
++      if (UniqueID_ != NULL)
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Unique-ID"), UniqueID_);
 +
 +      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.98"));
 +
@@ -470,7 +470,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
        FailCounter = 0;
     }
     
-@@ -1224,6 +1386,39 @@
+@@ -1224,6 +1386,34 @@
     setlocale(LC_ALL, "");
  
     HttpMethod Mth;
@@ -498,15 +498,10 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +        CFRelease(plist);
 +    }
 +
-+    if (CFMutableDictionaryRef dict = IOServiceMatching("IOPlatformExpertDevice"))
-+        if (io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, dict)) {
-+            if (CFTypeRef serial = IORegistryEntryCreateCFProperty(service, CFSTR(kIOPlatformSerialNumberKey), kCFAllocatorDefault, 0)) {
-+                SerialNumber_ = strdup(CFStringGetCStringPtr((CFStringRef) serial, CFStringGetSystemEncoding()));
-+                CFRelease(serial);
-+            }
-+
-+            IOObjectRelease(service);
-+        }
++    if (void *lockdown = lockdown_connect()) {
++        UniqueID_ = lockdown_copy_value(lockdown, NULL, kLockdownUniqueDeviceIDKey);
++        lockdown_disconnect(lockdown);
++    }
     
     return Mth.Loop();
  }
@@ -518,7 +513,7 @@ diff -ru apt-0.6.46.4.1/methods/makefile apt-0.6.46.4.1+iPhone/methods/makefile
  # The http method
  PROGRAM=http
 -SLIBS = -lapt-pkg $(SOCKETLIBS)
-+SLIBS = -lapt-pkg $(SOCKETLIBS) -framework CoreFoundation -framework CFNetwork -framework SystemConfiguration -framework IOKit
++SLIBS = -lapt-pkg $(SOCKETLIBS) -framework CoreFoundation -framework CFNetwork -framework SystemConfiguration -framework IOKit -llockdown
  LIB_MAKES = apt-pkg/makefile
  SOURCE = http.cc rfc2553emu.cc connect.cc
  include $(PROGRAM_H)
