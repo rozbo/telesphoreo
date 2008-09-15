@@ -2,7 +2,9 @@ pkg:setup
 for tproj in finger fingerd last lsvfs md ps; do
     "${PKG_TARG}-gcc" -o "${tproj}" "${tproj}.tproj"/*.c -D'__FBSDID(x)='
 done
+"${PKG_TARG}-gcc" -o tabs tabs.tproj/*.c -lncurses
 pkg: mkdir -p /bin /usr/bin /usr/libexec
 pkg: cp -a ps /bin
-pkg: cp -a finger last lsvfs md /usr/bin
+pkg: cp -a finger last lsvfs md tabs /usr/bin
 pkg: cp -a fingerd /usr/libexec
+ldid -S"${PKG_DATA}/ps.xml" "${PKG_DEST}/bin/ps"
