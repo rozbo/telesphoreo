@@ -8,7 +8,6 @@ pkg:setup
     --enable-libfaac \
     --enable-libfaad \
     --enable-libmp3lame \
-    --enable-libvorbis \
-    --enable-libx264
+    --enable-libvorbis
 make
 pkg:install
