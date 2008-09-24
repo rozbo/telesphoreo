@@ -8,12 +8,13 @@ done
 cd ..
 
 ${PKG_TARG}-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
-${PKG_TARG}-gcc -o chpass chpass.tproj/*.c -I. -Ipwd_mkdb.tproj -Ivipw.tproj
+# XXX: ${PKG_TARG}-gcc -o chpass chpass.tproj/*.c -I. -Ipwd_mkdb.tproj -Ivipw.tproj
 ${PKG_TARG}-gcc -o dmesg dmesg.tproj/*.c -I.
+${PKG_TARG}-gcc -o arch arch.tproj/*.m -I. -framework CoreFoundation -framework Foundation -lobjc
 
 cp -va "${PKG_DATA}"/kextmanager* .
 # XXX: shutdown
-for tproj in getconf getty hostinfo iostat login nvram reboot sync sysctl vipw zprint; do
+for tproj in ac accton getconf getty hostinfo iostat login mkfile nvram reboot sync sysctl update vifs vipw zdump zic zprint; do
     cflags=
 
     case ${tproj} in (shutdown)
@@ -28,10 +29,15 @@ chmod u+s passwd login
 
 pkg: mkdir -p /bin /sbin /usr/bin /usr/sbin
 
+pkg: cp -a nologin.tproj/nologin.sh /sbin/nologin
+pkg: cp -a pagesize.tproj/pagesize.sh /usr/bin/pagesize
+pkg: chmod 755 /sbin/nologin /usr/bin/pagesize
+
 pkg: cp -a sync /bin
 pkg: cp -a reboot dmesg /sbin
 pkg: ln -s reboot /sbin/halt
-pkg: cp -a chpass passwd zprint getty getconf hostinfo login /usr/bin
+pkg: cp -a arch getconf getty hostinfo login passwd zprint /usr/bin
 pkg: ln -s chpass /usr/bin/chfn
 pkg: ln -s chpass /usr/bin/chsh
-pkg: cp -a sysctl nvram vipw iostat /usr/sbin
+pkg: ln -s less /usr/bin/more
+pkg: cp -a ac accton iostat mkfile nvram sysctl update vifs vipw zdump zic /usr/sbin
