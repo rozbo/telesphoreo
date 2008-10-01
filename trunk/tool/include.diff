@@ -230,6 +230,20 @@ diff -ru /apl/inc/Foundation/NSAffineTransform.h /apl/32/Foundation/NSAffineTran
  
  typedef struct {
      CGFloat m11, m12, m21, m22;
+diff --git /usr/include/Foundation/NSFileManager.h /usr/include/Foundation/NSFileManager.h
+index a394b96..216a43f 100644
+--- /usr/include/Foundation/NSFileManager.h
++++ /usr/include/Foundation/NSFileManager.h
+@@ -97,8 +97,8 @@
+ - (BOOL)linkPath:(NSString *)src toPath:(NSString *)dest handler:(id)handler;
+ - (BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:(id)handler;
+ - (BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:(id)handler;	
+-- (BOOL)removeFileAtPath:(NSString *)path handler:(id)handler;
+ #endif
++- (BOOL)removeFileAtPath:(NSString *)path handler:(id)handler;
+ 
+ /* Process working directory management. Despite the fact that these are instance methods on NSFileManager, these methods report and change (respectively) the working directory for the entire process. Developers are cautioned that doing so is fraught with peril.
+  */
 diff -ru /apl/inc/Foundation/NSGeometry.h /apl/32/Foundation/NSGeometry.h
 --- /apl/inc/Foundation/NSGeometry.h	2008-02-19 13:11:41.000000000 +0000
 +++ /apl/32/Foundation/NSGeometry.h	2008-04-20 02:52:14.000000000 +0000
@@ -399,6 +413,25 @@ index e130afa..1f98c98 100644
  #define _STRUCT_ARM_THREAD_STATE	struct __darwin_arm_thread_state
  _STRUCT_ARM_THREAD_STATE
  {
+diff --git /usr/include/arm/_structs.h /usr/include/arm/_structs.h
+index 2834b48..6c14349 100644
+--- /usr/include/arm/_structs.h
++++ /usr/include/arm/_structs.h
+@@ -38,6 +38,14 @@ _STRUCT_MCONTEXT
+ #endif /* _STRUCT_MCONTEXT */
+ #endif /* __need_struct_mcontext */
+ 
++#ifdef __need_mcontext_t
++#undef __need_mcontext_t
++#ifndef _MCONTEXT_T
++#define _MCONTEXT_T
++typedef _STRUCT_MCONTEXT	*mcontext_t;
++#endif /* _MCONTEXT_T */
++#endif /* __need_mcontext_t */
++
+ #if !defined(_POSIX_C_SOURCE) || defined(_DARWIN_C_SOURCE)
+ #ifndef ARM_MCONTEXT_SIZE
+ #define ARM_MCONTEXT_SIZE       (ARM_THREAD_STATE_COUNT + ARM_VFP_STATE_COUNT + ARM_EXCEPTION_STATE_COUNT) * sizeof(int)
 diff --git /usr/include/mach/arm/thread_status.h /usr/include/mach/arm/thread_status.h
 index 69f9f4f..cc66a92 100755
 --- /usr/include/mach/arm/thread_status.h
