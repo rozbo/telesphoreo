@@ -1,4 +1,6 @@
 #!/bin/sh
+! /bin/launchctl list com.saurik.afpd.dns-sd &>/dev/null ||
+    /bin/launchctl unload /System/Library/LaunchDaemons/com.saurik.afpd.dns-sd.plist
 ! /bin/launchctl list net.sourceforge.netatalk.afpd &>/dev/null ||
     /bin/launchctl unload /System/Library/LaunchDaemons/net.sourceforge.netatalk.afpd.plist
 exit 0

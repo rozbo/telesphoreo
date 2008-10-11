@@ -4,4 +4,5 @@
 /etc/netatalk/papd.conf
 /etc/netatalk/AppleVolumes.default
 /etc/netatalk/AppleVolumes.system
+/System/Library/LaunchDaemons/com.saurik.afpd.dns-sd.plist
 /System/Library/LaunchDaemons/net.sourceforge.netatalk.afpd.plist
