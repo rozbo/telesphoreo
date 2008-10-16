@@ -1,6 +1,8 @@
 #!/bin/sh
-! /bin/launchctl list com.saurik.afpd.dns-sd &>/dev/null ||
+
+if [[ $1 == remove ]]; then
     /bin/launchctl unload /System/Library/LaunchDaemons/com.saurik.afpd.dns-sd.plist
-! /bin/launchctl list net.sourceforge.netatalk.afpd &>/dev/null ||
     /bin/launchctl unload /System/Library/LaunchDaemons/net.sourceforge.netatalk.afpd.plist
+fi
+
 exit 0
