@@ -1,7 +1,7 @@
-diff --git a/AppKit/NSOpenGL.h b/AppKit/NSOpenGL.h
+diff --git /usr/include/AppKit/NSOpenGL.h /usr/include/AppKit/NSOpenGL.h
 index 5a8eaf4..e3ccb99 100644
---- a/AppKit/NSOpenGL.h
-+++ b/AppKit/NSOpenGL.h
+--- /usr/include/AppKit/NSOpenGL.h
++++ /usr/include/AppKit/NSOpenGL.h
 @@ -6,7 +6,12 @@
  */
  
@@ -15,10 +15,10 @@ index 5a8eaf4..e3ccb99 100644
  
  @class NSData, NSView, NSScreen;
  
-diff --git a/CoreVideo/CVDisplayLink.h b/CoreVideo/CVDisplayLink.h
+diff --git /usr/include/CoreVideo/CVDisplayLink.h /usr/include/CoreVideo/CVDisplayLink.h
 index d08c03a..56a8b08 100644
---- a/CoreVideo/CVDisplayLink.h
-+++ b/CoreVideo/CVDisplayLink.h
+--- /usr/include/CoreVideo/CVDisplayLink.h
++++ /usr/include/CoreVideo/CVDisplayLink.h
 @@ -24,7 +24,12 @@ typedef struct __CVDisplayLink *CVDisplayLinkRef;
  #include <ApplicationServices/ApplicationServices.h>
  #include <CoreVideo/CVReturn.h>
@@ -32,10 +32,10 @@ index d08c03a..56a8b08 100644
  
  #if defined(__cplusplus)
  extern "C" {
-diff --git a/CoreVideo/CVOpenGLBuffer.h b/CoreVideo/CVOpenGLBuffer.h
+diff --git /usr/include/CoreVideo/CVOpenGLBuffer.h /usr/include/CoreVideo/CVOpenGLBuffer.h
 index d64a896..732637f 100644
---- a/CoreVideo/CVOpenGLBuffer.h
-+++ b/CoreVideo/CVOpenGLBuffer.h
+--- /usr/include/CoreVideo/CVOpenGLBuffer.h
++++ /usr/include/CoreVideo/CVOpenGLBuffer.h
 @@ -17,8 +17,14 @@
  #define __COREVIDEO_CVOPENGLBUFFER_H__ 1
  
@@ -51,10 +51,10 @@ index d64a896..732637f 100644
  
  
  #if defined(__cplusplus)
-diff --git a/CoreVideo/CVOpenGLTexture.h b/CoreVideo/CVOpenGLTexture.h
+diff --git /usr/include/CoreVideo/CVOpenGLTexture.h /usr/include/CoreVideo/CVOpenGLTexture.h
 index 352096e..04d2a62 100644
---- a/CoreVideo/CVOpenGLTexture.h
-+++ b/CoreVideo/CVOpenGLTexture.h
+--- /usr/include/CoreVideo/CVOpenGLTexture.h
++++ /usr/include/CoreVideo/CVOpenGLTexture.h
 @@ -20,8 +20,15 @@
  #include <CoreVideo/CVReturn.h>
  #include <CoreVideo/CVImageBuffer.h>
@@ -71,10 +71,10 @@ index 352096e..04d2a62 100644
  #include <stddef.h>
  #include <stdint.h>
  
-diff --git a/CoreVideo/CVOpenGLTextureCache.h b/CoreVideo/CVOpenGLTextureCache.h
+diff --git /usr/include/CoreVideo/CVOpenGLTextureCache.h /usr/include/CoreVideo/CVOpenGLTextureCache.h
 index bb3000e..8b4628b 100644
---- a/CoreVideo/CVOpenGLTextureCache.h
-+++ b/CoreVideo/CVOpenGLTextureCache.h
+--- /usr/include/CoreVideo/CVOpenGLTextureCache.h
++++ /usr/include/CoreVideo/CVOpenGLTextureCache.h
 @@ -13,7 +13,12 @@
  #include <CoreVideo/CVReturn.h>
  #include <CoreVideo/CVBuffer.h>
@@ -88,10 +88,10 @@ index bb3000e..8b4628b 100644
  
  #if defined(__cplusplus)
  extern "C" {
-diff --git a/QuartzCore/CAOpenGLLayer.h b/QuartzCore/CAOpenGLLayer.h
+diff --git /usr/include/QuartzCore/CAOpenGLLayer.h /usr/include/QuartzCore/CAOpenGLLayer.h
 index 0991768..fd6543c 100644
---- a/QuartzCore/CAOpenGLLayer.h
-+++ b/QuartzCore/CAOpenGLLayer.h
+--- /usr/include/QuartzCore/CAOpenGLLayer.h
++++ /usr/include/QuartzCore/CAOpenGLLayer.h
 @@ -5,7 +5,12 @@
  
  #import <QuartzCore/CALayer.h>
