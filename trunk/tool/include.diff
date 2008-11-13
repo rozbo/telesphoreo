@@ -258,6 +258,113 @@ diff -ru /apl/inc/Foundation/NSGeometry.h /apl/32/Foundation/NSGeometry.h
  
  #if __LP64__ || NS_BUILD_32_LIKE_64
  
+diff --git a/AppKit/NSOpenGL.h b/AppKit/NSOpenGL.h
+index 5a8eaf4..e3ccb99 100644
+--- a/AppKit/NSOpenGL.h
++++ b/AppKit/NSOpenGL.h
+@@ -6,7 +6,12 @@
+ */
+ 
+ #import <Foundation/NSObject.h>
++
++#ifdef __arm__
++#import <OpenGLES/ES1/gl.h>
++#else
+ #import <OpenGL/gl.h>
++#endif
+ 
+ @class NSData, NSView, NSScreen;
+ 
+diff --git a/CoreVideo/CVDisplayLink.h b/CoreVideo/CVDisplayLink.h
+index d08c03a..56a8b08 100644
+--- a/CoreVideo/CVDisplayLink.h
++++ b/CoreVideo/CVDisplayLink.h
+@@ -24,7 +24,12 @@ typedef struct __CVDisplayLink *CVDisplayLinkRef;
+ #include <ApplicationServices/ApplicationServices.h>
+ #include <CoreVideo/CVReturn.h>
+ #include <CoreVideo/CVBase.h>
++
++#ifdef __arm__
++#include <OpenGLES/EAGL.h>
++#else
+ #include <OpenGL/OpenGL.h>
++#endif
+ 
+ #if defined(__cplusplus)
+ extern "C" {
+diff --git a/CoreVideo/CVOpenGLBuffer.h b/CoreVideo/CVOpenGLBuffer.h
+index d64a896..732637f 100644
+--- a/CoreVideo/CVOpenGLBuffer.h
++++ b/CoreVideo/CVOpenGLBuffer.h
+@@ -17,8 +17,14 @@
+ #define __COREVIDEO_CVOPENGLBUFFER_H__ 1
+ 
+ #include <CoreVideo/CVImageBuffer.h>
++
++#ifdef __arm__
++#include <OpenGLES/EAGL.h>
++#include <OpenGLES/ES1/gl.h>
++#else
+ #include <OpenGL/OpenGL.h>
+ #include <OpenGL/gl.h>
++#endif
+ 
+ 
+ #if defined(__cplusplus)
+diff --git a/CoreVideo/CVOpenGLTexture.h b/CoreVideo/CVOpenGLTexture.h
+index 352096e..04d2a62 100644
+--- a/CoreVideo/CVOpenGLTexture.h
++++ b/CoreVideo/CVOpenGLTexture.h
+@@ -20,8 +20,15 @@
+ #include <CoreVideo/CVReturn.h>
+ #include <CoreVideo/CVImageBuffer.h>
+ #include <ApplicationServices/ApplicationServices.h>
++
++#ifdef __arm__
++#include <OpenGLES/EAGL.h>
++#include <OpenGLES/ES1/gl.h>
++#else
+ #include <OpenGL/OpenGL.h>
+ #include <OpenGL/gl.h>
++#endif
++
+ #include <stddef.h>
+ #include <stdint.h>
+ 
+diff --git a/CoreVideo/CVOpenGLTextureCache.h b/CoreVideo/CVOpenGLTextureCache.h
+index bb3000e..8b4628b 100644
+--- a/CoreVideo/CVOpenGLTextureCache.h
++++ b/CoreVideo/CVOpenGLTextureCache.h
+@@ -13,7 +13,12 @@
+ #include <CoreVideo/CVReturn.h>
+ #include <CoreVideo/CVBuffer.h>
+ #include <CoreVideo/CVOpenGLTexture.h>
++
++#ifdef __arm__
++#include <OpenGLES/EAGL.h>
++#else
+ #include <OpenGL/OpenGL.h>
++#endif
+ 
+ #if defined(__cplusplus)
+ extern "C" {
+diff --git a/QuartzCore/CAOpenGLLayer.h b/QuartzCore/CAOpenGLLayer.h
+index 0991768..fd6543c 100644
+--- a/QuartzCore/CAOpenGLLayer.h
++++ b/QuartzCore/CAOpenGLLayer.h
+@@ -5,7 +5,12 @@
+ 
+ #import <QuartzCore/CALayer.h>
+ #import <QuartzCore/CVBase.h>
++
++#ifdef __arm__
++#import <OpenGLES/EAGL.h>
++#else
+ #import <OpenGL/OpenGL.h>
++#endif
+ 
+ @interface CAOpenGLLayer : CALayer
+ {
 diff --git /usr/include/OSServices/OSServices.h /usr/include/OSServices/OSServices.h
 index f14355d..c3295cf 100644
 --- /usr/include/OSServices/OSServices.h
@@ -444,6 +551,19 @@ index 69f9f4f..cc66a92 100755
 
  typedef struct arm_thread_state {
         unsigned int r0;
+diff --git /usr/include/arm/_types.h /usr/include/arm/_types.h
+index 4817457..30c9891 100644
+--- /usr/include/arm/_types.h
++++ /usr/include/arm/_types.h
+@@ -15,7 +15,7 @@ typedef __signed char		__int8_t;
+ typedef char			__int8_t;
+ #endif	/* !__GNUC__ */
+ typedef unsigned char		__uint8_t;
+-typedef	unsigned short		__int16_t;
++typedef	short			__int16_t;
+ typedef	unsigned short		__uint16_t;
+ typedef int			__int32_t;
+ typedef unsigned int		__uint32_t;
 diff --git /usr/include/util.h /usr/include/util.h
 index c70c6fb..1effc37 100644
 --- /usr/include/util.h
