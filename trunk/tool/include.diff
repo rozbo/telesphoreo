@@ -122,6 +122,23 @@ index 64e4e8b..0f43f4c 100644
  #include <CoreFoundation/CFXMLNode.h>
  #include <CoreFoundation/CFXMLParser.h>
  #ifndef CF_OPEN_SOURCE
+diff --git /usr/include/WebCore/EventTargetNode.h /usr/include/WebCore/EventTargetNode.h
+index f44e158..728b6d3 100644
+--- /usr/include/WebCore/EventTargetNode.h
++++ /usr/include/WebCore/EventTargetNode.h
+@@ -102,9 +102,9 @@ protected:
+     friend class EventTarget;
+     RegisteredEventListenerList* m_regdListeners;
+ 
+-    HashMap<Node *, int> * EventTargetNode::WebThreadGetCurrentDOMMouseWheelEventListeners();
+-    HashMap<Node *, int> * EventTargetNode::WebThreadGetCurrentDOMMouseMoveEventListeners();
+-    HashMap<Node *, int> * EventTargetNode::WebThreadGetCurrentDOMMouseClickEventListeners();
++    HashMap<Node *, int> * WebThreadGetCurrentDOMMouseWheelEventListeners();
++    HashMap<Node *, int> * WebThreadGetCurrentDOMMouseMoveEventListeners();
++    HashMap<Node *, int> * WebThreadGetCurrentDOMMouseClickEventListeners();
+ 
+ private:
+     virtual void refEventTarget() { ref(); }
 --- /usr/include/CarbonCore/FixMath.h	2008-02-19 12:14:55.000000000 +0000
 +++ /usr/include/CarbonCore/FixMath.h	2008-03-27 09:50:49.000000000 +0000
 @@ -90,7 +90,7 @@
