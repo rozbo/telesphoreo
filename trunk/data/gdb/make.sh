@@ -1,8 +1,8 @@
 shopt -s extglob
 pkg:setup
-#cd src/gdb
-#autoconf
-#cd ../..
+cd src/gdb
+autoconf
+cd ../..
 cd ..
 mkdir build
 cd build
@@ -14,4 +14,4 @@ for bin in ar nm ranlib size strings strip; do
     pkg: rm -f "/usr/bin/${bin}"
 done
 pkg: rm -f /usr/lib/libiberty.a
-ldid -S"${PKG_DATA}/gdb.xml" "${PKG_DEST}/usr/bin/gdb"
+ldid -S"${PKG_DATA}/gdb.xml" "${PKG_DEST}/usr/bin/gdb"{,server}
