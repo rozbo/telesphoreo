@@ -1,0 +1,11 @@
+diff -ru mobileterminal-316s/Sources/MobileTerminal.m mobileterminal-316s+iPhone/Sources/MobileTerminal.m
+--- mobileterminal-316s/Sources/MobileTerminal.m	2008-08-26 11:46:29.000000000 +0000
++++ mobileterminal-316s+iPhone/Sources/MobileTerminal.m	2008-11-22 09:43:43.000000000 +0000
+@@ -7,6 +7,7 @@
+ #import <Foundation/Foundation.h>
+ #import <GraphicsServices/GraphicsServices.h>
+ #import <QuartzCore/CoreAnimation.h>
++#import <QuartzCore/CATransition.h>
+ #import <UIKit/UIView-Geometry.h>
+ 
+ #include "ColorMap.h"
