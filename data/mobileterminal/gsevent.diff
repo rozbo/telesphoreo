@@ -1,0 +1,123 @@
+diff -ru mobileterminal-316s/Sources/MobileTerminal.h mobileterminal-316s+iPhone/Sources/MobileTerminal.h
+--- mobileterminal-316s/Sources/MobileTerminal.h	2008-08-23 04:37:49.000000000 +0000
++++ mobileterminal-316s+iPhone/Sources/MobileTerminal.h	2008-11-22 09:42:13.000000000 +0000
+@@ -65,8 +65,8 @@
+ + (Menu *)menu;
+ 
+ - (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+-- (void)applicationSuspend:(GSEvent *)event;
+-- (void)applicationResume:(GSEvent *)event;
++- (void)applicationSuspend:(GSEventRef)event;
++- (void)applicationResume:(GSEventRef)event;
+ 
+ - (void)handleStreamOutput:(const char *)c length:(unsigned int)len identifier:(int)tid;
+ - (void)handleKeyPress:(unichar)c;
+diff -ru mobileterminal-316s/Sources/MobileTerminal.m mobileterminal-316s+iPhone/Sources/MobileTerminal.m
+--- mobileterminal-316s/Sources/MobileTerminal.m	2008-08-26 11:46:29.000000000 +0000
++++ mobileterminal-316s+iPhone/Sources/MobileTerminal.m	2008-11-22 09:42:13.000000000 +0000
+@@ -134,7 +134,7 @@
+ // Suspend/Resume: We have to hide then show again the keyboard view to get it
+ // to properly acheive focus on suspend and resume.
+ 
+-- (void)applicationResume:(GSEvent *)event
++- (void)applicationResume:(GSEventRef)event
+ {
+     [mainView addSubview:keyboardView];
+ 
+@@ -153,7 +153,7 @@
+     [self updateStatusBar];
+ }
+ 
+-- (void)applicationSuspend:(GSEvent *)event
++- (void)applicationSuspend:(GSEventRef)event
+ {
+     BOOL shouldQuit;
+     int i;
+@@ -181,7 +181,7 @@
+         [self removeStatusBarImageNamed:[NSString stringWithFormat:@"MobileTerminal%d", i]];
+ }
+ 
+-- (void)applicationExited:(GSEvent *)event
++- (void)applicationExited:(GSEventRef)event
+ {
+     int i;
+ 
+@@ -330,7 +330,7 @@
+     [[self textView] refreshCursorRow];
+ }
+ 
+-- (void)statusBarMouseUp:(GSEvent *)event
++- (void)statusBarMouseUp:(GSEventRef)event
+ {
+     if (numTerminals > 1) {
+         CGPoint pos = GSEventGetLocationInWindow(event).origin;
+@@ -349,7 +349,7 @@
+     }
+ }
+ 
+-- (void)deviceOrientationChanged:(GSEvent *)event
++- (void)deviceOrientationChanged:(GSEventRef)event
+ {
+     switch ([UIHardware deviceOrientation:YES]) {
+                                    case 1: [self setOrientation: 0]; break;
+diff -ru mobileterminal-316s/Sources/UI/GestureView.m mobileterminal-316s+iPhone/Sources/UI/GestureView.m
+--- mobileterminal-316s/Sources/UI/GestureView.m	2008-08-23 05:14:22.000000000 +0000
++++ mobileterminal-316s+iPhone/Sources/UI/GestureView.m	2008-11-22 09:42:13.000000000 +0000
+@@ -88,7 +88,7 @@
+     [self endTrackingAt:[touch locationInView:self] previous:[touch previousLocationInView:self] withEvent:event];
+ }
+ 
+-- (void)mouseDown:(GSEvent *)event
++- (void)mouseDown:(GSEventRef)event
+ {
+     mouseDownPos = [delegate viewPointForWindowPoint:GSEventGetLocationInWindow(event).origin];
+     [delegate showMenu:mouseDownPos];
+@@ -102,7 +102,7 @@
+     return ((7-(lround(theta/M_PI_4)+4)%8)+7)%8;
+ }
+ 
+-- (void)mouseUp:(GSEvent *)event
++- (void)mouseUp:(GSEventRef)event
+ {
+     if (gestureMode) {
+         gestureMode = NO;
+@@ -187,7 +187,7 @@
+     return YES;
+ }
+ 
+-- (CGPoint)gestureCenter:(GSEvent *)event
++- (CGPoint)gestureCenter:(GSEventRef)event
+ {
+     float cx = 0, cy = 0;
+     int i;
+@@ -200,18 +200,18 @@
+     return CGPointMake(cx,cy);
+ }
+ 
+-- (void)gestureStarted:(GSEvent *)event
++- (void)gestureStarted:(GSEventRef)event
+ {
+     [delegate hideMenu];
+     gestureMode = YES;
+     gestureStart = [delegate viewPointForWindowPoint:[self gestureCenter:event]];
+ }
+ 
+-- (void)gestureChanged:(GSEvent *)event
++- (void)gestureChanged:(GSEventRef)event
+ {
+ }
+ 
+-- (void)gestureEnded:(GSEvent *)event
++- (void)gestureEnded:(GSEventRef)event
+ {
+     [delegate hideMenu];
+     gestureEnd = [delegate viewPointForWindowPoint:[self gestureCenter:event]];
+@@ -259,7 +259,7 @@
+     menuTapped = NO;
+ }
+ 
+-- (void)view:(UIView *)view handleTapWithCount:(int)count event:(GSEvent *)event fingerCount:(int)fingers
++- (void)view:(UIView *)view handleTapWithCount:(int)count event:(GSEventRef)event fingerCount:(int)fingers
+ {
+     if (fingers == 1) {
+         if (count == 2) {

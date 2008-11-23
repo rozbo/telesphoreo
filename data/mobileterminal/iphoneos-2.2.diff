@@ -1,0 +1,19 @@
+diff -ru mobileterminal-316s/Sources/MobileTerminal.m mobileterminal-316s+iPhone/Sources/MobileTerminal.m
+--- mobileterminal-316s/Sources/MobileTerminal.m	2008-08-26 11:46:29.000000000 +0000
++++ mobileterminal-316s+iPhone/Sources/MobileTerminal.m	2008-11-22 09:39:43.000000000 +0000
+@@ -503,8 +503,13 @@
+ 
+     activeTerminal = active;
+ 
+-    if (numTerminals > 1) [self addStatusBarImageNamed:[NSString stringWithFormat:@"MobileTerminal%d", activeTerminal]
+-                                    removeOnAbnormalExit:YES];
++    if (numTerminals > 1) {
++        NSString *name = [NSString stringWithFormat:@"MobileTerminal%d", activeTerminal];
++        if ([self respondsToSelector:@selector(addStatusBarImageNamed:removeOnExit:)])
++            [self addStatusBarImageNamed:name removeOnExit:YES];
++        else
++            [self addStatusBarImageNamed:name removeOnAbnormalExit:YES];
++    }
+ 
+     [mainView insertSubview:[self textScroller] below:keyboardView];
+ 
