@@ -111,6 +111,20 @@ index 64e4e8b..0f43f4c 100644
  #define __DARWIN_ONLY_UNIX_CONFORMANCE	1
  #define __DARWIN_ONLY_VERS_1050		1
  
+diff --git a/QuartzCore/CoreAnimation.h b/QuartzCore/CoreAnimation.h
+index 6f45332..6a0cf35 100644
+--- a/QuartzCore/CoreAnimation.h
++++ b/QuartzCore/CoreAnimation.h
+@@ -16,7 +16,9 @@
+ #import <QuartzCore/CALayer.h>
+ #import <QuartzCore/CAMediaTiming.h>
+ #import <QuartzCore/CAMediaTimingFunction.h>
++#ifndef __arm__
+ #import <QuartzCore/CAOpenGLLayer.h>
++#endif
+ #import <QuartzCore/CARenderer.h>
+ #import <QuartzCore/CAScrollLayer.h>
+ #import <QuartzCore/CATextLayer.h>
 --- /usr/include/CoreFoundation/CoreFoundation.h	2008-02-27 06:36:09.000000000 +0000
 +++ /usr/include/CoreFoundation/CoreFoundation.h	2008-03-29 18:47:27.000000000 +0000
 @@ -78,7 +78,7 @@
