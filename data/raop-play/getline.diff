@@ -1,0 +1,37 @@
+diff -ru raop_play-0.5.1/raop_play/pls_stream.c raop_play-0.5.1+iPhone/raop_play/pls_stream.c
+--- raop_play-0.5.1/raop_play/pls_stream.c	2005-12-16 14:17:01.000000000 +0000
++++ raop_play-0.5.1+iPhone/raop_play/pls_stream.c	2008-12-06 04:06:57.000000000 +0000
+@@ -29,6 +29,9 @@
+ #include "aexcl_lib.h"
+ 
+ 
++/* XXX: this is slightly wrong, but I don't think this code cares */
++#define getline(a, b, c) (fgets(*a, *b, c) == NULL ? -1 : strlen(*a))
++
+ 
+ static int str_termlf(char *line)
+ {
+diff -ru raop_play-0.5.1/rendezvous/Client.c raop_play-0.5.1+iPhone/rendezvous/Client.c
+--- raop_play-0.5.1/rendezvous/Client.c	2005-12-16 14:17:02.000000000 +0000
++++ raop_play-0.5.1+iPhone/rendezvous/Client.c	2008-12-06 04:07:02.000000000 +0000
+@@ -83,8 +83,11 @@
+ #include "mDNSClientAPI.h"// Defines the interface to the mDNS core code
+ #include "mDNSPosix.h"    // Defines the specific types needed to run mDNS on this platform
+ #include "ExampleClientApp.h"
+ #include "mDNS.h"
+ 
++/* XXX: this is slightly wrong, but I don't think this code cares */
++#define getline(a, b, c) (fgets(*a, *b, c) == NULL ? -1 : strlen(*a))
++
+ 
+ // Globals
+ static mDNS mDNSStorage;       // mDNS core uses this to store its globals
+@@ -106,7 +108,7 @@
+ 	char fname[128],wfname[128];
+ 	FILE *inf,*outf;
+ 	char *sline;
+-	size_t linelen=128;
++	size_t linelen=128*128;
+ 	int i,ln,ws,cp1=0,cp2=0,cp3=0;
+ 
+ 	if(addr->type != mDNSAddrType_IPv4) return -1;
