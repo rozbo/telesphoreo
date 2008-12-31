@@ -4,7 +4,6 @@ make
 
 pkg: mkdir -p /usr/libexec /var/lib/cydia
 pkg: cp -a Library /usr/libexec/cydia
-pkg: cp -a exec /usr/libexec/cydia
 
 pkg: mkdir -p /System/Library
 pkg: cp -a LaunchDaemons /System/Library

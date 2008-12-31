@@ -1,0 +1,12 @@
+diff -ru cydia-1.0.2683/cydia/Cydia.mm cydia-1.0.2683+iPhone/cydia/Cydia.mm
+--- cydia-1.0.2683/cydia/Cydia.mm	2008-12-31 09:00:05.000000000 +0000
++++ cydia-1.0.2683+iPhone/cydia/Cydia.mm	2008-12-31 09:08:05.000000000 +0000
+@@ -257,7 +257,7 @@
+ 
+ #define lprintf(args...) fprintf(stderr, args)
+ 
+-#define ForRelease 0
++#define ForRelease 1
+ #define ForSaurik (1 && !ForRelease)
+ #define IgnoreInstall (0 && !ForRelease)
+ #define RecycleWebViews 0
