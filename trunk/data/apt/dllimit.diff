@@ -1,0 +1,12 @@
+diff -ru apt-0.6.46.4.1/apt-pkg/acquire.cc apt-0.6.46.4.1+iPhone/apt-pkg/acquire.cc
+--- apt-0.6.46.4.1/apt-pkg/acquire.cc	2006-12-04 14:37:34.000000000 +0000
++++ apt-0.6.46.4.1+iPhone/apt-pkg/acquire.cc	2009-01-21 10:47:16.000000000 +0000
+@@ -268,7 +286,7 @@
+       return 0;
+ 
+    /* if a method uses DownloadLimit, we switch to SingleInstance mode */
+-   if(_config->FindI("Acquire::"+Access+"::DlLimit",0) > 0)
++   if(_config->FindI("Acquire::"+Access+"::Dl-Limit",0) > 0)
+       Conf->SingleInstance = true;
+     
+    return Conf;
