@@ -1,7 +1,7 @@
 diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 --- apt-0.6.46.4.1/methods/http.cc	2006-12-04 14:37:36.000000000 +0000
-+++ apt-0.6.46.4.1+iPhone/methods/http.cc	2008-05-11 06:33:29.000000000 +0000
-@@ -30,6 +34,7 @@
++++ apt-0.6.46.4.1+iPhone/methods/http.cc	2009-01-21 10:11:37.000000000 +0000
+@@ -30,6 +36,7 @@
  #include <apt-pkg/error.h>
  #include <apt-pkg/hashes.h>
  
@@ -9,7 +9,11 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  #include <sys/stat.h>
  #include <sys/time.h>
  #include <utime.h>
-@@ -43,6 +48,12 @@
+@@ -40,9 +47,16 @@
+ #include <string.h>
+ #include <iostream>
+ #include <apti18n.h>
++#include <set>
  
  // Internet stuff
  #include <netdb.h>
@@ -22,7 +26,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  
  #include "connect.h"
  #include "rfc2553emu.h"
-@@ -51,6 +61,51 @@
+@@ -51,6 +65,51 @@
  									/*}}}*/
  using namespace std;
  
@@ -74,7 +78,68 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1117,261 @@
+@@ -630,6 +689,51 @@
+ }
+ 									/*}}}*/
+ 
++static const CFOptionFlags kNetworkEvents =
++    kCFStreamEventOpenCompleted |
++    kCFStreamEventHasBytesAvailable |
++    kCFStreamEventEndEncountered |
++    kCFStreamEventErrorOccurred |
++0;
++
++static void CFReadStreamCallback(CFReadStreamRef stream, CFStreamEventType event, void *arg) {
++    switch (event) {
++        case kCFStreamEventOpenCompleted:
++        break;
++
++        case kCFStreamEventHasBytesAvailable:
++        case kCFStreamEventEndEncountered:
++            *reinterpret_cast<int *>(arg) = 1;
++            CFRunLoopStop(CFRunLoopGetCurrent());
++        break;
++
++        case kCFStreamEventErrorOccurred:
++            *reinterpret_cast<int *>(arg) = -1;
++            CFRunLoopStop(CFRunLoopGetCurrent());
++        break;
++    }
++}
++
++/* http://lists.apple.com/archives/Macnetworkprog/2006/Apr/msg00014.html */
++int CFReadStreamOpen(CFReadStreamRef stream, double timeout) {
++    CFStreamClientContext context;
++    int value(0);
++
++    memset(&context, 0, sizeof(context));
++    context.info = &value;
++
++    if (CFReadStreamSetClient(stream, kNetworkEvents, CFReadStreamCallback, &context)) {
++        CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
++        if (CFReadStreamOpen(stream))
++            CFRunLoopRunInMode(kCFRunLoopDefaultMode, timeout, false);
++        else
++            value = -1;
++        CFReadStreamSetClient(stream, kCFStreamEventNone, NULL, NULL);
++    }
++
++    return value;
++}
++
+ // HttpMethod::SendReq - Send the HTTP request				/*{{{*/
+ // ---------------------------------------------------------------------
+ /* This places the http request in the outbound buffer */
+@@ -1043,6 +1147,8 @@
+    signal(SIGINT,SigTerm);
+    
+    Server = 0;
++
++   std::set<std::string> cached;
+    
+    int FailCounter = 0;
+    while (1)
+@@ -1062,159 +1168,314 @@
  
        if (Queue == 0)
  	 continue;
@@ -151,6 +216,14 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      URI uri = std::string(url);
 +      std::string hs = uri.Host;
 +
++      if (cached.find(hs) != cached.end()) {
++         _error->Error("Cached Failure");
++         Fail(true);
++         free(url);
++         FailCounter = 0;
++         continue;
++      }
++
 +      std::string urs = uri;
 +
 +      for (;;) {
@@ -197,10 +270,24 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      if (UniqueID_ != NULL)
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Unique-ID"), UniqueID_);
 +
-+      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.484"));
++      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.534"));
 +
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);
++
++#define _kCFStreamPropertyReadTimeout CFSTR("_kCFStreamPropertyReadTimeout")
++#define _kCFStreamPropertyWriteTimeout CFSTR("_kCFStreamPropertyWriteTimeout")
++#define _kCFStreamPropertySocketImmediateBufferTimeOut CFSTR("_kCFStreamPropertySocketImmediateBufferTimeOut")
++
++      /*SInt32 to(TimeOut);
++      CFNumberRef nm(CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &to));*/
++      double to(TimeOut);
++      CFNumberRef nm(CFNumberCreate(kCFAllocatorDefault, kCFNumberDoubleType, &to));
++
++      CFReadStreamSetProperty(rs, _kCFStreamPropertyReadTimeout, nm);
++      CFReadStreamSetProperty(rs, _kCFStreamPropertyWriteTimeout, nm);
++      CFReadStreamSetProperty(rs, _kCFStreamPropertySocketImmediateBufferTimeOut, nm);
++      CFRelease(nm);
 +
 +      CFDictionaryRef dr = SCDynamicStoreCopyProxies(NULL);
 +      CFReadStreamSetProperty(rs, kCFStreamPropertyHTTPProxy, dr);
@@ -219,9 +306,22 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +
 +      Status("Connecting to %s", hs.c_str());
 +
-+      if (!CFReadStreamOpen(rs)) {
-+         CfrsError("Open", rs);
-+         Fail(true);
++      switch (CFReadStreamOpen(rs, to)) {
++         case -1:
++            CfrsError("Open", rs);
++         goto fail;
++
++         case 0:
++            _error->Error("Host Unreachable");
++            cached.insert(hs);
++         goto fail;
++
++         case 1:
++            /* success */
++         break;
++
++         fail:
++            Fail(true);
 +         goto done;
 +      }
 +
@@ -229,6 +329,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +
 +      if (rd == -1) {
 +         CfrsError(uri.Host.c_str(), rs);
++         cached.insert(hs);
 +         Fail(true);
 +         goto done;
 +      }
@@ -320,6 +421,25 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         }
 +      }
 +
++      if (sc < 200 || sc >= 300 && sc != 304) {
++         sr = CFHTTPMessageCopyResponseStatusLine(hm);
++
++         size_t ln = CFStringGetLength(sr) + 1;
++         char cr[ln];
++
++         if (!CFStringGetCString(sr, cr, ln, se)) {
++            Fail();
++            goto done;
++         }
++
++         CFRelease(sr);
++
++         _error->Error("%s", cr);
++
++         Fail();
++         goto done_;
++      }
++
 +      CFRelease(hm);
 +
 +      if (sc == 304) {
@@ -327,9 +447,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         Res.IMSHit = true;
 +         Res.LastModified = Queue->LastModified;
 +	 URIDone(Res);
-+      } else if (sc < 200 || sc >= 300)
-+	 Fail();
-+      else {
++      } else {
 +         Hashes hash;
 +
 +         File = new FileFd(Queue->DestFile, FileFd::WriteAny);
@@ -475,7 +593,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
        FailCounter = 0;
     }
     
-@@ -1224,6 +1386,34 @@
+@@ -1224,6 +1484,34 @@
     setlocale(LC_ALL, "");
  
     HttpMethod Mth;
