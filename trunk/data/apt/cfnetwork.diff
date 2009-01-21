@@ -74,7 +74,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -1062,159 +1117,256 @@
+@@ -1062,159 +1117,261 @@
  
        if (Queue == 0)
  	 continue;
@@ -176,11 +176,16 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(SBuf.st_mtime).c_str(), se);
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Range"), sr);
 +         CFRelease(sr);
++
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Cache-Control"), CFSTR("no-cache"));
 +      } else if (Queue->LastModified != 0) {
 +         sr = CFStringCreateWithCString(kCFAllocatorDefault, TimeRFC1123(Queue->LastModified).c_str(), se);
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("If-Modified-Since"), sr);
 +         CFRelease(sr);
-+      }
++
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Cache-Control"), CFSTR("no-cache"));
++      } else
++         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("Cache-Control"), CFSTR("max-age=0"));
 +
 +      if (Firmware_ != NULL)
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Firmware"), Firmware_);
@@ -192,7 +197,7 @@ diff -ru apt-0.6.46.4.1/methods/http.cc apt-0.6.46.4.1+iPhone/methods/http.cc
 +      if (UniqueID_ != NULL)
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Unique-ID"), UniqueID_);
 +
-+      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.98"));
++      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.484"));
 +
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);
