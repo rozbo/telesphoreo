@@ -1,0 +1,12 @@
+diff -ru cydia-1.0.2684/uicaboodle.m/BrowserView.m cydia-1.0.2684+iPhone/uicaboodle.m/BrowserView.m
+--- cydia-1.0.2684/uicaboodle.m/BrowserView.m	2008-12-31 09:04:06.000000000 +0000
++++ cydia-1.0.2684+iPhone/uicaboodle.m/BrowserView.m	2008-12-31 10:30:49.000000000 +0000
+@@ -397,7 +397,7 @@
+ - (void) webView:(WebView *)sender decidePolicyForNewWindowAction:(NSDictionary *)action request:(NSURLRequest *)request newFrameName:(NSString *)name decisionListener:(id<WebPolicyDecisionListener>)listener {
+     if (NSURL *url = [request URL]) {
+         if (name == nil) unknown: {
+-            NSLog(@"win:%@:%@", url, [action description]);
++            //NSLog(@"win:%@:%@", url, [action description]);
+             if (![self getSpecial:url]) {
+                 NSString *scheme([[url scheme] lowercaseString]);
+                 if ([scheme isEqualToString:@"mailto"])
