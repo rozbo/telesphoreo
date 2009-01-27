@@ -30,9 +30,9 @@ if [[ -e "${PKG_DATA}"/_metadata/prerm ]]; then
     cp -a "${PKG_DATA}"/_metadata/prerm "$(pkg_ /DEBIAN)"
 fi
 
-#if [[ -e "${PKG_DATA}"/_metadata/conffiles ]]; then
-#    cp -a "${PKG_DATA}"/_metadata/conffiles "$(pkg_ /DEBIAN)"
-#fi
+if [[ -e "${PKG_DATA}"/_metadata/conffiles ]]; then
+    cp -a "${PKG_DATA}"/_metadata/conffiles "$(pkg_ /DEBIAN)"
+fi
 
 export PKG_HASH=$(util/catdir.sh "${PKG_DEST}" | md5sum | cut -d ' ' -f 1)
 echo "hashed dest ${PKG_NAME} to: ${PKG_HASH}"
@@ -54,6 +54,7 @@ else
         dpkg-deb -b "${PKG_DEST}" "${PKG_PACK}"
         echo "${PKG_HASH}" >"${PKG_STAT}/dest-md5"
         echo "${PKG_RVSN}" >"${PKG_STAT}/dest-ver"
+        "${PKG_BASE}"/upload.sh debs "${PKG_PACK}"
     fi
 fi
 

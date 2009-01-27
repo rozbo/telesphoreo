@@ -16,9 +16,15 @@ PKG_INCL=
 PKG_LIBS=
 PKG_PKGS=
 
-for dep in $({
-    find -L "${PKG_DATA}"/_metadata -name '*.dep' | cut -d '/' -f -
-} | sort -u); do
+case "${PKG_NAME}" in
+    (-) deps=();;
+    (:*) deps=(${PKG_NAME//:/ });;
+    (*) deps=($({
+        find -L "${PKG_DATA}"/_metadata -name '*.dep' | cut -d '/' -f -
+    } | sort -u));;
+esac
+
+for dep in ${deps[@]}; do
     DEP_NAME=$(basename "${dep}" .dep)
     DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
     PKG_PATH=${PKG_PATH}:${DEP_DEST}
@@ -43,11 +49,11 @@ PKG_INCL=${PKG_INCL%:}
 PKG_LIBS=${PKG_LIBS%:}
 PKG_PKGS=${PKG_PKGS%:}
 
+CODESIGN_ALLOCATE=$(which "${PKG_TARG}"-codesign_allocate) \
 C_INCLUDE_PATH= \
 COMPILER_PATH=${PKG_BASE}/util \
-CPATH=${PKG_INCL} \
+CPATH=/dat/git/iphone-api:${PKG_INCL} \
 CPLUS_INCLUDE_PATH= \
-GCC_EXEC_PREFIX=${PKG_CCPF}/lib/gcc \
 LD_LIBRARY_PATH=${PKG_LIBS} \
 LIBRARY_PATH=${PKG_LIBS} \
 MIGCC=${PKG_TARG}-gcc \

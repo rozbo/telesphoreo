@@ -7,22 +7,24 @@ export PKG_CCPF=$("${PKG_TARG}-gcc" -v 2>&1 | grep -- --prefix | sed -e 's/.*--p
 
 source "${PKG_BASE}/folders.sh"
 
-export PKG_DATA=$(PKG_DATA_ "${PKG_NAME}")
-export PKG_WORK=$(PKG_WORK_ "${PKG_NAME}")
-export PKG_DEST=$(PKG_DEST_ "${PKG_NAME}")
+if [[ ${PKG_NAME} != @(-|:*) ]]; then
+    export PKG_DATA=$(PKG_DATA_ "${PKG_NAME}")
+    export PKG_WORK=$(PKG_WORK_ "${PKG_NAME}")
+    export PKG_DEST=$(PKG_DEST_ "${PKG_NAME}")
 
-export PKG_STAT=${PKG_BASE}/stat/${PKG_ARCH}/${PKG_NAME}
-export PKG_DATA=$(echo "${PKG_BASE}"/data/"${PKG_NAME}"?(_))
-export PKG_VRSN=$(cat "${PKG_DATA}/_metadata/version")
-export PKG_PRIO=$(cat "${PKG_DATA}/_metadata/priority")
-export PKG_RVSN=$(cat "${PKG_STAT}/dest-ver" 2>/dev/null)
+    export PKG_STAT=${PKG_BASE}/stat/${PKG_ARCH}/${PKG_NAME}
+    export PKG_DATA=$(echo "${PKG_BASE}"/data/"${PKG_NAME}"?(_))
+    export PKG_VRSN=$(cat "${PKG_DATA}/_metadata/version")
+    export PKG_PRIO=$(cat "${PKG_DATA}/_metadata/priority")
+    export PKG_RVSN=$(cat "${PKG_STAT}/dest-ver" 2>/dev/null)
 
-if [[ ! -e ${PKG_DATA} ]]; then
-    echo "unknown package: ${PKG_NAME}" 1>&2
-    exit 1
+    if [[ ! -e ${PKG_DATA} ]]; then
+        echo "unknown package: ${PKG_NAME}" 1>&2
+        exit 1
+    fi
+
+    declare -a PKG_DEPS
+    for dep in "${PKG_DATA}"/_metadata/*.dep; do
+        PKG_DEPS[${#PKG_DEPS[@]}]=$(basename "${dep}" .dep)
+    done
 fi
-
-declare -a PKG_DEPS
-for dep in "${PKG_DATA}"/_metadata/*.dep; do
-    PKG_DEPS[${#PKG_DEPS[@]}]=$(basename "${dep}" .dep)
-done
