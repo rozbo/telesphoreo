@@ -21,6 +21,8 @@ if [[ ! -x ${PKG_BASE}/util/ldid || ${PKG_BASE}/util/ldid -ot ${PKG_BASE}/util/l
     g++ -I ~/menes -o "${PKG_BASE}"/util/ldid{,.cpp} -x c "${PKG_BASE}"/util/{lookup2,sha1}.c
 fi
 
+export CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate)
+
 for DEP_NAME in "${PKG_DEPS[@]}"; do
     "${PKG_MAKE}" "${DEP_NAME}"
 done
@@ -54,6 +56,10 @@ function pkg:patch() {
     pkg:libtool_ ltmain.sh
 
     for diff in "${PKG_DATA}"/*.diff; do
+        if [[ ${diff} == */_*.diff ]]; then
+            continue;
+        fi
+
         echo "patching with ${diff}..."
         patch -p1 <"${diff}"
     done
@@ -100,7 +106,7 @@ export -f pkg:libtool_
 
 function pkg:setup() {
     pkg:extract
-    cd *
+    cd */
     pkg:patch
 }
 
@@ -108,8 +114,7 @@ export -f pkg:setup
 
 function pkg:configure() {
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
-    ac_cv_prog_cc_g=no \
-    ac_cv_prog_cxx_g=no \
+    ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
     "${PKG_CONF}" \
         --build=x86_64-unknown-linux-gnu \
         --host="${PKG_TARG}" \
