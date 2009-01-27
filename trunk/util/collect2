@@ -51,6 +51,7 @@ if [[ "${darwin+@}" ]]; then
                 echo -n " -dylib_file ${dylib_name}:${dylib_file}"
             done
 
+            echo -n " -dylib_file /usr/lib/libncurses.5.4.dylib:$(PKG_DEST_ ncurses)/usr/lib/libncurses.5.dylib"
             echo -n " -dylib_file /usr/lib/libssl.0.9.7.dylib:$(PKG_DEST_ openssl)/usr/lib/libssl.0.9.8.dylib"
             echo -n " -dylib_file /usr/lib/libcrypto.0.9.7.dylib:$(PKG_DEST_ openssl)/usr/lib/libcrypto.0.9.8.dylib"
         done))
