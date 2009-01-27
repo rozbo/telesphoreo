@@ -12,7 +12,7 @@ svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(adv-cmds apt base bash coreutils cydia cydia-sources gawk grep inetutils less libarmfp libgcc nano network-cmds nvi rsync sed shell-cmds system-cmds tar unzip zip)
+PKG_REQS=(adv-cmds apt base bash coreutils cydia cydia-sources grep inetutils less libgcc nano network-cmds sed shell-cmds system-cmds tar unzip)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($({
@@ -49,6 +49,8 @@ done
 rm -rf "${PKG_BASE}/temp"
 cd "${PKG_BOOT}"
 
+"${PKG_BASE}"/fix.sh
+
 PKG_RSLT="${PKG_BASE}/rslt"
 mkdir -p "${PKG_RSLT}"
 
@@ -72,19 +74,17 @@ cp -a * "${PKG_RSLT}/CydiaInstaller.bundle/files"
     <key>Identifier</key>
     <string>org.saurik.cydia</string>
     <key>Description</key>
-    <string>/Working/ set of Unix tools and frameworks.</string>
+    <string>Unix Subsystem w/ Advanced Installer</string>
     <key>SupportedFirmware</key>
     <array>
-        <string>iPod1,1_2.0_5A240d</string>
-        <string>iPod1,1_2.0_5A225c</string>
-        <string>iPhone1,1_1.2.0_5A147p</string>
-        <string>iPhone1,1_1.2.0_5A225c</string>
-        <string>iPhone1,1_2.0_5A240d</string>
-        <string>iPhone1,1_2.0_5A274d</string>
-        <string>iPhone1,1_2.0_5A308</string>
-        <string>iPhone1,1_2.0_5A311</string>
-        <string>iPhone1,1_2.0_5A331</string>
-        <string>iPhone1,1_2.0_5A345</string>
+EOF
+
+    cat "${PKG_BASE}/arch/${PKG_ARCH}/firmware" | sed -e '
+        s/^/        <string>/
+        s/$/<\/string>/
+    '
+
+    cat <<EOF
     </array>
     <key>Commands</key>
     <array>
@@ -121,6 +121,12 @@ EOF
     done
 
     cat <<EOF
+        <dict>
+            <key>Action</key>
+            <string>RunScript</string>
+            <key>File</key>
+            <string>space.sh</string>
+        </dict>
     </array>
     <key>Size</key>
     <integer>$(du -bs "${PKG_RSLT}/CydiaInstaller.bundle/files" | cut -d $'\t' -f 1)</integer>
@@ -129,6 +135,7 @@ EOF
 EOF
 } >"${PKG_RSLT}/CydiaInstaller.bundle/Info.plist"
 
+cp -a "${PKG_BASE}"/pwnr/* "${PKG_RSLT}"/CydiaInstaller.bundle
 tar -zcf "${PKG_RSLT}/Pwnage_${PKG_ARCH}.tgz" -C "${PKG_RSLT}" CydiaInstaller.bundle
 
 rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.zip"
@@ -157,7 +164,6 @@ if [[ ${PKG_ARCH} == darwin-arm ]]; then
     cp -a usr/lib/libintl.8.0.2.dylib usr/libexec/cydia_
     cp -a usr/lib/libncurses.5.dylib usr/libexec/cydia_
     cp -a usr/lib/libreadline.5.2.dylib usr/libexec/cydia_
-    cp -a usr/libexec/cydia/move.sh usr/libexec/cydia_
 
     rm -f "${PKG_RSLT}/AppTapp_${PKG_ARCH}.xml"
     find * -type l -print -o -name "terminfo" -prune | while read -r link; do
