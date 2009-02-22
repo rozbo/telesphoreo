@@ -20,12 +20,14 @@ case "${PKG_NAME}" in
     (-) deps=();;
     (:*) deps=(${PKG_NAME//:/ });;
     (*) deps=($({
-        find -L "${PKG_DATA}"/_metadata -name '*.dep' | cut -d '/' -f -
+        find -L "${PKG_DATA}"/_metadata -name '*.dep' -exec basename {} .dep \;
     } | sort -u));;
 esac
 
 for dep in ${deps[@]}; do
-    DEP_NAME=$(basename "${dep}" .dep)
+    # XXX: bother dealing with weird arguments?
+    #DEP_NAME=$(basename "${dep}" .dep)
+    DEP_NAME=${dep}
     DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
     PKG_PATH=${PKG_PATH}:${DEP_DEST}
 
