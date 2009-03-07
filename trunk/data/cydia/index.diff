@@ -1,0 +1,21 @@
+diff -ru cydia-1.0.2712/cydia/Cydia.mm cydia-1.0.2712+iPhone/cydia/Cydia.mm
+--- cydia-1.0.2712/cydia/Cydia.mm	2009-01-26 10:31:46.000000000 +0000
++++ cydia-1.0.2712+iPhone/cydia/Cydia.mm	2009-01-26 13:07:03.000000000 +0000
+@@ -1759,7 +1759,7 @@
+         unichar character([name characterAtIndex:0]);
+         if (!isalpha(character))
+             return '#';
+-        return character;
++        return toupper(character);
+     _end
+ }
+ 
+@@ -2273,7 +2273,7 @@
+ 
+ - (Section *) initWithIndex:(unichar)index row:(size_t)row {
+     if ((self = [super init]) != nil) {
+-        name_ = [[NSString stringWithCharacters:&index length:1] retain];
++        name_ = [(index == '#' ? @"123" : [NSString stringWithCharacters:&index length:1]) retain];
+         index_ = index;
+         row_ = row;
+     } return self;
