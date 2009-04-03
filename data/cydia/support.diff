@@ -1,0 +1,12 @@
+diff -ru cydia-1.0.2797/cydia/Cydia.mm cydia-1.0.2797+iPhone/cydia/Cydia.mm
+--- cydia-1.0.2797/cydia/Cydia.mm	2009-03-16 15:12:33.000000000 +0000
++++ cydia-1.0.2797+iPhone/cydia/Cydia.mm	2009-03-18 04:53:40.000000000 +0000
+@@ -1662,6 +1662,8 @@
+                         homepage_ = nil;
+                     if (homepage_ != nil)
+                         homepage_ = [homepage_ retain];
++                    if (support_ != nil)
++                        support_ = [support_ retain];
+                     if (sponsor != nil)
+                         sponsor_ = [[Address addressWithString:sponsor] retain];
+                     if (author != nil)
