@@ -1,4 +1,7 @@
 #!/bin/sh
-! /bin/launchctl list com.openssh.sshd &>/dev/null ||
+
+if [[ $1 == remove || $1 == purge ]]; then
     /bin/launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist
+fi
+
 exit 0

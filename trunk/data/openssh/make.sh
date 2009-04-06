@@ -1,6 +1,6 @@
 pkg:setup
 autoconf
-pkg:configure --disable-strip --sysconfdir=/etc/ssh
+pkg:configure --disable-strip --sysconfdir=/etc/ssh --disable-libutil --disable-utmp --disable-wtmp ac_cv_path_AR=arm-apple-darwin9-ar
 make
 pkg:install INSTALL_SSH_RAND_HELPER=yes
 pkg: cp -a %/sshd-keygen-wrapper /usr/libexec
