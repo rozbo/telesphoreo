@@ -1,4 +1,7 @@
 #!/bin/sh
-/bin/launchctl list com.openssh.sshd &>/dev/null ||
+
+if [[ $1 == install || $1 == upgrade ]]; then
     /bin/launchctl load /Library/LaunchDaemons/com.openssh.sshd.plist
+fi
+
 exit 0
