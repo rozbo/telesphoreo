@@ -10,16 +10,20 @@ cd ..
 ${PKG_TARG}-gcc -o passwd passwd.tproj/!(od_passwd).c -I. -DTARGET_OS_EMBEDDED
 # XXX: ${PKG_TARG}-gcc -o chpass chpass.tproj/*.c -I. -Ipwd_mkdb.tproj -Ivipw.tproj
 ${PKG_TARG}-gcc -o dmesg dmesg.tproj/*.c -I.
+${PKG_TARG}-gcc -o sysctl sysctl.tproj/sysctl.c -I.
 ${PKG_TARG}-gcc -o arch arch.tproj/*.m -I. -framework CoreFoundation -framework Foundation -lobjc
 
 cp -va "${PKG_DATA}"/kextmanager* .
-# XXX: shutdown
-for tproj in ac accton getconf getty hostinfo iostat login mkfile nvram reboot sync sysctl update vifs vipw zdump zic zprint; do
+# XXX: kvm_mkdb shutdown
+for tproj in ac accton getconf getty hostinfo iostat login mkfile nvram pwd_mkdb reboot sync update vifs vipw zdump zic zprint; do
     cflags=
 
-    case ${tproj} in (shutdown)
-        cflags="${cflags} -lbsm"
-    ;; esac
+    case ${tproj} in
+        (kvm_mkdb) cflags="${cflags} -DBSD_KERNEL_PRIVATE";;
+        (login) cflags="${cflags} -lpam -DUSE_PAM";;
+        (pwd_mkdb) cflags="${cflags} -D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";;
+        (shutdown) cflags="${cflags} -lbsm";;
+    esac
 
     echo "${tproj}"
     ${PKG_TARG}-gcc -o "${tproj}" "${tproj}.tproj"/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit kextmanagerUser.c ${cflags}
@@ -40,4 +44,4 @@ pkg: cp -a arch getconf getty hostinfo login passwd zprint /usr/bin
 pkg: ln -s chpass /usr/bin/chfn
 pkg: ln -s chpass /usr/bin/chsh
 pkg: ln -s less /usr/bin/more
-pkg: cp -a ac accton iostat mkfile nvram sysctl update vifs vipw zdump zic /usr/sbin
+pkg: cp -a ac accton iostat mkfile nvram pwd_mkdb sysctl update vifs vipw zdump zic /usr/sbin
