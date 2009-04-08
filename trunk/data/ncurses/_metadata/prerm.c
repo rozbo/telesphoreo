@@ -9,13 +9,8 @@ int main(int argc, char *argv[]) {
     if (unlink("/usr/lib/_ncurses") == -1)
         return 1;
 
-    if (mkdir("/usr/lib/_ncurses", 0755) == -1) {
-        symlink("/usr/lib/", "/usr/lib/_ncurses");
-        return 2;
-    }
-
-    rename("/usr/lib/libcurses.dylib", "/usr/lib/_ncurses/libcurses.dylib");
-    rename("/usr/lib/libncurses.dylib", "/usr/lib/_ncurses/libncurses.dylib");
+    unlink("/usr/lib/libcurses.dylib");
+    unlink("/usr/lib/libncurses.dylib");
 
     if (access("/usr/lib/libcurses.dylib", F_OK) != 0)
         symlink("libncurses.5.4.dylib", "/usr/lib/libcurses.dylib");
