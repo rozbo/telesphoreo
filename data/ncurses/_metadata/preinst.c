@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
     ))) return 0;
 
     unlink("/usr/lib/_ncurses");
-    if (symlink("/usr/lib/", "/usr/lib/_ncurses") != 0)
+    if (symlink("/usr/lib", "/usr/lib/_ncurses") != 0)
         return 1;
 
     return 0;
