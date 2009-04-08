@@ -3,20 +3,25 @@ pkg:setup
 
 cd disklib
 rm -f mntopts.h getmntopts.c
-${PKG_TARG}-gcc -c *.c
+${PKG_TARG}-gcc -fno-common -c *.c
 ${PKG_TARG}-ar -r libdisk.a *.o
 cd ..
 
-for tproj in !(fstyp|dev_mkdb|dump|fsck_hfs|fuser|mount_hfs|restore|quotacheck|ufs).tproj; do
+for tproj in !(fstyp|fsck_hfs|fuser|mount_portal|mount_swapfs|mount_umap).tproj; do
     tproj=$(basename "${tproj}" .tproj)
     echo ${tproj}
 
     extra=
-    if [[ ${tproj} = mount_cd9660 ]]; then
+
+    if [[ ${tproj} = restore ]]; then
+        extra="${extra} -DRRESTORE"
+    fi
+
+    if [[ ${tproj} = mount_cd9660 || ${tproj} = mount_hfs ]]; then
         extra="${extra} -framework IOKit"
     fi
 
-    if [[ ${tproj} = mount_cd9660 || ${tproj} = newfs_hfs ]]; then
+    if [[ ${tproj} = mount_cd9660 || ${tproj} = mount_hfs || ${tproj} = newfs_hfs ]]; then
         extra="${extra} -framework CoreFoundation"
     fi
 
@@ -34,7 +39,8 @@ chmod u+s umount quota
 
 pkg: mkdir -p /usr/bin /usr/libexec /usr/sbin /sbin
 
+# XXX: mt ufs
 pkg: cp -a quota /usr/bin
-pkg: cp -a vsdbutil repquota fdisk edquota quot quotaon /usr/sbin
+pkg: cp -a dev_mkdb edquota fdisk quot quotaon repquota vsdbutil /usr/sbin
 pkg: cp -a vndevice /usr/libexec
-pkg: cp -a clri dumpfs tunefs umount @(fsck|fstyp|mount|newfs)?(_*([a-z0-9])) /sbin
+pkg: cp -a clri dump dumpfs quotacheck restore tunefs umount @(fsck|fstyp|mount|newfs)?(_*([a-z0-9])) /sbin
