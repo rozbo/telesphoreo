@@ -1,48 +1,13 @@
-diff -ru readline-5.2/support/shobj-conf readline-5.2+iPhone/support/shobj-conf
---- readline-5.2/support/shobj-conf	2006-04-11 13:15:43.000000000 +0000
-+++ readline-5.2+iPhone/support/shobj-conf	2007-12-28 14:22:45.000000000 +0000
-@@ -142,42 +142,19 @@
- 	;;
- 
- # Darwin/MacOS X
--darwin8*)
-+darwin*|macosx*)
- 	SHOBJ_STATUS=supported
- 	SHLIB_STATUS=supported
- 	
- 	SHOBJ_CFLAGS='-fno-common'
- 
--	SHOBJ_LD='MACOSX_DEPLOYMENT_TARGET=10.3 ${CC}'
--
--	SHLIB_LIBVERSION='$(SHLIB_MAJOR)$(SHLIB_MINOR).$(SHLIB_LIBSUFF)'
--	SHLIB_LIBSUFF='dylib'
--
--	SHOBJ_LDFLAGS='-undefined dynamic_lookup'
--	SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
--
--	SHLIB_LIBS='-lncurses'	# see if -lcurses works on MacOS X 10.1 
--	;;
--
--darwin*|macosx*)
--	SHOBJ_STATUS=unsupported
--	SHLIB_STATUS=supported
--
--	SHOBJ_CFLAGS='-fno-common'
--
- 	SHOBJ_LD='${CC}'
- 
+diff -ru readline-6.0/support/shobj-conf readline-6.0+iPhone/support/shobj-conf
+--- readline-6.0/support/shobj-conf	2009-01-04 19:32:42.000000000 +0000
++++ readline-6.0+iPhone/support/shobj-conf	2009-04-09 02:24:20.000000000 +0000
+@@ -157,8 +157,8 @@
  	SHLIB_LIBVERSION='$(SHLIB_MAJOR)$(SHLIB_MINOR).$(SHLIB_LIBSUFF)'
  	SHLIB_LIBSUFF='dylib'
  
--	case "${host_os}" in
--	darwin[78]*)	SHOBJ_LDFLAGS=''
--			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
--			;;
--	*)		SHOBJ_LDFLAGS='-dynamic'
--			SHLIB_XLDFLAGS='-arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
--			;;
--	esac
-+	SHOBJ_LDFLAGS='-undefined dynamic_lookup'
+-	SHOBJ_LDFLAGS='-dynamiclib -dynamic -undefined dynamic_lookup -arch_only `/usr/bin/arch`'
+-	SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
++	SHOBJ_LDFLAGS='-dynamiclib -dynamic -undefined dynamic_lookup -arch_only arm'
 +	SHLIB_XLDFLAGS='-dynamiclib -arch_only arm -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
  
  	SHLIB_LIBS='-lncurses'	# see if -lcurses works on MacOS X 10.1 
