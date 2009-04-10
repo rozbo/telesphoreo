@@ -6,11 +6,11 @@ mkdir bld-ncurses{,w}
 cd bld-ncurses
 flags='--with-shared --without-normal --without-debug --enable-sigwinch'
 PKG_CONF=../${dir}/configure pkg:configure ${flags}
-make
+make CFLAGS='-O2 -mthumb'
 pkg:install
 cd ../bld-ncursesw
 PKG_CONF=../${dir}/configure pkg:configure ${flags} --disable-overwrite --enable-widec
-make
+make CFLAGS='-O2 -mthumb'
 pkg:install
 
 pkg: mkdir -p @/usr/lib
