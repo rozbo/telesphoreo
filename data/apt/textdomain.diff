@@ -1,0 +1,72 @@
+diff -ru apt-0.7.20.2/cmdline/apt-cache.cc apt-0.7.20.2+iPhone/cmdline/apt-cache.cc
+--- apt-0.7.20.2/cmdline/apt-cache.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-cache.cc	2009-04-14 16:10:02.000000000 +0000
+@@ -1810,7 +1810,7 @@
+ 
+    // Set up gettext support
+    setlocale(LC_ALL,"");
+-   textdomain(PACKAGE);
++   //textdomain(PACKAGE);
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+diff -ru apt-0.7.20.2/cmdline/apt-cdrom.cc apt-0.7.20.2+iPhone/cmdline/apt-cdrom.cc
+--- apt-0.7.20.2/cmdline/apt-cdrom.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-cdrom.cc	2009-04-14 16:10:02.000000000 +0000
+@@ -188,7 +188,7 @@
+ 
+    // Set up gettext support
+    setlocale(LC_ALL,"");
+-   textdomain(PACKAGE);
++   //textdomain(PACKAGE);
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+diff -ru apt-0.7.20.2/cmdline/apt-config.cc apt-0.7.20.2+iPhone/cmdline/apt-config.cc
+--- apt-0.7.20.2/cmdline/apt-config.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-config.cc	2009-04-14 16:10:02.000000000 +0000
+@@ -103,7 +103,7 @@
+ 
+    // Set up gettext support
+    setlocale(LC_ALL,"");
+-   textdomain(PACKAGE);
++   //textdomain(PACKAGE);
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+diff -ru apt-0.7.20.2/cmdline/apt-extracttemplates.cc apt-0.7.20.2+iPhone/cmdline/apt-extracttemplates.cc
+--- apt-0.7.20.2/cmdline/apt-extracttemplates.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-extracttemplates.cc	2009-04-14 16:10:02.000000000 +0000
+@@ -361,7 +361,7 @@
+ 
+ 	// Set up gettext support
+ 	setlocale(LC_ALL,"");
+-	textdomain(PACKAGE);
++	//textdomain(PACKAGE);
+ 
+ 	// Parse the command line and initialize the package library
+ 	CommandLine CmdL(Args,_config);
+diff -ru apt-0.7.20.2/cmdline/apt-get.cc apt-0.7.20.2+iPhone/cmdline/apt-get.cc
+--- apt-0.7.20.2/cmdline/apt-get.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-get.cc	2009-04-15 19:38:48.000000000 +0000
+@@ -2758,7 +2759,7 @@
+ 
+    // Set up gettext support
+    setlocale(LC_ALL,"");
+-   textdomain(PACKAGE);
++   //textdomain(PACKAGE);
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+diff -ru apt-0.7.20.2/cmdline/apt-sortpkgs.cc apt-0.7.20.2+iPhone/cmdline/apt-sortpkgs.cc
+--- apt-0.7.20.2/cmdline/apt-sortpkgs.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/cmdline/apt-sortpkgs.cc	2009-04-14 16:10:02.000000000 +0000
+@@ -174,7 +174,7 @@
+ 
+    // Set up gettext support
+    setlocale(LC_ALL,"");
+-   textdomain(PACKAGE);
++   //textdomain(PACKAGE);
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);

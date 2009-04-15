@@ -1,6 +1,6 @@
 pkg:setup
 autoconf
-pkg:configure --disable-nls
+DPKG_ARCH=$(ls -d $(PKG_WORK_ dpkg)/dpkg-*/scripts) pkg:configure --disable-nls
 make
 
 pkg: mkdir -p /etc/apt/sources.list.d
