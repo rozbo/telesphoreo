@@ -6,3 +6,4 @@ pkg: rm -rf /usr/lib/man /usr/lib/ssl/man
 pkg: mkdir -p /etc/ssl
 mv "${PKG_DEST}"/usr/lib/ssl/{certs,openssl.cnf,private} "${PKG_DEST}"/etc/ssl
 ln -s /etc/ssl/{certs,openssl.cnf,private} "${PKG_DEST}"/usr/lib/ssl
+rm -rf "${PKG_DEST}"/usr/lib/*.a
