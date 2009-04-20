@@ -7,6 +7,7 @@ pkg: mkdir -p /etc/apt/sources.list.d
 pkg: mkdir -p /var/cache/apt/archives/partial
 pkg: mkdir -p /var/lib/apt/lists/partial
 pkg: mkdir -p /var/lib/apt/periodic
+pkg: mkdir -p /var/log/apt
 
 pkg: mkdir -p /usr/bin /usr/lib/apt
 pkg: cp -a bin/apt-* /usr/bin

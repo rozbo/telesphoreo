@@ -267,7 +267,7 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 +      if (UniqueID_ != NULL)
 +         CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("X-Unique-ID"), UniqueID_);
 +
-+      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.534"));
++      CFHTTPMessageSetHeaderFieldValue(hm, CFSTR("User-Agent"), CFSTR("Telesphoreo APT-HTTP/1.0.592"));
 +
 +      CFReadStreamRef rs = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault, hm);
 +      CFRelease(hm);

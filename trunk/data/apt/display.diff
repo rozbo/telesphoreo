@@ -1,0 +1,95 @@
+diff -ru apt-0.7.20.2/apt-pkg/cacheiterators.h apt-0.7.20.2+iPhone/apt-pkg/cacheiterators.h
+--- apt-0.7.20.2/apt-pkg/cacheiterators.h	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/apt-pkg/cacheiterators.h	2009-04-20 16:50:43.000000000 +0000
+@@ -71,6 +71,7 @@
+    inline pkgCache *Cache() {return Owner;};
+    
+    inline const char *Name() const {return Pkg->Name == 0?0:Owner->StrP + Pkg->Name;};
++   inline const char *Display() const {return Pkg->Display == 0?0:Owner->StrP + Pkg->Display;};
+    inline const char *Section() const {return Pkg->Section == 0?0:Owner->StrP + Pkg->Section;};
+    inline bool Purge() const {return Pkg->CurrentState == pkgCache::State::Purge ||
+ 	 (Pkg->CurrentVer == 0 && Pkg->CurrentState == pkgCache::State::NotInstalled);};
+@@ -123,6 +124,7 @@
+    inline pkgCache *Cache() {return Owner;};
+       
+    inline const char *VerStr() const {return Ver->VerStr == 0?0:Owner->StrP + Ver->VerStr;};
++   inline const char *Display() const {return Ver->Display == 0?0:Owner->StrP + Ver->Display;};
+    inline const char *Section() const {return Ver->Section == 0?0:Owner->StrP + Ver->Section;};
+    inline const char *Arch() const {return Ver->Arch == 0?0:Owner->StrP + Ver->Arch;};
+    inline PkgIterator ParentPkg() const {return PkgIterator(*Owner,Owner->PkgP + Ver->ParentPkg);};
+diff -ru apt-0.7.20.2/apt-pkg/deb/deblistparser.cc apt-0.7.20.2+iPhone/apt-pkg/deb/deblistparser.cc
+--- apt-0.7.20.2/apt-pkg/deb/deblistparser.cc	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/apt-pkg/deb/deblistparser.cc	2009-04-20 17:02:43.000000000 +0000
+@@ -75,6 +75,10 @@
+ /* */
+ bool debListParser::NewVersion(pkgCache::VerIterator Ver)
+ {
++   Ver->Display = UniqFindTagWrite("Name");
++   if (Ver->Display == 0)
++      Ver->Display = UniqFindTagWrite("Maemo-Display-Name");
++
+    // Parse the section
+    Ver->Section = UniqFindTagWrite("Section");
+    Ver->Arch = UniqFindTagWrite("Architecture");
+@@ -169,6 +169,10 @@
+ bool debListParser::UsePackage(pkgCache::PkgIterator Pkg,
+ 			       pkgCache::VerIterator Ver)
+ {
++   if (Pkg->Display == 0)
++      Pkg->Display = UniqFindTagWrite("Name");
++   if (Pkg->Display == 0)
++      Pkg->Display = UniqFindTagWrite("Maemo-Display-Name");
+    if (Pkg->Section == 0)
+       Pkg->Section = UniqFindTagWrite("Section");
+    if (Section.FindFlag("Essential",Pkg->Flags,pkgCache::Flag::Essential) == false)
+diff -ru apt-0.7.20.2/apt-pkg/deb/debrecords.cc apt-0.7.20.2+iPhone/apt-pkg/deb/debrecords.cc
+--- apt-0.7.20.2/apt-pkg/deb/debrecords.cc	2009-04-20 08:54:09.000000000 +0000
++++ apt-0.7.20.2+iPhone/apt-pkg/deb/debrecords.cc	2009-04-20 17:26:22.000000000 +0000
+@@ -51,6 +51,17 @@
+    return Section.FindS("Package");
+ }
+ 									/*}}}*/
++// RecordParser::Display - Return the package display name			/*{{{*/
++// ---------------------------------------------------------------------
++/* */
++string debRecordParser::Display()
++{
++   string display(Section.FindS("Name"));
++   if (display.empty())
++      display = Section.FindS("Maemo-Display-Name");
++   return display;
++}
++									/*}}}*/
+ // RecordParser::Homepage - Return the package homepage		       	/*{{{*/
+ // ---------------------------------------------------------------------
+ /* */
+diff -ru apt-0.7.20.2/apt-pkg/deb/debrecords.h apt-0.7.20.2+iPhone/apt-pkg/deb/debrecords.h
+--- apt-0.7.20.2/apt-pkg/deb/debrecords.h	2009-04-20 08:54:09.000000000 +0000
++++ apt-0.7.20.2+iPhone/apt-pkg/deb/debrecords.h	2009-04-20 17:20:31.000000000 +0000
+@@ -39,6 +39,7 @@
+    virtual string ShortDesc();
+    virtual string LongDesc();
+    virtual string Name();
++   virtual string Display();
+    virtual string Homepage();
+ 
+    virtual void GetRec(const char *&Start,const char *&Stop);
+diff -ru apt-0.7.20.2/apt-pkg/pkgcache.h apt-0.7.20.2+iPhone/apt-pkg/pkgcache.h
+--- apt-0.7.20.2/apt-pkg/pkgcache.h	2009-02-07 15:09:35.000000000 +0000
++++ apt-0.7.20.2+iPhone/apt-pkg/pkgcache.h	2009-04-20 16:49:55.000000000 +0000
+@@ -200,6 +200,7 @@
+ {
+    // Pointers
+    map_ptrloc Name;              // Stringtable
++   map_ptrloc Display;           // Stringtable
+    map_ptrloc VersionList;       // Version
+    map_ptrloc CurrentVer;        // Version
+    map_ptrloc Section;           // StringTable (StringItem)
+@@ -259,6 +272,7 @@
+ struct pkgCache::Version
+ {
+    map_ptrloc VerStr;            // Stringtable
++   map_ptrloc Display;           // Stringtable
+    map_ptrloc Section;           // StringTable (StringItem)
+    map_ptrloc Arch;              // StringTable
+       
