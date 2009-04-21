@@ -1,19 +1,19 @@
-diff -ru dpkg-1.13.25/lib/dpkg.h dpkg-1.13.25+iPhone/lib/dpkg.h
---- dpkg-1.13.25/lib/dpkg.h	2006-11-24 04:08:31.000000000 +0000
-+++ dpkg-1.13.25+iPhone/lib/dpkg.h	2008-09-03 07:28:26.000000000 +0000
-@@ -82,6 +82,7 @@
+diff -ru dpkg-1.14.25/lib/dpkg.h dpkg-1.14.25+iPhone/lib/dpkg.h
+--- dpkg-1.14.25/lib/dpkg.h	2009-02-01 06:18:59.000000000 +0000
++++ dpkg-1.14.25+iPhone/lib/dpkg.h	2009-04-11 01:20:50.000000000 +0000
+@@ -80,6 +80,7 @@
+ #define CONTROLFILE        "control"
+ #define CONFFILESFILE      "conffiles"
+ #define PREINSTFILE        "preinst"
++#define EXTRAINSTFILE      "extrainst_"
+ #define POSTINSTFILE       "postinst"
  #define PRERMFILE          "prerm"
  #define POSTRMFILE         "postrm"
- #define LISTFILE           "list"
-+#define EXTRAINSTFILE      "extrainst_"
- 
- #define STATUSFILE        "status"
- #define AVAILFILE         "available"
-diff -ru dpkg-1.13.25/src/processarc.c dpkg-1.13.25+iPhone/src/processarc.c
---- dpkg-1.13.25/src/processarc.c	2006-06-29 00:25:08.000000000 +0000
-+++ dpkg-1.13.25+iPhone/src/processarc.c	2008-09-03 07:28:33.000000000 +0000
-@@ -569,6 +569,16 @@
-   close(tc.backendpipe);
+diff -ru dpkg-1.14.25/src/processarc.c dpkg-1.14.25+iPhone/src/processarc.c
+--- dpkg-1.14.25/src/processarc.c	2009-02-01 06:19:02.000000000 +0000
++++ dpkg-1.14.25+iPhone/src/processarc.c	2009-04-11 01:19:29.000000000 +0000
+@@ -596,6 +596,16 @@
+   p1[0] = -1;
    waitsubproc(c1,BACKEND " --fsys-tarfile",PROCPIPE);
  
 +  if (oldversionstatus == stat_notinstalled || oldversionstatus == stat_configfiles) {

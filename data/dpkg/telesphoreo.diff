@@ -1,11 +1,9 @@
-diff -ru dpkg-1.13.25/ostable dpkg-1.13.25+iPhone/ostable
---- dpkg-1.13.25/ostable	2006-06-21 13:33:54.000000000 +0000
-+++ dpkg-1.13.25+iPhone/ostable	2008-04-11 16:12:36.000000000 +0000
-@@ -14,6 +14,7 @@
- #
- # <Debian name>	<GNU name>	<config.guess regex>
- linux		linux-gnu	linux[^-]*(-gnu.*)?
-+iphoneos	darwin9		darwin9
- darwin		darwin		darwin[^-]*
- freebsd		freebsd		freebsd[^-]*
- kfreebsd	kfreebsd-gnu	kfreebsd[^-]*(-gnu.*)?
+diff -ru dpkg-1.14.25/triplettable dpkg-1.14.25+iPhone/triplettable
+--- dpkg-1.14.25/triplettable	2009-01-25 01:19:14.000000000 +0000
++++ dpkg-1.14.25+iPhone/triplettable	2009-04-11 01:51:00.000000000 +0000
+@@ -13,4 +13,5 @@
+ bsd-openbsd-<cpu>	openbsd-<cpu>
+ bsd-netbsd-<cpu>	netbsd-<cpu>
+ bsd-darwin-<cpu>	darwin-<cpu>
++bsd-darwin-arm		iphoneos-arm
+ sysv-solaris-<cpu>	solaris-<cpu>
