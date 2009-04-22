@@ -1,7 +1,7 @@
 diff -ru apt-0.7.20.2/apt-pkg/tagfile.cc apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc
 --- apt-0.7.20.2/apt-pkg/tagfile.cc	2009-04-19 02:42:49.000000000 +0000
 +++ apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc	2009-04-19 03:28:33.000000000 +0000
-@@ -28,11 +28,11 @@
+@@ -28,11 +28,12 @@
  // ---------------------------------------------------------------------
  /* */
  pkgTagFile::pkgTagFile(FileFd *pFd,unsigned long Size) :
@@ -12,6 +12,7 @@ diff -ru apt-0.7.20.2/apt-pkg/tagfile.cc apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc
 -   if (Fd.IsOpen() == false)
 +   if (Fd.IsOpen() == false || Fd.Size() == 0)
     {
++      _error->Discard();
 +      Map = NULL;
        Buffer = 0;
        Start = End = Buffer = 0;
