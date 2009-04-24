@@ -10,7 +10,7 @@ diff -ru apt-0.6.46.4.1/apt-pkg/acquire.cc apt-0.6.46.4.1+iPhone/apt-pkg/acquire
 +   string name(U.Access + ':' + U.Host);
  
 -   return U.Access + ':' + U.Host;
-+   int parallel(_config->FindI("Acquire::"+U.Access+"::MaxParallel",0));
++   int parallel(_config->FindI("Acquire::"+U.Access+"::MaxParallel",8));
 +   if (parallel <= 0)
 +      return name;
 +
