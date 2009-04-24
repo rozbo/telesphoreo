@@ -1,5 +1,5 @@
 pkg:setup
-pkg:configure
+pkg:configure --disable-nls
 make
 pkg:install
 pkg: rm -f /usr/share/gnupg/{FAQ,faq.html}
