@@ -13,12 +13,19 @@ ${PKG_TARG}-gcc -o dmesg dmesg.tproj/*.c -I.
 ${PKG_TARG}-gcc -o sysctl sysctl.tproj/sysctl.c -I.
 ${PKG_TARG}-gcc -o arch arch.tproj/*.m -I. -framework CoreFoundation -framework Foundation -lobjc
 
+cd dynamic_pager.tproj
+mig -server backing_store_triggers_server.h -user /dev/null -header /dev/null backing_store_triggers.defs
+mig -server /dev/null -user backing_store_alerts.h -header /dev/null backing_store_alerts.defs
+mig -server default_pager_alerts_server.h -user /dev/null -header /dev/null default_pager_alerts.defs
+cd ..
+
 cp -va "${PKG_DATA}"/kextmanager* .
 # XXX: kvm_mkdb shutdown
-for tproj in ac accton getconf getty hostinfo iostat login mkfile nvram pwd_mkdb reboot sync update vifs vipw zdump zic zprint; do
+for tproj in ac accton dynamic_pager getconf getty hostinfo iostat login mkfile nvram pwd_mkdb reboot sync update vifs vipw vm_stat zdump zic zprint; do
     cflags=
 
     case ${tproj} in
+        (dynamic_pager) cflags="${cflags} -Idynamic_pager.tproj";;
         (kvm_mkdb) cflags="${cflags} -DBSD_KERNEL_PRIVATE";;
         (login) cflags="${cflags} -lpam -DUSE_PAM";;
         (pwd_mkdb) cflags="${cflags} -D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";;
@@ -38,9 +45,9 @@ pkg: cp -a pagesize.tproj/pagesize.sh /usr/bin/pagesize
 pkg: chmod 755 /sbin/nologin /usr/bin/pagesize
 
 pkg: cp -a sync /bin
-pkg: cp -a reboot dmesg /sbin
+pkg: cp -a dmesg dynamic_pager reboot /sbin
 pkg: ln -s reboot /sbin/halt
-pkg: cp -a arch getconf getty hostinfo login passwd zprint /usr/bin
+pkg: cp -a arch getconf getty hostinfo login passwd vm_stat zprint /usr/bin
 pkg: ln -s chpass /usr/bin/chfn
 pkg: ln -s chpass /usr/bin/chsh
 pkg: ln -s less /usr/bin/more
