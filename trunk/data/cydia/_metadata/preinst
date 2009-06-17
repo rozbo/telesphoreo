@@ -3,7 +3,7 @@
 declare -a cydia
 cydia=($CYDIA)
 
-if [[ $1 == install || $1 == upgrade ]]; then
+if [[ $1 == upgrade ]]; then
     if [[ ${CYDIA+@} ]]; then
         if [[ ${cydia[1]} -lt 1 ]]; then
             echo 'PLEASE RESTART CYDIA!'

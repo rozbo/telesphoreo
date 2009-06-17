@@ -16,3 +16,5 @@ pkg: chmod +s /Applications/Cydia.app/Cydia_
 
 pkg: mkdir -p /System/Library/PreferenceBundles
 pkg: cp -a CydiaSettings.bundle /System/Library/PreferenceBundles
+
+cp -a "$(PKG_DEST_ coreutils)"/usr/bin/du "${PKG_DEST}"/usr/libexec/cydia
