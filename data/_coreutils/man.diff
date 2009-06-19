@@ -1,24 +1,24 @@
-diff -ru coreutils-7.2/Makefile.am coreutils-7.2+iPhone/Makefile.am
---- coreutils-7.2/Makefile.am	2009-03-29 17:44:31.000000000 +0000
-+++ coreutils-7.2+iPhone/Makefile.am	2009-04-11 00:05:17.000000000 +0000
-@@ -15,7 +15,7 @@
- # You should have received a copy of the GNU General Public License
- # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+diff -ru coreutils-7.4/Makefile.am coreutils-7.4+iPhone/Makefile.am
+--- coreutils-7.4/Makefile.am	2009-05-03 20:05:34.000000000 +0000
++++ coreutils-7.4+iPhone/Makefile.am	2009-06-19 05:47:10.000000000 +0000
+@@ -17,7 +17,7 @@
+ 
+ ALL_RECURSIVE_TARGETS =
  
 -SUBDIRS = lib src doc man po tests gnulib-tests
 +SUBDIRS = lib src doc po tests gnulib-tests
- EXTRA_DIST = cfg.mk maint.mk \
-   .prev-version THANKS-to-translators THANKStt.in \
-   .version \
-diff -ru coreutils-7.2/Makefile.in coreutils-7.2+iPhone/Makefile.in
---- coreutils-7.2/Makefile.in	2009-03-31 12:35:42.000000000 +0000
-+++ coreutils-7.2+iPhone/Makefile.in	2009-04-11 00:05:23.000000000 +0000
-@@ -931,7 +931,7 @@
- top_build_prefix = @top_build_prefix@
- top_builddir = @top_builddir@
- top_srcdir = @top_srcdir@
+ 
+ changelog_etc =				\
+   ChangeLog-2005			\
+diff -ru coreutils-7.4/Makefile.in coreutils-7.4+iPhone/Makefile.in
+--- coreutils-7.4/Makefile.in	2009-05-07 12:01:41.000000000 +0000
++++ coreutils-7.4+iPhone/Makefile.in	2009-06-19 05:47:05.000000000 +0000
+@@ -936,7 +936,7 @@
+ 
+ # Some tests always need root privileges, others need them only sometimes.
+ ALL_RECURSIVE_TARGETS = install-root check-root distcheck-hook
 -SUBDIRS = lib src doc man po tests gnulib-tests
 +SUBDIRS = lib src doc po tests gnulib-tests
- EXTRA_DIST = cfg.mk maint.mk \
-   .prev-version THANKS-to-translators THANKStt.in \
-   .version \
+ changelog_etc = \
+   ChangeLog-2005			\
+   ChangeLog-2006			\
