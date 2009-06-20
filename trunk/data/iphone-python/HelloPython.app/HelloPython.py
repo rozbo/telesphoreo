@@ -68,7 +68,7 @@ class PYApplication(UIApplication):
 
         self.window.orderFront_(self)
         self.window.makeKey_(self)
-        self.window._setHidden_(NO)
+        self.window.setHidden_(NO)
 
         inner = self.window.bounds()
         navsize = UINavigationBar.defaultSize()
