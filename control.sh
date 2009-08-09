@@ -15,7 +15,7 @@ cat <<EOF
 Package: ${PKG_NAME}
 EOF
 
-if [[ ${PKG_PRIO} == required || ${PKG_PRIO} == +* ]]; then
+if [[ ${PKG_PRIO} == +* ]]; then
     cat <<EOF
 Essential: yes
 EOF
@@ -61,36 +61,76 @@ Size: $(find "${PKG_DEST}" -type f -exec cat {} \; | gzip -c | wc -c | cut -d $'
 EOF
 fi
 
-unset comma
-for dep in "${PKG_DEPS[@]}"; do
+if [[ -e ${PKG_DATA}/_metadata/predepends_ ]]; then
+    echo "Pre-Depends: $(cat "${PKG_DATA}/_metadata/predepends_")"
+else
+    unset comma
+
+    if [[ ${PKG_ZLIB} == lzma ]]; then
+        if [[ ${comma+@} == @ ]]; then
+            echo -n ","
+        else
+            echo -n "Pre-Depends:"
+            comma=
+        fi
+
+        echo -n " dpkg (>= 1.14.25-8)"
+    fi
+
+    if [[ -e ${PKG_DATA}/_metadata/predepends ]]; then
+        if [[ ${comma+@} == @ ]]; then
+            echo -n ","
+        else
+            echo -n "Pre-Depends:"
+            comma=
+        fi
+
+        echo -n " $(cat "${PKG_DATA}/_metadata/predepends")"
+    fi
+
     if [[ ${comma+@} == @ ]]; then
-        echo -n ","
-    else
-        echo -n "Depends:"
-        comma=
+        echo
     fi
-
-    echo -n " $(basename "${dep}" .dep)"
-    
-    ver=${PKG_DATA}/_metadata/${dep%.dep}.ver.${PKG_ARCH}
-    if [[ -e "${ver}" ]]; then
-        echo -n " (>= $(cat "${ver}"))"
-    fi
-done
-
-if [[ -e ${PKG_DATA}/_metadata/depends ]]; then
-    if [[ ${comma+@} == @ ]]; then
-        echo -n ","
-    else
-        echo -n "Depends:"
-        comma=
-    fi
-
-    echo -n " $(cat "${PKG_DATA}/_metadata/depends")"
 fi
 
-if [[ ${comma+@} == @ ]]; then
-    echo
+if [[ ! -e ${PKG_DATA}/_metadata/depends_ ]]; then
+    unset comma
+    for dep in "${PKG_DEPS[@]}"; do
+        if [[ ${dep} == _* ]]; then
+            continue
+        fi
+
+        if [[ ${comma+@} == @ ]]; then
+            echo -n ","
+        else
+            echo -n "Depends:"
+            comma=
+        fi
+
+        echo -n " $(basename "${dep}" .dep)"
+        
+        ver=${PKG_DATA}/_metadata/${dep%.dep}.ver.${PKG_ARCH}
+        if [[ -e "${ver}" ]]; then
+            echo -n " (>= $(cat "${ver}"))"
+        fi
+    done
+
+    if [[ -e ${PKG_DATA}/_metadata/depends ]]; then
+        if [[ ${comma+@} == @ ]]; then
+            echo -n ","
+        else
+            echo -n "Depends:"
+            comma=
+        fi
+
+        echo -n " $(cat "${PKG_DATA}/_metadata/depends")"
+    fi
+
+    if [[ ${comma+@} == @ ]]; then
+        echo
+    fi
+elif [[ -s ${PKG_DATA}/_metadata/depends_ ]]; then
+    echo "Depends: $(cat "${PKG_DATA}/_metadata/depends_")"
 fi
 
 if [[ -e ${PKG_DATA}/_metadata/replaces ]]; then

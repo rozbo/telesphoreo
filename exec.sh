@@ -28,6 +28,7 @@ for dep in ${deps[@]}; do
     # XXX: bother dealing with weird arguments?
     #DEP_NAME=$(basename "${dep}" .dep)
     DEP_NAME=${dep}
+    DEP_MORE=$(PKG_MORE_ "${DEP_NAME}")
     DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
     PKG_PATH=${PKG_PATH}:${DEP_DEST}
 
@@ -37,6 +38,10 @@ for dep in ${deps[@]}; do
 
     if [[ -d ${DEP_DEST}${PKG_TAPF}/lib ]]; then
         PKG_LIBS=${DEP_DEST}${PKG_TAPF}/lib:${PKG_LIBS}
+    fi
+
+    if [[ -d ${DEP_MORE}${PKG_TAPF}/lib ]]; then
+        PKG_LIBS=${DEP_MORE}${PKG_TAPF}/lib:${PKG_LIBS}
     fi
 
     if [[ -d ${DEP_DEST}${PKG_TAPF}/lib/pkgconfig ]]; then

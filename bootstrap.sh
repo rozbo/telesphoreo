@@ -12,12 +12,13 @@ svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(adv-cmds apt base bash coreutils cydia cydia-sources grep inetutils less libgcc nano network-cmds sed shell-cmds system-cmds tar unzip)
+PKG_REQS=(apt7 base cydia cydia-sources essential openssh pam-modules profile.d)
+PKG_REQS=(base cydia cydia-sources essential pam-modules profile.d)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($({
     echo "${PKG_REQS[@]}" | tr ' ' $'\n'
-    find -L "${PKG_REQS[@]}" -name '*.dep' | sed -e 's/.*\/\([^\/]*\)\.dep/\1/'
+    find -L "${PKG_REQS[@]}" -name '*.dep' | grep -v '/_[^/]*\.dep' | sed -e 's/.*\/\([^\/]*\)\.dep/\1/'
 } | sort -u))
 
 for PKG_NAME in "${PKG_REQS[@]}"; do
@@ -53,9 +54,6 @@ cd "${PKG_BOOT}"
 
 PKG_RSLT="${PKG_BASE}/rslt"
 mkdir -p "${PKG_RSLT}"
-
-rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz"
-tar -zcf "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz" *
 
 rm -rf "${PKG_RSLT}/CydiaInstaller.bundle"
 mkdir "${PKG_RSLT}/CydiaInstaller.bundle"
@@ -138,6 +136,26 @@ EOF
 cp -a "${PKG_BASE}"/pwnr/* "${PKG_RSLT}"/CydiaInstaller.bundle
 tar -zcf "${PKG_RSLT}/Pwnage_${PKG_ARCH}.tgz" -C "${PKG_RSLT}" CydiaInstaller.bundle
 
+function stash() {
+    src=$1
+    dst=var/stash/${src##*/}
+    mv "${src}" "${dst}"
+    dst=${src//+([A-Za-z])/..}/${dst}
+    ln -s "${dst#../}" "${src}"
+}
+
+mkdir -p var/stash
+mkdir -p usr/include
+
+mv -v usr/lib/_ncurses/* usr/lib
+rmdir usr/lib/_ncurses
+ln -s /usr/lib usr/lib/_ncurses
+
+#stash usr/share/gettext
+
+rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz"
+tar -zcf "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz" *
+
 rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.zip"
 zip -qry "${PKG_RSLT}/Manual_${PKG_ARCH}.zip" *
 
@@ -175,4 +193,4 @@ if [[ ${PKG_ARCH} == darwin-arm ]]; then
     zip -qry "${PKG_RSLT}/AppTapp_${PKG_ARCH}.zip" *
 fi
 
-rm -rf "${PKG_BOOT}"
+#rm -rf "${PKG_BOOT}"

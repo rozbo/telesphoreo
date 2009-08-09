@@ -23,15 +23,19 @@ fi
 
 export CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate)
 
-for DEP_NAME in "${PKG_DEPS[@]}"; do
-    "${PKG_MAKE}" "${DEP_NAME}"
-done
+#for DEP_NAME in "${PKG_DEPS[@]}"; do
+#    "${PKG_MAKE}" "${DEP_NAME}"
+#done
 
 export PKG_HASH=$({
     "${PKG_BASE}"/util/catdir.sh "${PKG_DATA}" -L \( -name '.svn' -o -name '_*' \) -prune -o
 
     for DEP_NAME in "${PKG_DEPS[@]}"; do
         "${PKG_BASE}"/util/catdir.sh "$(PKG_DEST_ "${DEP_NAME}")"
+        DEP_MORE="$(PKG_MORE_ "${DEP_NAME}")"
+        if [[ -d ${DEP_MORE} ]]; then
+            "${PKG_BASE}"/util/catdir.sh "${DEP_MORE}"
+        fi
     done
 } | md5sum | cut -d ' ' -f 1)
 
@@ -45,6 +49,9 @@ fi
 mkdir -p "${PKG_STAT}"
 rm -f "${PKG_STAT}/data-md5"
 
+rm -rf "${PKG_MORE}"
+mkdir -p "${PKG_MORE}"
+
 rm -rf "${PKG_DEST}"
 mkdir -p "${PKG_DEST}"
 
@@ -56,7 +63,7 @@ function pkg:patch() {
     pkg:libtool_ ltmain.sh
 
     for diff in "${PKG_DATA}"/*.diff; do
-        if [[ ${diff} == */_*.diff ]]; then
+        if [[ ${diff} =~ .*/_[^/]*.diff$ ]]; then
             continue;
         fi
 
@@ -115,17 +122,26 @@ export -f pkg:setup
 function pkg:configure() {
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
     ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
-    "${PKG_CONF}" \
+    cfg=("${PKG_CONF}" \
+        ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
         --build=x86_64-unknown-linux-gnu \
         --host="${PKG_TARG}" \
         --enable-static=no \
         --enable-shared=yes \
         --prefix=$(cat "${PKG_BASE}/arch/${PKG_ARCH}/prefix") \
         --localstatedir="/var/cache/${PKG_NAME}" \
-        "$@"
+        "$@")
+    echo "${cfg[@]}"
+    "${cfg[@]}"
 }
 
 export -f pkg:configure
+
+function pkg:make() {
+    make AR="${PKG_TARG}-ar" CFLAGS='-O2 -mthumb'
+}
+
+export -f pkg:make
 
 function pkg:install() {
     make install DESTDIR="${PKG_DEST}" "$@"
@@ -134,7 +150,7 @@ function pkg:install() {
 export -f pkg:install
 
 function pkg:extract() {
-    for tgz in "${PKG_DATA}"/{*.tar.gz,*.tgz}; do
+    for tgz in "${PKG_DATA}"/*.{tar.gz,tgz}; do
         tar -zxf "${tgz}"
     done
 
@@ -165,11 +181,11 @@ function rmdir_() {
     fi
 }
 
-rm -rf "${PKG_DEST}/usr/share/locale"
 rm -rf "${PKG_DEST}/usr/share/man"
 rm -rf "${PKG_DEST}/usr/share/info"
 rm -rf "${PKG_DEST}/usr/share/gtk-doc"
 rm -rf "${PKG_DEST}/usr/share/doc"
+rm -rf "${PKG_DEST}/usr/share/locale"
 rm -rf "${PKG_DEST}/usr/man"
 rm -rf "${PKG_DEST}/usr/local/share/man"
 rm -rf "${PKG_DEST}/usr/local/OpenSourceVersions"
@@ -202,5 +218,7 @@ find "${PKG_DEST}" -type f -name '*.a' -print0 | while read -r -d $'\0' bin; do
     "${PKG_BASE}/util/arid" "${bin}"
 done
 
-cp -a "${PKG_DATA}/_metadata/version" "${PKG_STAT}/data-ver"
+cp -aL "${PKG_DATA}/_metadata/version" "${PKG_STAT}/data-ver"
 echo "${PKG_HASH}" >"${PKG_STAT}/data-md5"
+
+echo "hashed code ${PKG_NAME} to: $("${PKG_BASE}"/util/catdir.sh "${PKG_DEST}" | md5sum | cut -d ' ' -f 1)"

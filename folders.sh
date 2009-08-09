@@ -12,6 +12,10 @@ function PKG_WORK_() {
 
 export -f PKG_WORK_
 
+function PKG_MORE_() {
+    echo "${PKG_BASE}/more/${PKG_ARCH}/$1"
+}
+
 function PKG_DEST_() {
     echo "${PKG_BASE}/dest/${PKG_ARCH}/$1"
 }
@@ -21,6 +25,7 @@ export -f PKG_DEST_
 function pkg_ {
     case "${1:0:1}" in
         (/) echo "${PKG_DEST}$1";;
+        (@) echo "${PKG_MORE}${1:1}";;
         (%) echo "${PKG_DATA}${1:1}";;
         (*) echo -"$1" | sed -e 's/^.//';;
     esac
