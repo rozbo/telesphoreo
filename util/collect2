@@ -42,7 +42,7 @@ if [[ "${darwin+@}" ]]; then
         flags=("${flags[@]}"$({
             echo "${PKG_PATH}" | tr ':' $'\n'
 
-            for DEP_NAME in libgcc libxml2 sqlite3; do
+            for DEP_NAME in libxml2 sqlite3; do
                 echo "$(PKG_DEST_ "${DEP_NAME}")"
             done
         } | while read -r path; do
