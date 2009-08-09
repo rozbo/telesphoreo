@@ -18,17 +18,14 @@ source "${PKG_BASE}/helper.sh"
 pkg: mkdir -p /DEBIAN
 ./control.sh "${PKG_NAME}" control >"$(pkg_ /DEBIAN/control)"
 
-if [[ -e "${PKG_DATA}"/_metadata/preinst ]]; then
-    cp -a "${PKG_DATA}"/_metadata/preinst "$(pkg_ /DEBIAN)"
-fi
-
-if [[ -e "${PKG_DATA}"/_metadata/postinst ]]; then
-    cp -a "${PKG_DATA}"/_metadata/postinst "$(pkg_ /DEBIAN)"
-fi
-
-if [[ -e "${PKG_DATA}"/_metadata/prerm ]]; then
-    cp -a "${PKG_DATA}"/_metadata/prerm "$(pkg_ /DEBIAN)"
-fi
+for script in preinst extrainst_ postinst prerm postrm; do
+    if [[ -e "${PKG_DATA}/_metadata/${script}.c" ]]; then
+        ./exec.sh - "${PKG_TARG}-gcc" -o "$(pkg_ /DEBIAN)/${script}" "${PKG_DATA}/_metadata/${script}.c"
+        ./exec.sh - ldid -S "$(pkg_ /DEBIAN)/${script}"
+    elif [[ -e "${PKG_DATA}/_metadata/${script}" ]]; then
+        cp -a "${PKG_DATA}/_metadata/${script}" "$(pkg_ /DEBIAN)"
+    fi
+done
 
 if [[ -e "${PKG_DATA}"/_metadata/conffiles ]]; then
     cp -a "${PKG_DATA}"/_metadata/conffiles "$(pkg_ /DEBIAN)"
@@ -51,7 +48,7 @@ else
         echo "package ${PKG_PACK} already exists..."
     else
         ./control.sh "${PKG_NAME}" control "${PKG_VRSN}-${PKG_RVSN}" >"$(pkg_ /DEBIAN/control)"
-        dpkg-deb -b "${PKG_DEST}" "${PKG_PACK}"
+        dpkg-deb -Z"${PKG_ZLIB}" -b "${PKG_DEST}" "${PKG_PACK}"
         echo "${PKG_HASH}" >"${PKG_STAT}/dest-md5"
         echo "${PKG_RVSN}" >"${PKG_STAT}/dest-ver"
         "${PKG_BASE}"/upload.sh debs "${PKG_PACK}"
