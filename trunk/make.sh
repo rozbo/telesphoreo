@@ -124,7 +124,7 @@ function pkg:configure() {
     ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
     cfg=("${PKG_CONF}" \
         ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
-        --build=x86_64-unknown-linux-gnu \
+        --build="$(${PKG_BASE}/util/config.guess)" \
         --host="${PKG_TARG}" \
         --enable-static=no \
         --enable-shared=yes \
