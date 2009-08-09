@@ -16,6 +16,12 @@ PKG_INCL=
 PKG_LIBS=
 PKG_PKGS=
 
+if [[ -n ${FAKEROOTKEY} ]]; then
+    for i in "$(dirname $(which fakeroot))"/../lib{64,32,}/libfakeroot; do
+        PKG_LIBS=$i:${PKG_LIBS}
+    done
+fi
+
 case "${PKG_NAME}" in
     (-) deps=();;
     (:*) deps=(${PKG_NAME//:/ });;
