@@ -1,12 +1,16 @@
-find "${PKG_DEST}" -type f \( -perm -0500 -o -name '*.dylib' \) -print0 | while read -r -d $'\0' bin; do
+find "${PKG_DEST}" -type f \( -perm -0100 -o -name '*.dylib' -o -name '*.so' \) -print0 | while read -r -d $'\0' bin; do
     case "$(file "${bin}")" in (\
         *': Mach-O fat file with '*([0-9])' architecture' |\
         *': '?(setuid )?(setgid )'Mach-O executable acorn' |\
-        *': Mach-O dynamically linked shared library acorn'\
+        *': Mach-O dynamically linked shared library acorn' |\
+        *': Mach-O bundle acorn'\
     );; (*) continue;; esac
 
     if arm-apple-darwin9-otool -hv "${bin}" | grep DYLIB_STUB &>/dev/null; then
         continue; fi
-    CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate) \
-        "${PKG_BASE}/util/ldid" -S "${bin}"
+    if grep $'\xfa\xde\x0c\x01' "${bin}" &>/dev/null; then
+        continue; fi
+
+    "${PKG_BASE}/util/ldid" -S "${bin}"
+        #"${PKG_BASE}/arch/iphoneos-arm/entitlement.xml" "${bin}"
 done
