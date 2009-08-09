@@ -7,13 +7,24 @@ if [[ $# == 0 ]]; then
     exit
 fi
 
+if [[ $UID -ne 0 ]]; then
+    exec fakeroot "$0" "$@"
+fi
+
 export PKG_MAKE=$0
 export PKG_NAME=${1%_}
 
 export PKG_BASE=$(realpath "$(dirname "$0")")
 source "${PKG_BASE}/helper.sh"
 
-./make.sh "${PKG_NAME}"
+# when running fakeroot, we shouldn't use the previous build result
+# as we don't have the fakeroot session info anymore
+
+if [[ -z ${FAKEROOTKEY} ]]; then
+    ./make.sh "${PKG_NAME}"
+else
+    ./remake.sh "${PKG_NAME}"
+fi
 
 pkg: mkdir -p /DEBIAN
 ./control.sh "${PKG_NAME}" control >"$(pkg_ /DEBIAN/control)"
