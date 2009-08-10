@@ -23,9 +23,9 @@ fi
 
 export CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate)
 
-#for DEP_NAME in "${PKG_DEPS[@]}"; do
-#    "${PKG_MAKE}" "${DEP_NAME}"
-#done
+for DEP_NAME in "${PKG_DEPS[@]}"; do
+    "${PKG_MAKE}" "${DEP_NAME}"
+done
 
 export PKG_HASH=$({
     "${PKG_BASE}"/util/catdir.sh "${PKG_DATA}" -L \( -name '.svn' -o -name '_*' \) -prune -o
