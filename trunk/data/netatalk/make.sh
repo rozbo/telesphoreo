@@ -1,5 +1,6 @@
 pkg:setup
-AR=$(which "${PKG_TARG}-ar") pkg:configure --enable-cups=no --sysconfdir=/etc
+autoconf
+AR=$(which "${PKG_TARG}-ar") pkg:configure --enable-cups=no --sysconfdir=/etc --with-bdb="$(PKG_DEST_ berkeleydb)/usr"
 make
 pkg:install
 
