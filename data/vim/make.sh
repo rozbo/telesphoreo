@@ -1,4 +1,9 @@
 pkg:setup
+
+for ((x = 1; x != 23; ++x)); do
+    patch -p0 <"${PKG_DATA}/patches/7.2.$(printf '%.3u\n' "$x")"
+done
+
 cd src
 autoconf
 cd ..
