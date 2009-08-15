@@ -3,5 +3,5 @@
 # either add your own .list file to /etc/apt/sources.list.d
 # or add your entry to the global /etc/apt/sources.list file
 
-deb http://apt.saurik.com/ tangelo main
+deb http://apt.saurik.com/ tangelo-3.7 main
 #deb-src http://apt.saurik.com/ tangelo main

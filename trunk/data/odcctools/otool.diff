@@ -74,12 +74,3 @@ diff -ru odcctools-277/otool/print_objc.c odcctools-277+iPhone/otool/print_objc.
  };
  
  /*
-@@ -51,7 +55,7 @@
-     char *characters;
-     unsigned int _length;
- };
--//typedef struct objc_string_object NXConstantString;
-+typedef struct objc_string_object NXConstantString;
- 
- #define SIZEHASHTABLE 821
- struct _hashEntry {
