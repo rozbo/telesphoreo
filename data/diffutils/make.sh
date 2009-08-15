@@ -1,4 +1,4 @@
 pkg:setup
 pkg:configure
-make
+pkg:make
 make install prefix="${PKG_DEST}/usr"
