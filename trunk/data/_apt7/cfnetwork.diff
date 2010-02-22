@@ -1,19 +1,21 @@
-diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
---- apt-0.7.20.2/methods/http.cc	2009-02-07 15:09:35.000000000 +0000
-+++ apt-0.7.20.2+iPhone/methods/http.cc	2009-04-14 16:34:31.000000000 +0000
-@@ -30,6 +30,7 @@
- #include <apt-pkg/error.h>
+diff -ru apt-0.7.25.3/methods/http.cc apt-0.7.25.3+iPhone/methods/http.cc
+--- apt-0.7.25.3/methods/http.cc	2010-02-01 19:44:41.000000000 +0000
++++ apt-0.7.25.3+iPhone/methods/http.cc	2010-02-22 20:20:42.000000000 +0000
+@@ -31,6 +31,7 @@
  #include <apt-pkg/hashes.h>
+ #include <apt-pkg/netrc.h>
  
 +#include <sys/sysctl.h>
  #include <sys/stat.h>
  #include <sys/time.h>
  #include <utime.h>
-@@ -40,9 +41,16 @@
+@@ -41,11 +42,18 @@
  #include <string.h>
  #include <iostream>
- #include <apti18n.h>
+ #include <map>
 +#include <set>
+ #include <apti18n.h>
+ 
  
  // Internet stuff
  #include <netdb.h>
@@ -26,7 +28,7 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
  
  #include "config.h"
  #include "connect.h"
-@@ -52,6 +60,51 @@
+@@ -54,6 +62,51 @@
  									/*}}}*/
  using namespace std;
  
@@ -78,7 +80,7 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
  string HttpMethod::FailFile;
  int HttpMethod::FailFd = -1;
  time_t HttpMethod::FailTime = 0;
-@@ -632,6 +685,51 @@
+@@ -646,6 +699,51 @@
  }
  									/*}}}*/
  
@@ -130,7 +132,7 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
  // HttpMethod::SendReq - Send the HTTP request				/*{{{*/
  // ---------------------------------------------------------------------
  /* This places the http request in the outbound buffer */
-@@ -1043,6 +1141,8 @@
+@@ -1088,6 +1186,8 @@
     signal(SIGINT,SigTerm);
     
     Server = 0;
@@ -139,10 +141,11 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
     
     int FailCounter = 0;
     while (1)
-@@ -1063,173 +1163,313 @@
+@@ -1107,214 +1207,314 @@
+ 
        if (Queue == 0)
  	 continue;
-       
+-      
 -      // Connect to the server
 -      if (Server == 0 || Server->Comp(Queue->Uri) == false)
 -      {
@@ -168,8 +171,31 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 -	 delete Server;
 -	 Server = 0;
 -	 continue;
--      }
++
 +      CFStringEncoding se = kCFStringEncodingUTF8;
++
++      char *url = strdup(Queue->Uri.c_str());
++    url:
++      URI uri = std::string(url);
++      std::string hs = uri.Host;
++
++      if (cached.find(hs) != cached.end()) {
++         _error->Error("Cached Failure");
++         Fail(true);
++         free(url);
++         FailCounter = 0;
++         continue;
++      }
++
++      std::string urs = uri;
++
++      for (;;) {
++         size_t bad = urs.find_first_of("+");
++         if (bad == std::string::npos)
++            break;
++         // XXX: generalize
++         urs = urs.substr(0, bad) + "%2b" + urs.substr(bad + 1);
+       }
  
 -      // Fill the pipeline.
 -      Fetch(0);
@@ -208,29 +234,6 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 -	    continue;
 -	 }
 -      };
-+      char *url = strdup(Queue->Uri.c_str());
-+    url:
-+      URI uri = std::string(url);
-+      std::string hs = uri.Host;
-+
-+      if (cached.find(hs) != cached.end()) {
-+         _error->Error("Cached Failure");
-+         Fail(true);
-+         free(url);
-+         FailCounter = 0;
-+         continue;
-+      }
-+
-+      std::string urs = uri;
-+
-+      for (;;) {
-+         size_t bad = urs.find_first_of("+");
-+         if (bad == std::string::npos)
-+            break;
-+         // XXX: generalize
-+         urs = urs.substr(0, bad) + "%2b" + urs.substr(bad + 1);
-+      }
-+
 +      CFStringRef sr = CFStringCreateWithCString(kCFAllocatorDefault, urs.c_str(), se);
 +      CFURLRef ur = CFURLCreateWithString(kCFAllocatorDefault, sr, NULL);
 +      CFRelease(sr);
@@ -343,9 +346,7 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 -	    bool Result =  Server->RunData();
 +      hm = (CFHTTPMessageRef) CFReadStreamCopyProperty(rs, kCFStreamPropertyHTTPResponseHeader);
 +      sc = CFHTTPMessageGetResponseStatusCode(hm);
- 
--	    /* If the server is sending back sizeless responses then fill in
--	       the size now */
++
 +      if (sc == 301 || sc == 302) {
 +         sr = CFHTTPMessageCopyHeaderFieldValue(hm, CFSTR("Location"));
 +         if (sr == NULL) {
@@ -420,7 +421,9 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 +
 +      if (sc < 200 || sc >= 300 && sc != 304) {
 +         sr = CFHTTPMessageCopyResponseStatusLine(hm);
-+
+ 
+-	    /* If the server is sending back sizeless responses then fill in
+-	       the size now */
 +         size_t ln = CFStringGetLength(sr) + 1;
 +         char cr[ln];
 +
@@ -567,23 +570,6 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 +                   Fail();
 +                   goto done;
 +               }
-+
-+               dt += sz;
-+               rd -= sz;
-+            }
-+
-+            rd = CFReadStreamRead(rs, data, sizeof(data));
-+            goto read;
-+         }
-+      }
-+
-+     goto done;
-+    done_:
-+      CFRelease(hm);
-+    done:
-+      CFReadStreamClose(rs);
-+      CFRelease(rs);
-+      free(url);
  
 -	 // We need to flush the data, the header is like a 404 w/ error text
 -	 case 4:
@@ -598,16 +584,69 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 -	    break;
 -	 }
 -	 
+-         // Try again with a new URL
+-         case 6:
+-         {
+-            // Clear rest of response if there is content
+-            if (Server->HaveContent)
+-            {
+-               File = new FileFd("/dev/null",FileFd::WriteExists);
+-               Server->RunData();
+-               delete File;
+-               File = 0;
++               dt += sz;
++               rd -= sz;
+             }
+ 
+-            /* Detect redirect loops.  No more redirects are allowed
+-               after the same URI is seen twice in a queue item. */
+-            StringVector &R = Redirected[Queue->DestFile];
+-            bool StopRedirects = false;
+-            if (R.size() == 0)
+-               R.push_back(Queue->Uri);
+-            else if (R[0] == "STOP" || R.size() > 10)
+-               StopRedirects = true;
+-            else
+-            {
+-               for (StringVectorIterator I = R.begin(); I != R.end(); I++)
+-                  if (Queue->Uri == *I)
+-                  {
+-                     R[0] = "STOP";
+-                     break;
+-                  }
+- 
+-               R.push_back(Queue->Uri);
+-            }
+- 
+-            if (StopRedirects == false)
+-               Redirect(NextURI);
+-            else
+-               Fail();
+- 
+-            break;
++            rd = CFReadStreamRead(rs, data, sizeof(data));
++            goto read;
+          }
+-
 -	 default:
 -	 Fail(_("Internal error"));
 -	 break;
--      }
+       }
 -      
++
++     goto done;
++    done_:
++      CFRelease(hm);
++    done:
++      CFReadStreamClose(rs);
++      CFRelease(rs);
++      free(url);
++
        FailCounter = 0;
     }
     
-@@ -1242,6 +1482,34 @@
-    setlocale(LC_ALL, "");
+@@ -1330,6 +1530,35 @@
+    signal(SIGPIPE, SIG_IGN);
  
     HttpMethod Mth;
 +
@@ -638,13 +677,14 @@ diff -ru apt-0.7.20.2/methods/http.cc apt-0.7.20.2+iPhone/methods/http.cc
 +        UniqueID_ = lockdown_copy_value(lockdown, NULL, kLockdownUniqueDeviceIDKey);
 +        lockdown_disconnect(lockdown);
 +    }
-    
++
     return Mth.Loop();
  }
-diff -ru apt-0.7.20.2/methods/makefile apt-0.7.20.2+iPhone/methods/makefile
---- apt-0.7.20.2/methods/makefile	2009-02-07 15:09:35.000000000 +0000
-+++ apt-0.7.20.2+iPhone/methods/makefile	2009-04-14 16:18:18.000000000 +0000
-@@ -47,7 +47,7 @@
+ 
+diff -ru apt-0.7.25.3/methods/makefile apt-0.7.25.3+iPhone/methods/makefile
+--- apt-0.7.25.3/methods/makefile	2010-02-01 19:44:41.000000000 +0000
++++ apt-0.7.25.3+iPhone/methods/makefile	2010-02-22 20:14:29.000000000 +0000
+@@ -46,7 +46,7 @@
  
  # The http method
  PROGRAM=http

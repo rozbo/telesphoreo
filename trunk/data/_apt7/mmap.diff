@@ -61,7 +61,7 @@ diff -ru apt-0.7.20.2/apt-pkg/tagfile.cc apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc
 -   End = Start + EndSize;
 -   return true;
 -}
--
+-									/*}}}*/
  // TagFile::Step - Advance to the next section				/*{{{*/
  // ---------------------------------------------------------------------
  /* If the Section Scanner fails we refill the buffer and try again. 
@@ -163,7 +163,7 @@ diff -ru apt-0.7.20.2/apt-pkg/tagfile.cc apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc
 +         Stop = End;
 +         goto end;
 +      }
-       
+ 
        for (; Stop+1 < End && Stop[1] == '\r'; Stop++);
  
        // Double newline marks the end of the record
@@ -172,7 +172,7 @@ diff -ru apt-0.7.20.2/apt-pkg/tagfile.cc apt-0.7.20.2+iPhone/apt-pkg/tagfile.cc
 +      if (Stop+1 == End || Stop[1] == '\n')
 +      end: {
  	 Indexes[TagCount] = Stop - Section;
- 	 for (; Stop < End && (Stop[0] == '\n' || Stop[0] == '\r'); Stop++);
+ 	 TrimRecord(false,End);
  	 return true;
 diff -ru apt-0.7.20.2/apt-pkg/tagfile.h apt-0.7.20.2+iPhone/apt-pkg/tagfile.h
 --- apt-0.7.20.2/apt-pkg/tagfile.h	2009-02-07 15:09:35.000000000 +0000

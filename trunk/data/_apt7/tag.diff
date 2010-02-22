@@ -12,8 +12,8 @@ diff -ru apt-0.7.20.2/apt-pkg/cacheiterators.h apt-0.7.20.2+iPhone/apt-pkg/cache
 @@ -148,6 +150,48 @@
     };
  };
- 
-+// Tag Iterator
+ 									/*}}}*/
++// Tag Iterator								/*{{{*/
 +class pkgCache::TagIterator
 +{
 +   Tag *Tg;
@@ -54,8 +54,8 @@ diff -ru apt-0.7.20.2/apt-pkg/cacheiterators.h apt-0.7.20.2+iPhone/apt-pkg/cache
 +	 Tg = Owner.TagP;
 +   };
 +};
-+
- // Description Iterator
++									/*}}}*/
+ // Description Iterator							/*{{{*/
  class pkgCache::DescIterator
  {
 @@ -423,6 +467,8 @@
@@ -260,14 +260,14 @@ diff -ru apt-0.7.20.2/apt-pkg/pkgcache.h apt-0.7.20.2+iPhone/apt-pkg/pkgcache.h
 @@ -248,6 +255,12 @@
     unsigned short Size;
  };
- 
-+struct pkgCache::Tag
+ 									/*}}}*/
++struct pkgCache::Tag						/*{{{*/
 +{
 +   map_ptrloc Name;           // Stringtable
 +   map_ptrloc NextTag;        // Tag
 +};
-+
- struct pkgCache::DescFile
++									/*}}}*/
+ struct pkgCache::DescFile						/*{{{*/
  {
     map_ptrloc File;           // PackageFile
 @@ -340,6 +354,7 @@

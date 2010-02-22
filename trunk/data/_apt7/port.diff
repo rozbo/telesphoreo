@@ -9,19 +9,15 @@ diff -ru apt-0.7.20.2/apt-inst/deb/dpkgdb.cc apt-0.7.20.2+iPhone/apt-inst/deb/dp
  #include <sys/stat.h>
  #include <sys/mman.h>
  #include <fcntl.h>
-diff -ru apt-0.7.20.2/apt-inst/makefile apt-0.7.20.2+iPhone/apt-inst/makefile
---- apt-0.7.20.2/apt-inst/makefile	2009-02-07 15:09:35.000000000 +0000
-+++ apt-0.7.20.2+iPhone/apt-inst/makefile	2009-04-14 16:10:02.000000000 +0000
-@@ -11,7 +11,8 @@
- 
- # The library name
- LIBRARY=apt-inst
--LIBEXT=$(GLIBC_VER)$(LIBSTDCPP_VER)
+diff -ru apt-0.7.25.3/buildlib/libversion.mak apt-0.7.25.3+iPhone/buildlib/libversion.mak
+--- apt-0.7.25.3/buildlib/libversion.mak	2010-02-01 19:44:40.000000000 +0000
++++ apt-0.7.25.3+iPhone/buildlib/libversion.mak	2010-02-22 18:03:29.000000000 +0000
+@@ -18,4 +18,4 @@
+ # want to drop this, but this a ABI break.
+ # And we don't want to do this now. So we hardcode a value here,
+ # and drop it later on (hopefully as fast as possible).
+-LIBEXT=-libc6.9-6
 +LIBEXT=
-+#$(GLIBC_VER)$(LIBSTDCPP_VER)
- MAJOR=1.1
- MINOR=0
- SLIBS=$(PTHREADLIB) -lapt-pkg
 diff -ru apt-0.7.20.2/apt-pkg/deb/dpkgpm.cc apt-0.7.20.2+iPhone/apt-pkg/deb/dpkgpm.cc
 --- apt-0.7.20.2/apt-pkg/deb/dpkgpm.cc	2009-02-07 15:09:35.000000000 +0000
 +++ apt-0.7.20.2+iPhone/apt-pkg/deb/dpkgpm.cc	2009-04-14 16:10:02.000000000 +0000
@@ -34,19 +30,6 @@ diff -ru apt-0.7.20.2/apt-pkg/deb/dpkgpm.cc apt-0.7.20.2+iPhone/apt-pkg/deb/dpkg
        /* Mask off sig int/quit. We do this because dpkg also does when 
           it forks scripts. What happens is that when you hit ctrl-c it sends
  	 it to all processes in the group. Since dpkg ignores the signal 
-diff -ru apt-0.7.20.2/apt-pkg/makefile apt-0.7.20.2+iPhone/apt-pkg/makefile
---- apt-0.7.20.2/apt-pkg/makefile	2009-02-07 15:09:35.000000000 +0000
-+++ apt-0.7.20.2+iPhone/apt-pkg/makefile	2009-04-14 16:16:15.000000000 +0000
-@@ -12,7 +12,8 @@
- # The library name, don't forget to update init.h and the copy in 
- # methods/makefile - FIXME
- LIBRARY=apt-pkg
--LIBEXT=$(GLIBC_VER)$(LIBSTDCPP_VER)
-+LIBEXT=
-+#$(GLIBC_VER)$(LIBSTDCPP_VER)
- MAJOR=4.6
- MINOR=0
- SLIBS=$(PTHREADLIB) $(INTLLIBS) -lutil
 diff -ru apt-0.7.20.2/buildlib/environment.mak.in apt-0.7.20.2+iPhone/buildlib/environment.mak.in
 --- apt-0.7.20.2/buildlib/environment.mak.in	2009-02-07 15:09:35.000000000 +0000
 +++ apt-0.7.20.2+iPhone/buildlib/environment.mak.in	2009-04-14 16:11:50.000000000 +0000
@@ -198,10 +181,10 @@ diff -ru apt-0.7.20.2/ftparchive/contents.cc apt-0.7.20.2+iPhone/ftparchive/cont
 diff -ru apt-0.7.20.2/Makefile apt-0.7.20.2+iPhone/Makefile
 --- apt-0.7.20.2/Makefile	2009-02-07 15:09:35.000000000 +0000
 +++ apt-0.7.20.2+iPhone/Makefile	2009-04-14 16:10:02.000000000 +0000
-@@ -18,7 +18,6 @@
+@@ -18,7 +18,5 @@
  	$(MAKE) -C ftparchive $@
  	$(MAKE) -C dselect $@
- 	$(MAKE) -C doc $@
+-	$(MAKE) -C doc $@
 -	$(MAKE) -C po $@
  
  # Some very common aliases
