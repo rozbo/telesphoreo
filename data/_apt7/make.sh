@@ -3,6 +3,7 @@ autoconf
 DPKG_ARCH=$(ls -d $(PKG_WORK_ dpkg)/dpkg-*/scripts) pkg:configure --disable-nls
 make
 
+pkg: mkdir -p /etc/apt/apt.conf.d
 pkg: mkdir -p /etc/apt/sources.list.d
 pkg: mkdir -p /var/cache/apt/archives/partial
 pkg: mkdir -p /var/lib/apt/lists/partial
