@@ -101,6 +101,14 @@ diff -Nru apt-0.7.25.3/apt-pkg/contrib/strutl.h apt-0.7.25.3+iPhone/apt-pkg/cont
  inline int name(const char *A,const char *B) {return func(A,A+strlen(A),B,B+strlen(B));}; \
  inline int name(const char *A,const char *AEnd,const char *B) {return func(A,AEnd,B,B+strlen(B));}; \
  inline int name(const string& A,const char *B) {return func(A.c_str(),A.c_str()+A.length(),B,B+strlen(B));}; \
+@@ -77,6 +77,7 @@
+ inline int name(const string& A,const char *B,const char *BEnd) {return func(A.c_str(),A.c_str()+A.length(),B,BEnd);};
+ 
+ #define APT_MKSTRCMP2(name,func) \
++inline int name(const srkString &A,const char *B) {return func(A.Start,A.Start+A.Size,B,B+strlen(B));}; \
+ inline int name(const char *A,const char *AEnd,const char *B) {return func(A,AEnd,B,B+strlen(B));}; \
+ inline int name(const string& A,const char *B) {return func(A.begin(),A.end(),B,B+strlen(B));}; \
+ inline int name(const string& A,const string& B) {return func(A.begin(),A.end(),B.begin(),B.end());}; \
 diff -Nru apt-0.7.25.3/apt-pkg/deb/deblistparser.cc apt-0.7.25.3+iPhone/apt-pkg/deb/deblistparser.cc
 --- apt-0.7.25.3/apt-pkg/deb/deblistparser.cc	2010-02-24 08:53:52.000000000 +0000
 +++ apt-0.7.25.3+iPhone/apt-pkg/deb/deblistparser.cc	2010-02-24 08:51:50.000000000 +0000
@@ -637,7 +645,7 @@ diff -Nru apt-0.7.25.3/apt-pkg/pkgcache.h apt-0.7.25.3+iPhone/apt-pkg/pkgcache.h
 diff -Nru apt-0.7.25.3/apt-pkg/srkstring.h apt-0.7.25.3+iPhone/apt-pkg/srkstring.h
 --- apt-0.7.25.3/apt-pkg/srkstring.h	1970-01-01 00:00:00.000000000 +0000
 +++ apt-0.7.25.3+iPhone/apt-pkg/srkstring.h	2010-02-24 08:37:27.000000000 +0000
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,59 @@
 +// -*- mode: cpp; mode: fold -*-
 +// Description								/*{{{*/
 +// $Id: pkgcache.h,v 1.25 2001/07/01 22:28:24 jgg Exp $
@@ -690,11 +698,6 @@ diff -Nru apt-0.7.25.3/apt-pkg/srkstring.h apt-0.7.25.3+iPhone/apt-pkg/srkstring
 +
 +   operator std::string() { std::string Str; Str.assign(Start, Size); return Str; }
 +};
-+
-+int stringcasecmp(const char *lhsb, const char *lhse, const char *rhs);
-+inline int stringcasecmp(const srkString &lhs, const char *rhs) {
-+   return stringcasecmp(lhs.Start, lhs.Start + lhs.Size, rhs);
-+}
 +
 +int stringcmp(const std::string &lhs, const char *rhsb, const char *rhse);
 +inline bool operator ==(const std::string &lhs, const srkString &rhs) {
