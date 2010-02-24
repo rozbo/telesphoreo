@@ -1,0 +1,118 @@
+diff -ru apt-0.7.25.3/apt-pkg/deb/deblistparser.cc apt-0.7.25.3+iPhone/apt-pkg/deb/deblistparser.cc
+--- apt-0.7.25.3/apt-pkg/deb/deblistparser.cc	2010-02-24 09:53:27.000000000 +0000
++++ apt-0.7.25.3+iPhone/apt-pkg/deb/deblistparser.cc	2010-02-24 09:42:05.000000000 +0000
+@@ -45,7 +45,7 @@
+    const char *Stop;
+    if (Section.Find(Tag,Start,Stop) == false)
+       return 0;
+-   return WriteString(Start,Stop - Start);
++   return WriteString(srkString(Start,Stop - Start));
+ }
+ 									/*}}}*/
+ // ListParser::UniqFindTagWrite - Find the tag and write a unq string	/*{{{*/
+diff -ru apt-0.7.25.3/apt-pkg/pkgcachegen.cc apt-0.7.25.3+iPhone/apt-pkg/pkgcachegen.cc
+--- apt-0.7.25.3/apt-pkg/pkgcachegen.cc	2010-02-24 09:53:27.000000000 +0000
++++ apt-0.7.25.3+iPhone/apt-pkg/pkgcachegen.cc	2010-02-24 09:51:06.000000000 +0000
+@@ -680,21 +680,38 @@
+ unsigned long pkgCacheGenerator::WriteUniqString(const char *S,
+ 						 unsigned int Size)
+ {
++   return WriteString(srkString(S, Size), srkSeriouslyUnique);
++}
++
++unsigned long pkgCacheGenerator::WriteString(const srkString &S,
++					     enum srkLevel level)
++{
++   if (level == srkRunOfTheMillNormal)
++      return Map.WriteString(S.Start,S.Size);
++
+    /* We use a very small transient hash table here, this speeds up generation
+       by a fair amount on slower machines */
+-   pkgCache::StringItem *&Bucket = UniqHash[(S[0]*5 + S[1]) % _count(UniqHash)];
++   pkgCache::StringItem *&Bucket(level == srkReasonablySpecial ? SpecHash[(S[0]*5 + S[1]) % _count(SpecHash)] : UniqHash[(S[0]*5 + S[1]) % _count(UniqHash)]);
+    if (Bucket != 0 && 
+-       stringcmp(S,S+Size,Cache.StrP + Bucket->String) == 0)
++       stringcmp(S,Cache.StrP + Bucket->String) == 0)
+       return Bucket->String;
+    
++   pkgCache::StringItem *I;
++   map_ptrloc *Last;
++
++   if (level != srkSeriouslyUnique) {
++      I = NULL;
++      Last = NULL;
++   } else {
++
+    // Search for an insertion point
+-   pkgCache::StringItem *I = Cache.StringItemP + Cache.HeaderP->StringList;
++   I = Cache.StringItemP + Cache.HeaderP->StringList;
+    int Res = 1;
+-   map_ptrloc *Last = &Cache.HeaderP->StringList;
++   Last = &Cache.HeaderP->StringList;
+    for (; I != Cache.StringItemP; Last = &I->NextItem, 
+         I = Cache.StringItemP + I->NextItem)
+    {
+-      Res = stringcmp(S,S+Size,Cache.StrP + I->String);
++      Res = stringcmp(S,Cache.StrP + I->String);
+       if (Res >= 0)
+ 	 break;
+    }
+@@ -705,6 +722,8 @@
+       Bucket = I;
+       return I->String;
+    }
++
++   }
+    
+    // Get a structure
+    unsigned long Item = Map.Allocate(sizeof(pkgCache::StringItem));
+@@ -714,8 +733,9 @@
+    // Fill in the structure
+    pkgCache::StringItem *ItemP = Cache.StringItemP + Item;
+    ItemP->NextItem = I - Cache.StringItemP;
+-   *Last = Item;
+-   ItemP->String = Map.WriteString(S,Size);
++   if (Last != NULL)
++      *Last = Item;
++   ItemP->String = Map.WriteString(S.Start,S.Size);
+    if (ItemP->String == 0)
+       return 0;
+    
+diff -ru apt-0.7.25.3/apt-pkg/pkgcachegen.h apt-0.7.25.3+iPhone/apt-pkg/pkgcachegen.h
+--- apt-0.7.25.3/apt-pkg/pkgcachegen.h	2010-02-24 09:53:27.000000000 +0000
++++ apt-0.7.25.3+iPhone/apt-pkg/pkgcachegen.h	2010-02-24 09:50:07.000000000 +0000
+@@ -32,13 +32,16 @@
+ {
+    private:
+    
+-   pkgCache::StringItem *UniqHash[26];
++   pkgCache::StringItem *UniqHash[24];
++   pkgCache::StringItem *SpecHash[2];
+    
+    public:
+    
+    class ListParser;
+    friend class ListParser;
+    
++   enum srkLevel { srkRunOfTheMillNormal, srkReasonablySpecial, srkSeriouslyUnique };
++   
+    protected:
+    
+    DynamicMMap &Map;
+@@ -63,6 +66,7 @@
+ 
+    unsigned long WriteUniqString(const char *S,unsigned int Size);
+    inline unsigned long WriteUniqString(const string &S) {return WriteUniqString(S.c_str(),S.length());};
++   unsigned long WriteString(const srkString &S, enum srkLevel level);
+ 
+    void DropProgress() {Progress = 0;};
+    bool SelectFile(const string &File,const string &Site,pkgIndexFile const &Index,
+@@ -98,7 +102,7 @@
+    inline unsigned long WriteUniqString(const char *S,unsigned int Size) {return Owner->WriteUniqString(S,Size);};
+    inline unsigned long WriteString(const string &S) {return Owner->Map.WriteString(S);};
+    inline unsigned long WriteString(const char *S,unsigned int Size) {return Owner->Map.WriteString(S,Size);};
+-   inline unsigned long WriteString(const srkString &S) {return Owner->Map.WriteString(S.Start,S.Size);};
++   inline unsigned long WriteString(const srkString &S) {return Owner->WriteString(S, srkReasonablySpecial);};
+    bool NewDepends(pkgCache::VerIterator Ver,const string &Package,
+ 		   const string &Version,unsigned int Op,
+ 		   unsigned int Type);
