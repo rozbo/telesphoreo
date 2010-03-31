@@ -6,6 +6,7 @@ make
 pkg: mkdir -p /etc/apt/apt.conf.d
 pkg: mkdir -p /etc/apt/preferences.d
 pkg: mkdir -p /etc/apt/sources.list.d
+pkg: mkdir -p /etc/apt/trusted.gpg.d
 pkg: mkdir -p /var/cache/apt/archives/partial
 pkg: mkdir -p /var/lib/apt/lists/partial
 pkg: mkdir -p /var/lib/apt/periodic
