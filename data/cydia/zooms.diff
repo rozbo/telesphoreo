@@ -1,0 +1,12 @@
+diff -ru cydia-1.0.3032/cydia/Cydia.mm cydia-1.0.3032+iPhone/cydia/Cydia.mm
+--- cydia-1.0.3032/uicaboodle.m/BrowserView.mm	2009-09-09 22:03:03.000000000 +0000
++++ cydia-1.0.3032+iPhone/uicaboodle.m/BrowserView.mm	2009-09-10 03:46:28.000000000 +0000
+@@ -1208,7 +1207,7 @@
+ 
+             [webview_ _setDocumentType:0x4];
+ 
+-            if ([webview_ respondsToSelector:@selector(UIWebDocumentView:)])
++            if ([webview_ respondsToSelector:@selector(setZoomsFocusedFormControl:)])
+                 [webview_ setZoomsFocusedFormControl:YES];
+             [webview_ setContentsPosition:7];
+             [webview_ setEnabledGestures:0xa];
