@@ -1,0 +1,13 @@
+diff -ru cydia-1.0.3032/cydia/Cydia.mm cydia-1.0.3032+iPhone/cydia/Cydia.mm
+--- cydia-1.0.3032/uicaboodle.m/BrowserView.mm	2009-09-09 22:03:03.000000000 +0000
++++ cydia-1.0.3032+iPhone/uicaboodle.m/BrowserView.mm	2009-09-10 03:46:28.000000000 +0000
+@@ -309,8 +309,7 @@
+     subrect.size.height -= extra;
+     [scroller_ setScrollerIndicatorSubrect:subrect];
+ 
+-    NSSize visible(NSMakeSize(subrect.size.width, subrect.size.height));
+-    [webview_ setValue:[NSValue valueWithSize:visible] forGestureAttribute:UIGestureAttributeVisibleSize];
++    [webview_ setValue:[NSValue valueWithSize:NSMakeSize(subrect.size.width, subrect.size.height)] forGestureAttribute:UIGestureAttributeVisibleSize];
+ 
+     CGSize size(size_);
+     size.height += extra;
