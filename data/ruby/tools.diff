@@ -1,7 +1,7 @@
-diff -ru ruby-1.8.6-p111/configure.in ruby-1.8.6-p111+iPhone/configure.in
---- ruby-1.8.6-p111/configure.in	2007-09-07 07:38:51.000000000 +0000
-+++ ruby-1.8.6-p111+iPhone/configure.in	2008-01-14 07:16:01.000000000 +0000
-@@ -1052,7 +1052,7 @@
+diff -ru ruby-1.9.1-p429/configure.in ruby-1.9.1-p429+iPhone/configure.in
+--- ruby-1.9.1-p429/configure.in	2010-05-03 03:06:07.000000000 +0000
++++ ruby-1.9.1-p429+iPhone/configure.in	2010-08-07 23:16:58.000000000 +0000
+@@ -1418,7 +1418,7 @@
  	rhapsody*)	: ${LDSHARED='cc -dynamic -bundle -undefined suppress'}
  			: ${LDFLAGS=""}
  			rb_cv_dlopen=yes ;;
@@ -9,8 +9,8 @@ diff -ru ruby-1.8.6-p111/configure.in ruby-1.8.6-p111+iPhone/configure.in
 +	darwin*)	: ${LDSHARED='$(CC) -dynamic -bundle -undefined suppress -flat_namespace'}
  			: ${LDFLAGS=""}
  			: ${LIBPATHENV=DYLD_LIBRARY_PATH}
- 			rb_cv_dlopen=yes ;;
-@@ -1172,15 +1172,15 @@
+ 			# /usr/local/include is always searched for
+@@ -1578,15 +1578,15 @@
  
  case "$target_os" in
    linux* | gnu* | k*bsd*-gnu)
@@ -31,12 +31,14 @@ diff -ru ruby-1.8.6-p111/configure.in ruby-1.8.6-p111+iPhone/configure.in
  esac
  
  EXTSTATIC=
-@@ -1372,7 +1372,7 @@
+@@ -1781,7 +1781,7 @@
  	;;
      darwin*)
  	LIBRUBY_SO='lib$(RUBY_SO_NAME).$(MAJOR).$(MINOR).$(TEENY).dylib'
 -	LIBRUBY_LDSHARED='cc -dynamiclib -undefined suppress -flat_namespace'
 +	LIBRUBY_LDSHARED='$(CC) -dynamiclib -undefined suppress -flat_namespace'
- 	LIBRUBY_DLDFLAGS='-install_name $(libdir)/lib$(RUBY_SO_NAME).dylib -current_version $(MAJOR).$(MINOR).$(TEENY) -compatibility_version $(MAJOR).$(MINOR)'
+ 	LIBRUBY_DLDFLAGS='-install_name $(libdir)/lib$(RUBY_SO_NAME).dylib -current_version $(MAJOR).$(MINOR).$(TEENY) -compatibility_version $(ruby_version)'
  	LIBRUBY_ALIASES='lib$(RUBY_SO_NAME).$(MAJOR).$(MINOR).dylib lib$(RUBY_SO_NAME).dylib'
  	;;
+Only in ruby-1.9.1-p429+iPhone: configure.in.orig
+Only in ruby-1.9.1-p429+iPhone: configure.in.rej
