@@ -7,4 +7,5 @@ touch iconv.c
 make LOCAL_LIBS=-liconv
 cd ../..
 pkg:install
+pkg: rm -rf /usr/share/ri
 pkg: rm -f /usr/lib/libruby-static.a
