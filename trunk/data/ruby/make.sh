@@ -9,3 +9,4 @@ cd ../..
 pkg:install
 pkg: rm -rf /usr/share/ri
 pkg: rm -f /usr/lib/libruby-static.a
+pkg: rm -f /usr/lib/libruby.1.9.1-static.a
