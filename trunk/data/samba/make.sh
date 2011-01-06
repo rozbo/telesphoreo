@@ -1,8 +1,8 @@
 pkg:setup
 cd source
 ./autogen.sh
-pkg:configure samba_cv_CC_NEGATIVE_ENUM_VALUES=yes --without-cluster-support --disable-swat --without-ldap --with-configdir=/etc/samba --with-privatedir=/etc/samba --with-fhs
-make
+pkg:configure samba_cv_CC_NEGATIVE_ENUM_VALUES=yes --without-cluster-support --disable-swat --without-ldap --with-configdir=/etc/samba --with-privatedir=/etc/samba --with-fhs --without-utmp
+pkg:make
 pkg:install BIN_PROGS4=
 pkg: mkdir /usr/samba
 
