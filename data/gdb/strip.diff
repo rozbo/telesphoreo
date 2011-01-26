@@ -43,14 +43,6 @@ diff -ru gdb-1119/Makefile gdb-1119+iPhone/Makefile
  		cp $(DSTROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target} \
                     $(SYMROOT)/$(LIBEXEC_GDB_DIR)/gdb-$${target}; \
  		if echo $${target} | egrep '^[^-]*-apple-darwin' > /dev/null; then \
-@@ -722,7 +722,6 @@
- 	set -e; for dstroot in $(SYMROOT) $(DSTROOT); do \
- 		$(INSTALL) -c -m 755 $(OBJROOT)/$(ARM_TARGET)--$(ARM_TARGET)/gdb/gdbserver/gdbserver $${dstroot}/usr/bin/gdbserver; \
- 	done
--	strip -S $(DSTROOT)/usr/bin/gdbserver
- 
- install-binutils-macosx:
- 
 @@ -730,7 +729,7 @@
  		instname=`echo $${i} | sed -e 's/\\-new//'`; \
  		lipo -create $(patsubst %,$(OBJROOT)/%/binutils/$${i},$(NATIVE_TARGETS)) \
