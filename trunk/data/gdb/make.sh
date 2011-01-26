@@ -14,5 +14,5 @@ for bin in ar nm ranlib size strings strip; do
     pkg: rm -f "/usr/bin/${bin}"
 done
 pkg: rm -f /usr/lib/libiberty.a
-ldid -S"${PKG_DATA}/gdb.xml" "${PKG_DEST}/usr/bin/gdb"{,server}
+ldid -S"${PKG_DATA}/gdb.xml" "${PKG_DEST}/usr/bin/gdb"
 pkg: rm -rf /usr/share/locale
