@@ -1,4 +1,0 @@
-#!/bin/sh
-if [[ $1 == remove ]]; then
-    /usr/bin/apt-key del 6197E890
-fi
