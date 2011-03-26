@@ -1,4 +1,0 @@
-#!/bin/sh
-if [[ $1 == remove ]]; then
-    /usr/bin/apt-key del 8764B4F4
-fi
