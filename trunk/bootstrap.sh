@@ -12,14 +12,36 @@ svn export "${PKG_BASE}/over" "${PKG_BOOT}"
 
 mkdir -p "${PKG_BOOT}/var/lib/dpkg/info"
 
-PKG_REQS=(apt7 base cydia cydia-sources essential openssh pam-modules profile.d)
-PKG_REQS=(base cydia cydia-sources essential pam-modules profile.d)
+#PKG_REQS=(apt7)
+#PKG_REQS=(adv-cmds apt7 base coreutils cydia cydia-sources diffutils diskdev-cmds essential findutils firmware-sbin grep inetutils less network-cmds openssh pam-modules profile.d sed sqlite3-lib system-cmds uikittools unzip wget zip)
+#PKG_REQS=(base cydia-sources dpkg essential firmware-sbin openssh pam-modules profile.d system-cmds wget)
+#PKG_REQS=(adv-cmds apt7 base coreutils cydia-sources diffutils diskdev-cmds findutils firmware-sbin grep inetutils less network-cmds openssh pam-modules profile.d sed sqlite3-lib system-cmds unzip wget zip)
+PKG_REQS=(adv-cmds apr-lib apt7 base coreutils cydia-sources darwintools diffutils diskdev-cmds essential findutils firmware-sbin grep inetutils less network-cmds openssh pam-modules pcre profile.d sed shell-cmds sqlite3-lib system-cmds unzip wget zip)
+#PKG_REQS=(base cydia cydia-sources diskdev-cmds essential firmware-sbin pam-modules profile.d sqlite3-lib system-cmds uikittools libxml2-lib yellowsn0w.com)
 
 cd "${PKG_BASE}/data"
 PKG_REQS=($({
     echo "${PKG_REQS[@]}" | tr ' ' $'\n'
     find -L "${PKG_REQS[@]}" -name '*.dep' | grep -v '/_[^/]*\.dep' | sed -e 's/.*\/\([^\/]*\)\.dep/\1/'
-} | sort -u))
+} | sort -u | grep -Ev '^(libxml2|sqlite3)-dylib$'))
+
+function merge() {
+    deb=$1
+    name=$2
+
+    rm -rf "${PKG_BASE}/temp"
+    dpkg -x "${deb}" "${PKG_BASE}/temp"
+
+    files=("${PKG_BASE}/temp"/*)
+    if [[ ${#files[@]} -ne 0 && ${name} != firmware-sbin ]]; then
+        cp -a "${PKG_BASE}/temp"/* "${PKG_BOOT}"
+    fi
+
+    (cd "${PKG_BASE}/temp"; find | sed -e '
+        s/^\.\///
+        s/^/\//
+    ') >"${PKG_BOOT}/var/lib/dpkg/info/${name}.list"
+}
 
 for PKG_NAME in "${PKG_REQS[@]}"; do
     PKG_NAME=${PKG_NAME%/_metadata/priority}
@@ -29,23 +51,15 @@ for PKG_NAME in "${PKG_REQS[@]}"; do
     #./package.sh "${PKG_NAME}"
     source "${PKG_BASE}/helper.sh"
 
-    rm -rf "${PKG_BASE}/temp"
-    dpkg -x "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" "${PKG_BASE}/temp"
-
-    echo "merging ${PKG_NAME}..."
-    files=("${PKG_BASE}/temp"/*)
-    if [[ ${#files[@]} -ne 0 ]]; then
-        cp -a "${PKG_BASE}/temp"/* "${PKG_BOOT}"
-    fi
+    echo "merging ${PKG_NAME} ${PKG_VRSN}-${PKG_RVSN}..."
+    merge "${PKG_BASE}/debs/${PKG_NAME}_${PKG_VRSN}-${PKG_RVSN}_${PKG_ARCH}.deb" "${PKG_NAME}"
 
     "${PKG_BASE}/control.sh" "${PKG_NAME}" available >>"${PKG_BOOT}/var/lib/dpkg/available"
     "${PKG_BASE}/control.sh" "${PKG_NAME}" status >>"${PKG_BOOT}/var/lib/dpkg/status"
-
-    (cd "${PKG_BASE}/temp"; find | sed -e '
-        s/^\.\///
-        s/^/\//
-    ') >"${PKG_BOOT}/var/lib/dpkg/info/${PKG_NAME}.list"
 done
+
+merge debs/cydia_1.0.3366-1_iphoneos-arm.deb cydia
+merge debs/uikittools_1.1.0_iphoneos-arm.deb uikittools
 
 rm -rf "${PKG_BASE}/temp"
 cd "${PKG_BOOT}"
@@ -151,10 +165,13 @@ mv -v usr/lib/_ncurses/* usr/lib
 rmdir usr/lib/_ncurses
 ln -s /usr/lib usr/lib/_ncurses
 
+rmdir --ignore-fail-on-non-empty System/Library/LaunchDaemons
+
 #stash usr/share/gettext
 
 rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz"
 tar -zcf "${PKG_RSLT}/Manual_${PKG_ARCH}.tgz" *
+tar -Jcf "${PKG_RSLT}/Manual_${PKG_ARCH}.txz" *
 
 rm -f "${PKG_RSLT}/Manual_${PKG_ARCH}.zip"
 zip -qry "${PKG_RSLT}/Manual_${PKG_ARCH}.zip" *
