@@ -1,4 +1,0 @@
-#!/bin/sh
-if [[ $1 == remove ]]; then
-    /usr/bin/apt-key del AA31C175
-fi
