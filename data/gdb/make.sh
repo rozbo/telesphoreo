@@ -7,7 +7,7 @@ cd ..
 mkdir build
 cd build
 PKG_CONF=$(echo ../!(build)/src/configure) pkg:configure
-pkg:make
+make
 # XXX: do I really need DSTROOT?
 pkg:install DSTROOT="${PKG_DEST}"
 for bin in ar nm ranlib size strings strip; do
