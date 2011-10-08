@@ -21,7 +21,7 @@ cd ..
 
 cp -va "${PKG_DATA}"/kextmanager* .
 # XXX: kvm_mkdb shutdown
-for tproj in ac accton chpass dynamic_pager getconf getty hostinfo iostat login mkfile nvram pwd_mkdb reboot sync update vifs vipw vm_stat zdump zic zprint; do
+for tproj in ac accton dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync update vifs vipw vm_stat zdump zic zprint; do
     cflags=
 
     case ${tproj} in
@@ -50,4 +50,4 @@ pkg: ln -s reboot /sbin/halt
 pkg: cp -a arch getconf getty hostinfo login passwd vm_stat zprint /usr/bin
 pkg: ln -s chpass /usr/bin/chfn
 pkg: ln -s chpass /usr/bin/chsh
-pkg: cp -a ac accton iostat mkfile nvram pwd_mkdb sysctl update vifs vipw zdump zic /usr/sbin
+pkg: cp -a ac accton iostat mkfile pwd_mkdb sysctl update vifs vipw zdump zic /usr/sbin
