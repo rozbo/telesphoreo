@@ -1,6 +1,0 @@
-#!/bin/sh
-case "$1" in
-    (remove|purge)
-        /usr/bin/apt-key del CB79DCA8
-    ;;
-esac

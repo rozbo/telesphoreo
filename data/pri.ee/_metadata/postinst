@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/bin/apt-key add /usr/share/keyrings/pri.ee-keyring.gpg
