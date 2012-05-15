@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [[ $1 == upgrade ]]; then
+    /bin/launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist
+fi
+
 if [[ $1 == install || $1 == upgrade ]]; then
     /bin/launchctl load /Library/LaunchDaemons/com.openssh.sshd.plist
 fi
