@@ -22,12 +22,6 @@
     <dict>
         <key>Listeners</key>
         <dict>
-            <key>Bonjour</key>
-            <array>
-                <string>ssh</string>
-                <string>sftp-ssh</string>
-            </array>
-
             <key>SockServiceName</key>
             <string>ssh</string>
         </dict>
