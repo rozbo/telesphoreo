@@ -22,7 +22,7 @@ pkg: mv /usr/lib/lib{,n}curses.dylib /usr/lib/_ncurses/
 pkg: rm -f /usr/lib/*.a
 
 for ti in "${PKG_DEST}"/usr/share/terminfo/*/*; do
-    if [[ ${ti} == */@(?(pc)ansi|cons25|cygwin|dumb|linux|mach|rxvt|screen|sun|vt@(52|100|102|220)|swvt25?(m)|[Ex]term)?(-*) ]]; then
+    if [[ ${ti} == */@(?(pc)ansi|cons25|cygwin|dumb|linux|mach|rxvt|screen|sun|vt@(52|100|102|220)|swvt25?(m)|[Exe]term|putty|konsole|gnome|apple|Apple_Terminal|unknown)?([-+.]*) ]]; then
         echo "keeping terminfo: ${ti}"
     else
         rm -f "${ti}"
