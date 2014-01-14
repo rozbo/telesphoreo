@@ -4,7 +4,7 @@ cd ..
 dir=$(echo *)
 mkdir bld-ncurses{,w}
 cd bld-ncurses
-flags='--with-shared --without-normal --without-debug --enable-sigwinch'
+flags='--with-shared --without-normal --without-debug --enable-sigwinch --disable-mixed-case --enable-termcap'
 PKG_CONF=../${dir}/configure pkg:configure ${flags}
 make #CFLAGS='-O2 -mthumb'
 pkg:install
@@ -30,3 +30,7 @@ for ti in "${PKG_DEST}"/usr/share/terminfo/*/*; do
 done
 
 rmdir --ignore-fail-on-non-empty "${PKG_DEST}"/usr/share/terminfo/*
+
+for ti in "${PKG_DEST}"/usr/share/terminfo/*; do
+    ln -Tsf "${ti##*/}" "${PKG_DEST}"/usr/share/terminfo/"$(printf "%02x" "'${ti##*/}")"
+done
