@@ -67,8 +67,9 @@ function pkg:patch() {
             continue;
         fi
 
+        args=$(cat ${diff%.diff}.args 2>/dev/null || true)
         echo "patching with ${diff}..."
-        patch -p1 <"${diff}"
+        patch ${args:=-p1} <"${diff}"
     done
 }
 
