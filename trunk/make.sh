@@ -139,7 +139,7 @@ function pkg:configure() {
 export -f pkg:configure
 
 function pkg:make() {
-    make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" CFLAGS='-O2 -mthumb -fno-common' "$@"
+    make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" CFLAGS='-O2 -mthumb -fno-common' CXXFLAGS='-O2 -mthumb' "$@"
 }
 
 export -f pkg:make
