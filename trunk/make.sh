@@ -94,7 +94,7 @@ export -f pkg:bin
 
 function pkg:autoconf() {
     for m4 in $(find -name "*.m4"); do
-        patch -r/dev/null "${m4}" "${PKG_BASE}/util/libtool.m4.diff" || true
+        patch -F 3 -r/dev/null "${m4}" "${PKG_BASE}/util/libtool.m4.diff" || true
     done
 
     autoconf
