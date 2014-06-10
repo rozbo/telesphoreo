@@ -9,7 +9,7 @@ diff -ru apt-0.7.25.3/methods/http.cc apt-0.7.25.3+iPhone/methods/http.cc
  #include <sys/stat.h>
  #include <sys/time.h>
  #include <utime.h>
-@@ -41,11 +42,18 @@
+@@ -41,11 +42,19 @@
  #include <string.h>
  #include <iostream>
  #include <map>
@@ -21,6 +21,7 @@ diff -ru apt-0.7.25.3/methods/http.cc apt-0.7.25.3+iPhone/methods/http.cc
  #include <netdb.h>
 +#include <arpa/inet.h>
 +
++#include <dlfcn.h>
 +#include <lockdown.h>
 +#include <CoreFoundation/CoreFoundation.h>
 +#include <CoreServices/CoreServices.h>
@@ -645,7 +646,7 @@ diff -ru apt-0.7.25.3/methods/http.cc apt-0.7.25.3+iPhone/methods/http.cc
        FailCounter = 0;
     }
     
-@@ -1330,6 +1530,35 @@
+@@ -1330,6 +1530,41 @@
     signal(SIGPIPE, SIG_IGN);
  
     HttpMethod Mth;
@@ -673,6 +674,12 @@ diff -ru apt-0.7.25.3/methods/http.cc apt-0.7.25.3+iPhone/methods/http.cc
 +        CFRelease(plist);
 +    }
 +
++    if (UniqueID_ == NULL)
++    if (void *libMobileGestalt = dlopen("/usr/lib/libMobileGestalt.dylib", RTLD_GLOBAL | RTLD_LAZY))
++    if (CFStringRef (*$MGCopyAnswer)(CFStringRef) = (CFStringRef (*)(CFStringRef)) dlsym(libMobileGestalt, "MGCopyAnswer"))
++        UniqueID_ = $MGCopyAnswer(CFSTR("UniqueDeviceID"));
++
++    if (UniqueID_ == NULL)
 +    if (void *lockdown = lockdown_connect()) {
 +        UniqueID_ = lockdown_copy_value(lockdown, NULL, kLockdownUniqueDeviceIDKey);
 +        lockdown_disconnect(lockdown);
