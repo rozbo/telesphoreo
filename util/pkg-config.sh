@@ -51,7 +51,7 @@ for pkg in "${pkgs[@]}"; do
             DEP_DEST=$(PKG_DEST_ "${DEP_NAME}")
 
             find "${DEP_DEST}" -name "${pkg}.pc" -printf "${DEP_DEST}\n"
-        done) && args_=(--define-variable=prefix="${dest}/usr" "${args_[@]}")
+        done | head -n 1) && args_=(--define-variable=prefix="${dest}/usr" "${args_[@]}")
     fi
 
     #echo @@@ pkg-config "${args_[@]}" "${pkg}" 1>&2
