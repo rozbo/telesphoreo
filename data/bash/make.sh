@@ -1,7 +1,7 @@
 pkg:extract
 cd *
 
-for ((x = 1; x != 18; ++x)); do
+for ((x = 1; x != 41; ++x)); do
     patch -p0 <"${PKG_DATA}/bash40-$(printf '%.3u\n' "$x")"
 done
 
