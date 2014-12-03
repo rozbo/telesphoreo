@@ -1,6 +1,6 @@
 diff -ru git-2.2.0/Makefile git-2.2.0+iPhone/Makefile
 --- git-2.2.0/Makefile	2014-11-26 22:39:03.000000000 +0000
-+++ git-2.2.0+iPhone/Makefile	2014-12-03 08:21:03.000000000 +0000
++++ git-2.2.0+iPhone/Makefile	2014-12-03 11:56:31.000000000 +0000
 @@ -1628,7 +1628,6 @@
  
  $(BUILT_INS): git$X
@@ -17,7 +17,15 @@ diff -ru git-2.2.0/Makefile git-2.2.0+iPhone/Makefile
  	ln -s $< $@ 2>/dev/null || \
  	cp $< $@
  
-@@ -2226,14 +2224,12 @@
+@@ -2219,21 +2217,19 @@
+ 	  for p in git$X $(filter $(install_bindir_programs),$(ALL_PROGRAMS)); do \
+ 		$(RM) "$$execdir/$$p" && \
+ 		test -z "$(NO_INSTALL_HARDLINKS)$(NO_CROSS_DIRECTORY_HARDLINKS)" && \
+-		ln "$$bindir/$$p" "$$execdir/$$p" 2>/dev/null || \
++		ln -s "$$bindir/$$p" "$$execdir/$$p" 2>/dev/null || \
+ 		cp "$$bindir/$$p" "$$execdir/$$p" || exit; \
+ 	  done; \
+ 	} && \
  	for p in $(filter $(install_bindir_programs),$(BUILT_INS)); do \
  		$(RM) "$$bindir/$$p" && \
  		test -z "$(NO_INSTALL_HARDLINKS)" && \
