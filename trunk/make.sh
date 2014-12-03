@@ -23,9 +23,9 @@ fi
 
 export CODESIGN_ALLOCATE=$(which arm-apple-darwin9-codesign_allocate)
 
-for DEP_NAME in "${PKG_DEPS[@]}"; do
-    "${PKG_MAKE}" "${DEP_NAME}"
-done
+#for DEP_NAME in "${PKG_DEPS[@]}"; do
+#    "${PKG_MAKE}" "${DEP_NAME}"
+#done
 
 export PKG_HASH=$({
     "${PKG_BASE}"/util/catdir.sh "${PKG_DATA}" -L \( -name '.svn' -o -name '_*' \) -prune -o
@@ -121,8 +121,6 @@ function pkg:setup() {
 export -f pkg:setup
 
 function pkg:configure() {
-    PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
-    ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
     cfg=("${PKG_CONF}" \
         ac_cv_prog_cc_g=no ac_cv_prog_cxx_g=no \
         --build="$(${PKG_BASE}/util/config.guess)" \
@@ -131,15 +129,17 @@ function pkg:configure() {
         --enable-shared=yes \
         --prefix=$(cat "${PKG_BASE}/arch/${PKG_ARCH}/prefix") \
         --localstatedir="/var/cache/${PKG_NAME}" \
+        CFLAGS='-O2 -mthumb -fno-common' \
         "$@")
     echo "${cfg[@]}"
+    PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
     "${cfg[@]}"
 }
 
 export -f pkg:configure
 
 function pkg:make() {
-    make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" CFLAGS='-O2 -mthumb -fno-common' CXXFLAGS='-O2 -mthumb' "$@"
+    make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" CXXFLAGS='-O2 -mthumb' "$@"
 }
 
 export -f pkg:make
