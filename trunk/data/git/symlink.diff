@@ -1,21 +1,42 @@
-diff -ru git-1.5.6.rc0/Makefile git-1.5.6.rc0+iPhone/Makefile
---- git-1.5.6.rc0/Makefile	2008-05-26 00:47:42.000000000 +0000
-+++ git-1.5.6.rc0+iPhone/Makefile	2008-05-31 18:51:02.000000000 +0000
-@@ -999,7 +999,7 @@
- 		'-DGIT_INFO_PATH="$(infodir_SQ)"' $<
+diff -ru git-2.2.0/Makefile git-2.2.0+iPhone/Makefile
+--- git-2.2.0/Makefile	2014-11-26 22:39:03.000000000 +0000
++++ git-2.2.0+iPhone/Makefile	2014-12-03 08:21:03.000000000 +0000
+@@ -1628,7 +1628,6 @@
  
  $(BUILT_INS): git$X
--	$(QUIET_BUILT_IN)$(RM) $@ && ln git$X $@
-+	$(QUIET_BUILT_IN)$(RM) $@ && ln -s git$X $@
+ 	$(QUIET_BUILT_IN)$(RM) $@ && \
+-	ln $< $@ 2>/dev/null || \
+ 	ln -s $< $@ 2>/dev/null || \
+ 	cp $< $@
  
- common-cmds.h: ./generate-cmdlist.sh command-list.txt
+@@ -1912,7 +1911,6 @@
  
-@@ -1241,7 +1241,7 @@
- 		cp '$(DESTDIR_SQ)$(bindir_SQ)/git$X' \
- 			'$(DESTDIR_SQ)$(gitexecdir_SQ)/git$X'; \
- 	fi
--	$(foreach p,$(BUILT_INS), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' && ln '$(DESTDIR_SQ)$(gitexecdir_SQ)/git$X' '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' ;)
-+	$(foreach p,$(BUILT_INS), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' && ln -s 'git$X' '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p' ;)
- ifneq (,$X)
- 	$(foreach p,$(patsubst %$X,%,$(filter %$X,$(ALL_PROGRAMS) $(BUILT_INS) git$X)), $(RM) '$(DESTDIR_SQ)$(gitexecdir_SQ)/$p';)
- endif
+ $(REMOTE_CURL_ALIASES): $(REMOTE_CURL_PRIMARY)
+ 	$(QUIET_LNCP)$(RM) $@ && \
+-	ln $< $@ 2>/dev/null || \
+ 	ln -s $< $@ 2>/dev/null || \
+ 	cp $< $@
+ 
+@@ -2226,14 +2224,12 @@
+ 	for p in $(filter $(install_bindir_programs),$(BUILT_INS)); do \
+ 		$(RM) "$$bindir/$$p" && \
+ 		test -z "$(NO_INSTALL_HARDLINKS)" && \
+-		ln "$$bindir/git$X" "$$bindir/$$p" 2>/dev/null || \
+ 		ln -s "git$X" "$$bindir/$$p" 2>/dev/null || \
+ 		cp "$$bindir/git$X" "$$bindir/$$p" || exit; \
+ 	done && \
+ 	for p in $(BUILT_INS); do \
+ 		$(RM) "$$execdir/$$p" && \
+ 		test -z "$(NO_INSTALL_HARDLINKS)" && \
+-		ln "$$execdir/git$X" "$$execdir/$$p" 2>/dev/null || \
+ 		ln -s "git$X" "$$execdir/$$p" 2>/dev/null || \
+ 		cp "$$execdir/git$X" "$$execdir/$$p" || exit; \
+ 	done && \
+@@ -2241,7 +2237,6 @@
+ 	for p in $$remote_curl_aliases; do \
+ 		$(RM) "$$execdir/$$p" && \
+ 		test -z "$(NO_INSTALL_HARDLINKS)" && \
+-		ln "$$execdir/git-remote-http$X" "$$execdir/$$p" 2>/dev/null || \
+ 		ln -s "git-remote-http$X" "$$execdir/$$p" 2>/dev/null || \
+ 		cp "$$execdir/git-remote-http$X" "$$execdir/$$p" || exit; \
+ 	done && \
