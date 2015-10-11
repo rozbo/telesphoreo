@@ -9,7 +9,7 @@ done
 
 cd pam
 autoconf
-pkg:configure --enable-fakeroot="${PKG_DEST}" --enable-read-both-confs --enable-sconfigdir=/etc/pam --enable-securedir=/usr/lib/pam --enable-giant-libpam --disable-libcrack
+pkg:configure --enable-fakeroot="${PKG_DEST}" --enable-read-both-confs --enable-sconfigdir=/etc/pam --enable-securedir=/usr/lib/pam --enable-giant-libpam --disable-libcrack ac_cv_c_bigendian=no
 
 CPATH=$(pwd):$CPATH
 make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" LD="${PKG_TARG}-ld" RANLIB="${PKG_TARG}-ranlib"
