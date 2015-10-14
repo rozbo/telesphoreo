@@ -103,6 +103,7 @@ function pkg:autoconf() {
 export -f pkg:autoconf
 
 export PKG_CONF=./configure
+export PKG_MCPU=-mthumb
 
 function pkg:libtool_() {
     for ltmain in $(find -name "$1"); do
@@ -129,7 +130,8 @@ function pkg:configure() {
         --enable-shared=yes \
         --prefix=$(cat "${PKG_BASE}/arch/${PKG_ARCH}/prefix") \
         --localstatedir="/var/cache/${PKG_NAME}" \
-        CFLAGS='-O2 -mthumb -fno-common' \
+        CFLAGS="-O2 ${PKG_MCPU} -fno-common" \
+        CXXFLAGS="-O2 ${PKG_MCPU} -fno-common" \
         "$@")
     echo "${cfg[@]}"
     PKG_CONFIG="$(realpath "${PKG_BASE}/util/pkg-config.sh")" \
@@ -139,7 +141,7 @@ function pkg:configure() {
 export -f pkg:configure
 
 function pkg:make() {
-    make CC="${PKG_TARG}-gcc" AR="${PKG_TARG}-ar" CXXFLAGS='-O2 -mthumb' "$@"
+    make CC="${PKG_TARG}-gcc" CXX="${PKG_TARG}-g++" AR="${PKG_TARG}-ar" "$@"
 }
 
 export -f pkg:make
