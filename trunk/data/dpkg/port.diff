@@ -11,12 +11,13 @@ diff -ru dpkg-1.14.25/lib/Makefile.am dpkg-1.14.25+iPhone/lib/Makefile.am
 diff -ru dpkg-1.14.25/lib/tarfn.c dpkg-1.14.25+iPhone/lib/tarfn.c
 --- dpkg-1.14.25/lib/tarfn.c	2009-02-01 06:18:59.000000000 +0000
 +++ dpkg-1.14.25+iPhone/lib/tarfn.c	2009-04-11 01:11:30.000000000 +0000
-@@ -55,6 +55,13 @@
+@@ -55,6 +55,14 @@
  	return n;
  }
  
 +int strnlen(const char *s, int size) {
-+    for (int i = 0; i != size; ++i)
++    int i;
++    for (i = 0; i != size; ++i)
 +        if (s[i] == '\0')
 +            return i;
 +    return size;
