@@ -1,7 +1,7 @@
 pkg:setup
-autoconf
-cp -a libcompat/obstack.[ch] lib
-pkg:configure --with-admindir=/var/lib/dpkg --without-start-stop-daemon --disable-nls --sysconfdir=/etc --disable-linker-optimisations dpkg_cv_va_copy=yes
+#autoconf
+#cp -a libcompat/obstack.[ch] lib
+pkg:configure --with-admindir=/var/lib/dpkg --disable-start-stop-daemon --disable-nls --sysconfdir=/etc --disable-linker-optimisations dpkg_cv_va_copy=yes --enable-static=yes --enable-shared=no --with-dpkg-deb-compressor=gzip
 pkg:make
 pkg:install
 pkg: rm -rf /usr/share/perl5

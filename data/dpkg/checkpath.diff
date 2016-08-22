@@ -1,17 +1,20 @@
-diff -ru dpkg-1.14.25/src/help.c dpkg-1.14.25+iPhone/src/help.c
---- dpkg-1.14.25/src/help.c	2009-02-01 06:19:02.000000000 +0000
-+++ dpkg-1.14.25+iPhone/src/help.c	2009-04-11 01:34:20.000000000 +0000
-@@ -77,12 +77,11 @@
- 
- void checkpath(void) {
- /* Verify that some programs can be found in the PATH. */
--  static const char *const checklist[]= { "ldconfig", 
-+  static const char *const checklist[]= {
- #if WITH_START_STOP_DAEMON
-     "start-stop-daemon",
- #endif    
--    "install-info",
--    "update-rc.d",
+diff -ru dpkg-1.18.10/src/help.c dpkg-1.18.10+iPhone/src/help.c
+--- dpkg-1.18.10/src/help.c	2016-07-05 01:55:14.000000000 +0000
++++ dpkg-1.18.10+iPhone/src/help.c	2016-08-22 21:34:30.000000000 +0000
+@@ -121,16 +121,7 @@
+     TAR,
+     DIFF,
+     BACKEND,
+-    /* Mac OS X uses dyld (Mach-O) instead of ld.so (ELF), and does not have
+-     * an ldconfig. */
+-#if defined(__APPLE__) && defined(__MACH__)
+-    "update_dyld_shared_cache",
+-#else
+-    "ldconfig",
+-#endif
+-#if BUILD_START_STOP_DAEMON
+-    "start-stop-daemon",
+-#endif
 +    "launchctl",
      NULL
    };
